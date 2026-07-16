@@ -1,10 +1,10 @@
 # osxec
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/{github_nickname}/{github_repo_name}.svg)](https://pkg.go.dev/github.com/{github_nickname}/{github_repo_name})
-[![Go Report Card](https://goreportcard.com/badge/github.com/{github_nickname}/{github_repo_name})](https://goreportcard.com/report/github.com/{github_nickname}/{github_repo_name})
+[![Go Reference](https://pkg.go.dev/badge/github.com/gitamix/lint.svg)](https://pkg.go.dev/github.com/gitamix/lint)
+[![Go Report Card](https://goreportcard.com/badge/github.com/gitamix/lint)](https://goreportcard.com/report/github.com/gitamix/lint)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/{github_nickname}/{github_repo_name})
-[![Release](https://img.shields.io/github/v/release/{github_nickname}/{github_repo_name}?style=flat)](https://github.com/{github_nickname}/{github_repo_name}/releases)
+![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/gitamix/lint)
+[![Release](https://img.shields.io/github/v/release/gitamix/lint?style=flat)](https://github.com/gitamix/lint/releases)
 
 Short description of the project.
 
@@ -22,7 +22,7 @@ Show simple examples how the module works.
 
 ## Documentation
 
-Full API reference is available on [pkg.go.dev](https://pkg.go.dev/github.com/{github_nickname}/{github_repo_name})
+Full API reference is available on [pkg.go.dev](https://pkg.go.dev/github.com/gitamix/lint)
 
 ## Requirements
 
@@ -42,4 +42,4 @@ This project is licensed under the MIT License — see the [LICENSE](LICENSE) fi
 
 ## Author / Contact
 
-Maintained by [Ilya Sitnikov](https://github.com/{github_nickname})
+Maintained by [Ilya Sitnikov](https://github.com/gitamix)

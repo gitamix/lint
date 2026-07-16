@@ -39,7 +39,7 @@ to replace template placeholders with your GitHub identity.
     sh ./scripts/itsme.sh <your_github_nickname> <your_github_repo>
     ```
 
-3. [Pick an open issue](https://github.com/{github_nickname}/{github_repo_name}/issues)
+3. [Pick an open issue](https://github.com/gitamix/lint/issues)
 and work on it.
 
     If there is no suitable issue for your idea,
