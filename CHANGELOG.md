@@ -7,4 +7,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-Work in progress...
+- Implemented issue with its message and type,
+indicating problems in the project that need to be linted.
