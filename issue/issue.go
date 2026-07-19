@@ -21,7 +21,7 @@ func NewIssue(typ Type, msg string) Issue {
 
 // NewCritical creates a new Issue with type Critical.
 //
-// It is a convenience function to create an critical issue.
+// It is a convenience function to create a critical issue.
 // This function is used to create issues that indicate critical problems
 // that need to be solved immediately.
 func NewCritical(msg string) Issue {

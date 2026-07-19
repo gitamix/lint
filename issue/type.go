@@ -27,9 +27,9 @@ const (
 )
 
 // Type represents the severity of an issue in the linting process
-// and used to categorize issues found during linting.
+// and is used to categorize issues found during linting.
 //
-// It indicates the severity of the issue (critical, warning, info)
+// It indicates the severity of the issue (critical, warning, info),
 // allowing the linting process to handle different types of issues appropriately.
 type Type uint8
 

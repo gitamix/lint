@@ -51,22 +51,22 @@ func TestIssue_Type(t *testing.T) {
 		want impl.Type
 	}{
 		{
-			name: "critical issue with its contstructor",
+			name: "critical issue with its constructor",
 			i:    impl.NewCritical("test message"),
 			want: impl.Critical,
 		},
 		{
-			name: "warning issue with its contstructor",
+			name: "warning issue with its constructor",
 			i:    impl.NewWarning("test message"),
 			want: impl.Warning,
 		},
 		{
-			name: "info issue with its contstructor",
+			name: "info issue with its constructor",
 			i:    impl.NewInfo("test message"),
 			want: impl.Info,
 		},
 		{
-			name: "info issue with issue contstructor",
+			name: "info issue with issue constructor",
 			i:    impl.NewIssue(impl.Info, "test message"),
 			want: impl.Info,
 		},
