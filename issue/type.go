@@ -46,3 +46,18 @@ func (t Type) String() string {
 		return ""
 	}
 }
+
+// ParseOr provided string to issue Type
+// or returns the default provided one if value does not fit any.
+func ParseOr(s string, def Type) Type {
+	switch s {
+	case "critical":
+		return Critical
+	case "warning":
+		return Warning
+	case "info":
+		return Info
+	default:
+		return def
+	}
+}
