@@ -10,7 +10,7 @@ type Config struct {
 	pattern value.String
 }
 
-// NewConfig creates a new Config istance
+// NewConfig creates a new Config instance
 // with provided pattern config value.
 func NewConfig(pattern value.String) Config {
 	return Config{

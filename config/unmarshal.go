@@ -31,7 +31,7 @@ type (
 )
 
 // Unmarshal unmarshals YAML content and returns a Config instance
-// contains configuration or returns error if unmarshaling failed.
+// containing the configuration, or returns an error if unmarshaling fails.
 func Unmarshal(bb []byte) (*Config, error) {
 	var out yamlConfig
 	err := yaml.Unmarshal(bb, &out)

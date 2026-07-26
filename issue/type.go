@@ -47,8 +47,8 @@ func (t Type) String() string {
 	}
 }
 
-// ParseOr provided string to issue Type
-// or returns the default provided one if value does not fit any.
+// ParseOr parses the provided string into an issue Type,
+// or returns the provided default if the value does not match any known type.
 func ParseOr(s string, def Type) Type {
 	switch s {
 	case "critical":
