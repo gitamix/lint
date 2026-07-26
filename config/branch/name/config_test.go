@@ -137,3 +137,74 @@ func TestConfig_Pattern(t *testing.T) {
 		})
 	}
 }
+
+func TestConfig_Level(t *testing.T) {
+	t.Parallel()
+	type want struct {
+		level issue.Type
+	}
+	tests := []struct {
+		name string
+		c    impl.Config
+		want want
+	}{
+		{
+			name: "critical level",
+			c: impl.NewConfig(
+				value.NewString(
+					issue.Critical,
+					"foo",
+				),
+			),
+			want: want{
+				level: issue.Critical,
+			},
+		},
+		{
+			name: "warning level",
+			c: impl.NewConfig(
+				value.NewString(
+					issue.Warning,
+					"foo",
+				),
+			),
+			want: want{
+				level: issue.Warning,
+			},
+		},
+		{
+			name: "info level",
+			c: impl.NewConfig(
+				value.NewString(
+					issue.Info,
+					"foo",
+				),
+			),
+			want: want{
+				level: issue.Info,
+			},
+		},
+		{
+			name: "zero level defaults to warning",
+			c: impl.NewConfig(
+				value.NewString(
+					0,
+					"foo",
+				),
+			),
+			want: want{
+				level: issue.Warning,
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			assert.Equal(
+				t,
+				tt.want.level,
+				tt.c.Pattern().Level(),
+			)
+		})
+	}
+}
