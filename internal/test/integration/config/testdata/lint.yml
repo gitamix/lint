@@ -1,0 +1,16 @@
+# Git branch rules.
+branch:
+  # ticket rules to enforce a specific format for task identifiers in commit messages.
+  ticket:
+    issue:
+      # Level for task rules: critical, warning, info
+      level: "info"
+    # Regular expression pattern for the task identifier.
+    pattern: (TASK|PROJ|BUG)-[0-9]+
+  name:
+    issue:
+      # Level for task rules: critical, warning, info
+      level: "warning"
+    # Regular expression pattern for branch names.
+    # This pattern allows branches to be named with lowercase letters, numbers, underscores, and hyphens.
+    pattern: ^(feature|bugfix|hotfix)/[A-Z]+-\d+
