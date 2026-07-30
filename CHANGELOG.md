@@ -16,6 +16,8 @@ indicating problems in the project that need to be linted
 including its name and ticket the branch related with
 - Loading and unmarshaling config from YAML file
 - Integration tests to load and unmarhal the whole lint config
+- Added linting current branch with its name
+- Implemented fake git client for testing purposes.
 
 ### Changed
 
