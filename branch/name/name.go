@@ -6,8 +6,8 @@ import (
 	"github.com/gitamix/lint/config/branch/name"
 )
 
-// Linter represents a linter to validate branch names.
-type Linter struct {
+// Name represents a linter to validate branch names.
+type Name struct {
 	// cfg is the configuration defines
 	// the rules to validate the branch name.
 	cfg name.Config
@@ -16,14 +16,14 @@ type Linter struct {
 	name branch.Name
 }
 
-// NewLinter creates a new Linter for validating
+// NewName creates a new Name for validating
 // the provided branch name using lint configuration
 // definines the rules to validate the branch name.
-func NewLinter(
+func NewName(
 	name branch.Name,
 	cfg name.Config,
-) *Linter {
-	return &Linter{
+) *Name {
+	return &Name{
 		cfg:  cfg,
 		name: name,
 	}

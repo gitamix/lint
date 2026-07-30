@@ -17,8 +17,8 @@ type (
 		CurrentBranch(ctx context.Context) (branch.Branch, error)
 	}
 
-	// Linter validates the current git branch against configured rules.
-	Linter struct {
+	// Branch validates the current git branch against configured rules.
+	Branch struct {
 		// git is the git client used to retrieve the current branch.
 		git gitClient
 
@@ -27,11 +27,11 @@ type (
 	}
 )
 
-// NewLinter creates a new Linter
+// NewBranch creates a new Branch
 // with the provided git client used to retrieve the current branch
 // and configuration containing validation rules.
-func NewLinter(git gitClient, cfg config.Config) *Linter {
-	return &Linter{
+func NewBranch(git gitClient, cfg config.Config) *Branch {
+	return &Branch{
 		git: git,
 		cfg: cfg,
 	}

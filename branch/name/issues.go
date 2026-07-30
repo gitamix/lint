@@ -12,15 +12,15 @@ import (
 // It checks whether the branch name matches the required regex pattern
 // from the linter configuration. If the name does not match, a single
 // issue is returned describing the mismatch.
-func (l *Linter) Issues() []issue.Issue {
+func (n *Name) Issues() []issue.Issue {
 	issues := make([]issue.Issue, 0, 1)
-	pattern := l.cfg.Pattern().Exact()
+	pattern := n.cfg.Pattern().Exact()
 	matched := regexp.
 		MustCompile(pattern).
-		MatchString(l.name.String())
+		MatchString(n.name.String())
 	if !matched {
 		issues = append(issues, issue.NewIssue(
-			l.cfg.Pattern().Level(),
+			n.cfg.Pattern().Level(),
 			"branch name doesn't match the required pattern '"+pattern+"'",
 		))
 	}

@@ -20,12 +20,12 @@ func TestLinter_Issues(t *testing.T) {
 	}
 	tests := []struct {
 		name string
-		l    *impl.Linter
+		n    *impl.Name
 		want want
 	}{
 		{
 			name: "ok",
-			l: impl.NewLinter(
+			n: impl.NewName(
 				branch.NewName("TASK-1234"),
 				name.NewConfig(
 					value.NewString(
@@ -40,7 +40,7 @@ func TestLinter_Issues(t *testing.T) {
 		},
 		{
 			name: "critical by pattern",
-			l: impl.NewLinter(
+			n: impl.NewName(
 				branch.NewName("FEATURE-1234"),
 				name.NewConfig(
 					value.NewString(
@@ -57,7 +57,7 @@ func TestLinter_Issues(t *testing.T) {
 		},
 		{
 			name: "warning by pattern",
-			l: impl.NewLinter(
+			n: impl.NewName(
 				branch.NewName("FEATURE-1234"),
 				name.NewConfig(
 					value.NewString(
@@ -74,7 +74,7 @@ func TestLinter_Issues(t *testing.T) {
 		},
 		{
 			name: "empty pattern",
-			l: impl.NewLinter(
+			n: impl.NewName(
 				branch.NewName("FEATURE-1234"),
 				name.NewConfig(
 					value.NewString(
@@ -89,7 +89,7 @@ func TestLinter_Issues(t *testing.T) {
 		},
 		{
 			name: "critical empty branch name",
-			l: impl.NewLinter(
+			n: impl.NewName(
 				branch.NewName(""),
 				name.NewConfig(
 					value.NewString(
@@ -106,7 +106,7 @@ func TestLinter_Issues(t *testing.T) {
 		},
 		{
 			name: "critical empty branch name & empty pattern",
-			l: impl.NewLinter(
+			n: impl.NewName(
 				branch.NewName(""),
 				name.NewConfig(
 					value.NewString(
@@ -120,15 +120,15 @@ func TestLinter_Issues(t *testing.T) {
 			},
 		},
 		{
-			name: "empty linter",
-			l:    &impl.Linter{},
+			name: "empty impl",
+			n:    &impl.Name{},
 			want: want{
 				issues: []issue.Issue{},
 			},
 		},
 		{
-			name: "nil linter",
-			l:    nil,
+			name: "nil impl",
+			n:    nil,
 			want: want{
 				issues: nil,
 				panic:  true,
@@ -140,14 +140,14 @@ func TestLinter_Issues(t *testing.T) {
 			t.Parallel()
 			if tt.want.panic {
 				assert.Panics(t, func() {
-					_ = tt.l.Issues()
+					_ = tt.n.Issues()
 				})
 				return
 			}
 			assert.Equal(
 				t,
 				tt.want.issues,
-				tt.l.Issues(),
+				tt.n.Issues(),
 			)
 		})
 	}

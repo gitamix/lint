@@ -28,13 +28,13 @@ func TestLinter_Issues(t *testing.T) {
 	}
 	tests := []struct {
 		name string
-		l    *impl.Linter
+		b    *impl.Branch
 		args args
 		want want
 	}{
 		{
 			name: "ok",
-			l: impl.NewLinter(
+			b: impl.NewBranch(
 				git.NewRepository(
 					git.WithCurrentBranch(
 						func(_ context.Context) (branch.Branch, error) {
@@ -65,7 +65,7 @@ func TestLinter_Issues(t *testing.T) {
 		},
 		{
 			name: "failed to get current branch from git",
-			l: impl.NewLinter(
+			b: impl.NewBranch(
 				git.NewRepository(
 					git.WithCurrentBranch(
 						func(_ context.Context) (branch.Branch, error) {
@@ -94,7 +94,7 @@ func TestLinter_Issues(t *testing.T) {
 		},
 		{
 			name: "critical on name not matched pattern",
-			l: impl.NewLinter(
+			b: impl.NewBranch(
 				git.NewRepository(
 					git.WithCurrentBranch(
 						func(_ context.Context) (branch.Branch, error) {
@@ -127,7 +127,7 @@ func TestLinter_Issues(t *testing.T) {
 		},
 		{
 			name: "warning on empty branch name",
-			l: impl.NewLinter(
+			b: impl.NewBranch(
 				git.NewRepository(
 					git.WithCurrentBranch(
 						func(_ context.Context) (branch.Branch, error) {
@@ -160,7 +160,7 @@ func TestLinter_Issues(t *testing.T) {
 		},
 		{
 			name: "warning on empty pattern",
-			l: impl.NewLinter(
+			b: impl.NewBranch(
 				git.NewRepository(
 					git.WithCurrentBranch(
 						func(_ context.Context) (branch.Branch, error) {
@@ -191,7 +191,7 @@ func TestLinter_Issues(t *testing.T) {
 		},
 		{
 			name: "empty current branch name and pattern",
-			l: impl.NewLinter(
+			b: impl.NewBranch(
 				git.NewRepository(
 					git.WithCurrentBranch(
 						func(_ context.Context) (branch.Branch, error) {
@@ -222,7 +222,7 @@ func TestLinter_Issues(t *testing.T) {
 		},
 		{
 			name: "empty config",
-			l: impl.NewLinter(
+			b: impl.NewBranch(
 				git.NewRepository(
 					git.WithCurrentBranch(
 						func(_ context.Context) (branch.Branch, error) {
@@ -243,8 +243,8 @@ func TestLinter_Issues(t *testing.T) {
 			},
 		},
 		{
-			name: "empty linter",
-			l:    &impl.Linter{},
+			name: "empty value",
+			b:    &impl.Branch{},
 			args: args{
 				ctx: context.Background(),
 			},
@@ -253,8 +253,8 @@ func TestLinter_Issues(t *testing.T) {
 			},
 		},
 		{
-			name: "nil linter",
-			l:    nil,
+			name: "nil value",
+			b:    nil,
 			args: args{
 				ctx: context.Background(),
 			},
@@ -268,11 +268,11 @@ func TestLinter_Issues(t *testing.T) {
 			t.Parallel()
 			if tt.want.panic {
 				assert.Panics(t, func() {
-					_, _ = tt.l.Issues(tt.args.ctx)
+					_, _ = tt.b.Issues(tt.args.ctx)
 				})
 				return
 			}
-			got, gotErr := tt.l.Issues(tt.args.ctx)
+			got, gotErr := tt.b.Issues(tt.args.ctx)
 			assert.Equal(t, tt.want.issues, got)
 			assert.ErrorIs(t, gotErr, tt.want.err)
 		})

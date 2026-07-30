@@ -6,7 +6,7 @@ import (
 
 	"github.com/gitamix/types/branch"
 
-	"github.com/gitamix/lint/branch/name"
+	lintname "github.com/gitamix/lint/branch/name"
 	"github.com/gitamix/lint/errs"
 	"github.com/gitamix/lint/issue"
 )
@@ -17,16 +17,16 @@ import (
 // and validates it with the config set in the instance on created.
 //
 // Returns error if retrieving the current branch fails.
-func (l *Linter) Issues(ctx context.Context) ([]issue.Issue, error) {
-	br, err := l.git.CurrentBranch(ctx)
+func (b *Branch) Issues(ctx context.Context) ([]issue.Issue, error) {
+	br, err := b.git.CurrentBranch(ctx)
 	if err != nil {
 		return nil, errors.Join(errs.ErrGitFailed, err)
 	}
 	issues := make([]issue.Issue, 0, 2)
-	nameIssues := name.
-		NewLinter(
+	nameIssues := lintname.
+		NewName(
 			branch.NewName(br.String()),
-			l.cfg.Name(),
+			b.cfg.Name(),
 		).
 		Issues()
 	issues = append(issues, nameIssues...)
