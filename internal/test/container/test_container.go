@@ -12,6 +12,10 @@ import (
 // built from Dockerfile in the repository root.
 //
 // It uses the provided context and timeout for container initialization.
+// The wait strategy combines multiple checks in a single exec call
+// to ensure the container is fully ready before tests start — critical
+// in CI where container startup may appear complete while internal
+// filesystems are still initialising.
 func TestContainer(
 	ctx context.Context,
 	timeout time.Duration,
@@ -28,7 +32,12 @@ func TestContainer(
 		tc.WithDockerfile(dockf),
 		tc.WithWaitStrategy(
 			wait.
-				ForExec([]string{"git", "rev-parse", "main"}).
+				ForExec([]string{
+					"sh", "-c",
+					"git rev-parse main && " +
+						"test -f /opt/fixture/repo/.hashes.fixture.env && " +
+						"git rev-parse HEAD",
+				}).
 				WithStartupTimeout(30*time.Second),
 		),
 	)
