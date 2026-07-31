@@ -1,6 +1,7 @@
 package name
 
 import (
+	"fmt"
 	"regexp"
 
 	"github.com/gitamix/lint/issue"
@@ -21,7 +22,11 @@ func (n *Name) Issues() []issue.Issue {
 	if !matched {
 		issues = append(issues, issue.NewIssue(
 			n.cfg.Pattern().Level(),
-			"branch name doesn't match the required pattern '"+pattern+"'",
+			fmt.Sprintf(
+				"branch name '%s' doesn't match the required pattern '%s'",
+				n.name.String(),
+				pattern,
+			),
 		))
 	}
 	return issues

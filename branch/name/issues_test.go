@@ -51,7 +51,7 @@ func TestLinter_Issues(t *testing.T) {
 			),
 			want: want{
 				issues: []issue.Issue{
-					issue.NewCritical("branch name doesn't match the required pattern '(TASK|PROJ|BUG)-[0-9]+'"),
+					issue.NewCritical("branch name 'FEATURE-1234' doesn't match the required pattern '(TASK|PROJ|BUG)-[0-9]+'"),
 				},
 			},
 		},
@@ -68,7 +68,7 @@ func TestLinter_Issues(t *testing.T) {
 			),
 			want: want{
 				issues: []issue.Issue{
-					issue.NewWarning("branch name doesn't match the required pattern '(TASK|PROJ|BUG)-[0-9]+'"),
+					issue.NewWarning("branch name 'FEATURE-1234' doesn't match the required pattern '(TASK|PROJ|BUG)-[0-9]+'"),
 				},
 			},
 		},
@@ -100,7 +100,7 @@ func TestLinter_Issues(t *testing.T) {
 			),
 			want: want{
 				issues: []issue.Issue{
-					issue.NewCritical("branch name doesn't match the required pattern '(TASK|PROJ|BUG)-[0-9]+'"),
+					issue.NewCritical("branch name '' doesn't match the required pattern '(TASK|PROJ|BUG)-[0-9]+'"),
 				},
 			},
 		},

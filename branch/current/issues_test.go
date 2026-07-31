@@ -134,7 +134,9 @@ func TestBranch_Issues(t *testing.T) {
 			},
 			want: want{
 				issues: []issue.Issue{
-					issue.NewCritical(`branch name doesn't match the required pattern '^(feature|bugfix|hotfix)/[A-Z]+-\d+'`),
+					issue.NewCritical(
+						`branch name 'release/TASK-123' doesn't match the required pattern '^(feature|bugfix|hotfix)/[A-Z]+-\d+'`,
+					),
 				},
 				err: nil,
 			},
@@ -179,7 +181,9 @@ func TestBranch_Issues(t *testing.T) {
 			},
 			want: want{
 				issues: []issue.Issue{
-					issue.NewCritical(`branch name doesn't match the required pattern '^(feature|bugfix|hotfix)/[A-Z]+-\d+'`),
+					issue.NewCritical(
+						`branch name 'my-favorite-feature' doesn't match the required pattern '^(feature|bugfix|hotfix)/[A-Z]+-\d+'`,
+					),
 					issue.NewCritical(`ticket doesn't match the required pattern '(TASK|PROJ|BUG)-[0-9]+'`),
 				},
 				err: nil,
@@ -213,7 +217,7 @@ func TestBranch_Issues(t *testing.T) {
 			},
 			want: want{
 				issues: []issue.Issue{
-					issue.NewWarning(`branch name doesn't match the required pattern '^(feature|bugfix|hotfix)/[A-Z]+-\d+'`),
+					issue.NewWarning(`branch name '' doesn't match the required pattern '^(feature|bugfix|hotfix)/[A-Z]+-\d+'`),
 				},
 				err: nil,
 			},
