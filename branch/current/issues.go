@@ -3,8 +3,10 @@ package current
 import (
 	"context"
 	"errors"
+	"regexp"
 
 	"github.com/gitamix/types/branch"
+	"github.com/gitamix/types/ticket"
 
 	lintname "github.com/gitamix/lint/branch/name"
 	"github.com/gitamix/lint/errs"
@@ -30,5 +32,21 @@ func (b *Branch) Issues(ctx context.Context) ([]issue.Issue, error) {
 		).
 		Issues()
 	issues = append(issues, nameIssues...)
+	ticketPattern := b.cfg.
+		Ticket().
+		ID().
+		Pattern()
+	if v := ticketPattern.Exact(); v != "" {
+		tkt := ticket.ParseTicket(
+			br.String(),
+			regexp.MustCompile(v),
+		)
+		if tkt.Empty() {
+			issues = append(issues, issue.NewIssue(
+				ticketPattern.Level(),
+				"ticket doesn't match the required pattern '"+v+"'",
+			))
+		}
+	}
 	return issues, nil
 }

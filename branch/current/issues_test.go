@@ -10,13 +10,15 @@ import (
 	impl "github.com/gitamix/lint/branch/current"
 	config "github.com/gitamix/lint/config/branch"
 	"github.com/gitamix/lint/config/branch/name"
+	"github.com/gitamix/lint/config/ticket"
+	"github.com/gitamix/lint/config/ticket/id"
 	"github.com/gitamix/lint/config/value"
 	"github.com/gitamix/lint/errs"
 	"github.com/gitamix/lint/internal/test/fake/repo/git"
 	"github.com/gitamix/lint/issue"
 )
 
-func TestLinter_Issues(t *testing.T) {
+func TestBranch_Issues(t *testing.T) {
 	t.Parallel()
 	type args struct {
 		ctx context.Context
@@ -50,6 +52,18 @@ func TestLinter_Issues(t *testing.T) {
 							value.NewString(
 								issue.Critical,
 								`^(feature|bugfix|hotfix)/[A-Z]+-\d+`,
+							),
+						),
+					),
+					config.WithTicket(
+						ticket.NewConfig(
+							ticket.WithID(
+								id.NewConfig(
+									value.NewString(
+										issue.Warning,
+										`(TASK|PROJ|BUG)-[0-9]+`,
+									),
+								),
 							),
 						),
 					),
@@ -126,6 +140,52 @@ func TestLinter_Issues(t *testing.T) {
 			},
 		},
 		{
+			name: "criticals on name & ticket not match pattern",
+			b: impl.NewBranch(
+				git.NewRepository(
+					git.WithCurrentBranch(
+						func(_ context.Context) (branch.Branch, error) {
+							return branch.NewBranch(
+								branch.NewName("my-favorite-feature"),
+							), nil
+						},
+					),
+				),
+				config.NewConfig(
+					config.WithName(
+						name.NewConfig(
+							value.NewString(
+								issue.Critical,
+								`^(feature|bugfix|hotfix)/[A-Z]+-\d+`,
+							),
+						),
+					),
+					config.WithTicket(
+						ticket.NewConfig(
+							ticket.WithID(
+								id.NewConfig(
+									value.NewString(
+										issue.Critical,
+										`(TASK|PROJ|BUG)-[0-9]+`,
+									),
+								),
+							),
+						),
+					),
+				),
+			),
+			args: args{
+				ctx: context.Background(),
+			},
+			want: want{
+				issues: []issue.Issue{
+					issue.NewCritical(`branch name doesn't match the required pattern '^(feature|bugfix|hotfix)/[A-Z]+-\d+'`),
+					issue.NewCritical(`ticket doesn't match the required pattern '(TASK|PROJ|BUG)-[0-9]+'`),
+				},
+				err: nil,
+			},
+		},
+		{
 			name: "warning on empty branch name",
 			b: impl.NewBranch(
 				git.NewRepository(
@@ -159,7 +219,38 @@ func TestLinter_Issues(t *testing.T) {
 			},
 		},
 		{
-			name: "warning on empty pattern",
+			name: "empty pattern",
+			b: impl.NewBranch(
+				git.NewRepository(
+					git.WithCurrentBranch(
+						func(_ context.Context) (branch.Branch, error) {
+							return branch.NewBranch(
+								branch.NewName("feature/TASK-123"),
+							), nil
+						},
+					),
+				),
+				config.NewConfig(
+					config.WithName(
+						name.NewConfig(
+							value.NewString(
+								issue.Warning,
+								``,
+							),
+						),
+					),
+				),
+			),
+			args: args{
+				ctx: context.Background(),
+			},
+			want: want{
+				issues: []issue.Issue{},
+				err:    nil,
+			},
+		},
+		{
+			name: "empty ticket id pattern & name matched pattern",
 			b: impl.NewBranch(
 				git.NewRepository(
 					git.WithCurrentBranch(
@@ -176,6 +267,18 @@ func TestLinter_Issues(t *testing.T) {
 							value.NewString(
 								issue.Warning,
 								`^(feature|bugfix|hotfix)/[A-Z]+-\d+`,
+							),
+						),
+					),
+					config.WithTicket(
+						ticket.NewConfig(
+							ticket.WithID(
+								id.NewConfig(
+									value.NewString(
+										issue.Critical,
+										``,
+									),
+								),
 							),
 						),
 					),
