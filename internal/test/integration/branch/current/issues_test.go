@@ -11,6 +11,7 @@ import (
 	"github.com/gitamix/git/client/git"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/suite"
 
 	lintbranch "github.com/gitamix/lint/branch/current"
 	"github.com/gitamix/lint/config/branch"
@@ -24,96 +25,105 @@ import (
 	"github.com/gitamix/lint/issue"
 )
 
-func TestBranch_Issues(t *testing.T) {
-	t.Run("ok", func(t *testing.T) {
-		ctx, cancel := context.WithTimeout(
-			context.Background(),
-			10*time.Second,
-		)
-		defer cancel()
-		currbr := lintbranch.NewBranch(
-			git.NewClient(
-				shfx.NewShell(
-					shared.
-						ContainerFixture().
-						Container(),
-					container.RepoDir,
-				),
-			),
-			branch.NewConfig(
-				branch.WithTicket(
-					ticket.NewConfig(
-						ticket.WithID(
-							id.NewConfig(
-								value.NewString(
-									issue.Info,
-									`(TASK|PROJ|BUG)-[0-9]+`,
-								),
-							),
-						),
-					),
-				),
-				branch.WithName(
-					name.NewConfig(
-						value.NewString(
-							issue.Warning,
-							`^(feature|bugfix|hotfix)/[A-Z]+-\d+`,
-						),
-					),
-				),
-			),
-		)
-		got, gotErr := currbr.Issues(ctx)
-		require.NoError(t, gotErr)
-		assert.Equal(t, []issue.Issue{}, got)
-	})
+// IssuesSuite groups integration tests for branch current validation.
+type IssuesSuite struct {
+	suite.Suite
+	// git is the client to interact with git repositories.
+	git *git.Client
+}
 
-	t.Run("not matched with name & ticket patterns", func(t *testing.T) {
-		ctx, cancel := context.WithTimeout(
-			context.Background(),
-			10*time.Second,
-		)
-		defer cancel()
-		currbr := lintbranch.NewBranch(
-			git.NewClient(
-				shfx.NewShell(
-					shared.ContainerFixture().
-						Container(),
-					container.RepoDir,
-				),
-			),
-			branch.NewConfig(
-				branch.WithTicket(
-					ticket.NewConfig(
-						ticket.WithID(
-							id.NewConfig(
-								value.NewString(
-									issue.Info,
-									`([0-9]+)-\w`,
-								),
+// SetupSuite initializes the shared container fixture and creates the git client.
+func (s *IssuesSuite) SetupSuite() {
+	s.git = git.NewClient(
+		shfx.NewShell(
+			shared.
+				ContainerFixture().
+				Container(),
+			container.RepoDir,
+		),
+	)
+}
+
+// TestBranch_Issues runs all branch-current validation tests.
+func TestBranch_Issues(t *testing.T) {
+	t.Parallel()
+	suite.Run(t, new(IssuesSuite))
+}
+
+func (s *IssuesSuite) TestOk() {
+	ctx, cancel := context.WithTimeout(
+		context.Background(),
+		5*time.Second,
+	)
+	defer cancel()
+	currbr := lintbranch.NewBranch(
+		s.git,
+		branch.NewConfig(
+			branch.WithTicket(
+				ticket.NewConfig(
+					ticket.WithID(
+						id.NewConfig(
+							value.NewString(
+								issue.Info,
+								`(TASK|PROJ|BUG)-[0-9]+`,
 							),
 						),
 					),
 				),
-				branch.WithName(
-					name.NewConfig(
-						value.NewString(
-							issue.Warning,
-							`^(feature|release)/\w+`,
+			),
+			branch.WithName(
+				name.NewConfig(
+					value.NewString(
+						issue.Warning,
+						`^(feature|bugfix|hotfix)/[A-Z]+-\d+`,
+					),
+				),
+			),
+		),
+	)
+	got, gotErr := currbr.Issues(ctx)
+	require.NoError(s.T(), gotErr)
+	assert.Equal(s.T(), []issue.Issue{}, got)
+}
+
+func (s *IssuesSuite) TestNotMatchedWithPattern() {
+	ctx, cancel := context.WithTimeout(
+		context.Background(),
+		5*time.Second,
+	)
+	defer cancel()
+	currbr := lintbranch.NewBranch(
+		s.git,
+		branch.NewConfig(
+			branch.WithTicket(
+				ticket.NewConfig(
+					ticket.WithID(
+						id.NewConfig(
+							value.NewString(
+								issue.Info,
+								`([0-9]+)-\w`,
+							),
 						),
 					),
 				),
 			),
-		)
-		got, gotErr := currbr.Issues(ctx)
-		require.NoError(t, gotErr)
-		assert.Equal(
-			t,
-			[]issue.Issue{
-				issue.NewWarning("branch name 'bugfix/BUG-456' doesn't match the required pattern '^(feature|release)/\\w+'"),
-				issue.NewInfo("ticket doesn't match the required pattern '([0-9]+)-\\w'"),
-			},
-			got,
-		)
-	})
+			branch.WithName(
+				name.NewConfig(
+					value.NewString(
+						issue.Warning,
+						`^(feature|release)/\w+`,
+					),
+				),
+			),
+		),
+	)
+	got, gotErr := currbr.Issues(ctx)
+	require.NoError(s.T(), gotErr)
+	assert.Equal(s.T(),
+		[]issue.Issue{
+			issue.NewWarning("branch name 'bugfix/BUG-456' doesn't match the required pattern '^(feature|release)/\\w+'"),
+			issue.NewInfo("ticket doesn't match the required pattern '([0-9]+)-\\w'"),
+		},
+		got,
+	)
 }
