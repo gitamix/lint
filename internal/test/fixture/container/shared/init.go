@@ -4,7 +4,9 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"testing"
+	"log"
+	"path/filepath"
+	"runtime"
 	"time"
 
 	tc "github.com/testcontainers/testcontainers-go"
@@ -14,13 +16,12 @@ import (
 	ctrfx "github.com/gitamix/lint/internal/test/fixture/container"
 )
 
-// ContainerFixture returns the global shared container fixture
-// used by integration tests across all packages.
+// init initializes the shared container fixture.
 //
-// It initializes the fixture only once and fails the test
-// if the shared setup could not be completed successfully.
-func ContainerFixture(t *testing.T) *ctrfx.Container {
-	t.Helper()
+// Creates and sets a container fixture backed
+// by the shared test container
+// and loads the fixture environment variables from it.
+func init() {
 	fixtureOnce.Do(func() {
 		ctx, cancel := context.WithTimeout(
 			context.Background(),
@@ -30,9 +31,8 @@ func ContainerFixture(t *testing.T) *ctrfx.Container {
 		sharedFX, sharedErr = setupSharedContainerFixture(ctx)
 	})
 	if sharedErr != nil {
-		t.Fatalf("failed to setup shared container fixture: %v", sharedErr)
+		log.Fatalf("shared container fixture: %v", sharedErr)
 	}
-	return sharedFX
 }
 
 // setupSharedContainerFixture creates a container fixture backed
@@ -64,4 +64,21 @@ func setupSharedContainerFixture(ctx context.Context) (*ctrfx.Container, error) 
 		return nil, fmt.Errorf("failed to load env: %w", err)
 	}
 	return ctrfx.NewContainer(ctr, vars), nil
+}
+
+// mustRepoRoot returns the root directory of the repository containing this test code
+// and panics if it cannot determine the repository root.
+//
+// This function is useful for locating files relative to the repository root in tests.
+func mustRepoRoot() string {
+	_, file, _, ok := runtime.Caller(0)
+	if !ok {
+		panic("resolve test file path")
+	}
+	return filepath.Clean(
+		filepath.Join(
+			filepath.Dir(file),
+			"../../../../..",
+		),
+	)
 }

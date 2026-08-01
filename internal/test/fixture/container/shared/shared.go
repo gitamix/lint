@@ -1,8 +1,6 @@
 package shared
 
 import (
-	"path/filepath"
-	"runtime"
 	"sync"
 
 	ctrfx "github.com/gitamix/lint/internal/test/fixture/container"
@@ -22,19 +20,8 @@ var (
 	sharedErr error
 )
 
-// mustRepoRoot returns the root directory of the repository containing this test code
-// and panics if it cannot determine the repository root.
-//
-// This function is useful for locating files relative to the repository root in tests.
-func mustRepoRoot() string {
-	_, file, _, ok := runtime.Caller(0)
-	if !ok {
-		panic("resolve test file path")
-	}
-	return filepath.Clean(
-		filepath.Join(
-			filepath.Dir(file),
-			"../../../../..",
-		),
-	)
+// ContainerFixture returns the global shared container fixture
+// used by integration tests across all packages.
+func ContainerFixture() *ctrfx.Container {
+	return sharedFX
 }

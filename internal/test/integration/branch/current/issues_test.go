@@ -25,9 +25,7 @@ import (
 )
 
 func TestBranch_Issues(t *testing.T) {
-	t.Parallel()
 	t.Run("ok", func(t *testing.T) {
-		t.Parallel()
 		ctx, cancel := context.WithTimeout(
 			context.Background(),
 			10*time.Second,
@@ -37,7 +35,7 @@ func TestBranch_Issues(t *testing.T) {
 			git.NewClient(
 				shfx.NewShell(
 					shared.
-						ContainerFixture(t).
+						ContainerFixture().
 						Container(),
 					container.RepoDir,
 				),
@@ -71,7 +69,6 @@ func TestBranch_Issues(t *testing.T) {
 	})
 
 	t.Run("not matched with name & ticket patterns", func(t *testing.T) {
-		t.Parallel()
 		ctx, cancel := context.WithTimeout(
 			context.Background(),
 			10*time.Second,
@@ -80,8 +77,7 @@ func TestBranch_Issues(t *testing.T) {
 		currbr := lintbranch.NewBranch(
 			git.NewClient(
 				shfx.NewShell(
-					shared.
-						ContainerFixture(t).
+					shared.ContainerFixture().
 						Container(),
 					container.RepoDir,
 				),
