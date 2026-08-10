@@ -3,6 +3,7 @@ package value
 import (
 	"reflect"
 	"slices"
+	"strings"
 
 	"github.com/gitamix/lint/issue"
 )
@@ -24,6 +25,12 @@ func NewStrings(lvl issue.Type, vv ...string) *Strings {
 		lvl: lvl,
 		vv:  vv,
 	}
+}
+
+// String returns a comma-separated string
+// representation of the slice of exact values.
+func (s *Strings) String() string {
+	return strings.Join(s.vv, ",")
 }
 
 // Exact returns a copy of the slice of exact values.

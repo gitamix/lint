@@ -68,6 +68,50 @@ func TestStrings_Exact(t *testing.T) {
 	})
 }
 
+func TestStrings_String(t *testing.T) {
+	t.Parallel()
+
+	t.Run("joins values with comma", func(t *testing.T) {
+		t.Parallel()
+		str := impl.
+			NewStrings(
+				issue.Critical,
+				"foo",
+				"bar",
+				"baz",
+			)
+		assert.Equal(t, "foo,bar,baz", str.String())
+	})
+
+	t.Run("joins a single value", func(t *testing.T) {
+		t.Parallel()
+		str := impl.
+			NewStrings(
+				issue.Critical,
+				"foo",
+			)
+		assert.Equal(t, "foo", str.String())
+	})
+
+	t.Run("returns empty string for no values", func(t *testing.T) {
+		t.Parallel()
+		str := impl.NewStrings(issue.Critical)
+		assert.Equal(t, "", str.String())
+	})
+
+	t.Run("preserves empty strings", func(t *testing.T) {
+		t.Parallel()
+		str := impl.
+			NewStrings(
+				issue.Critical,
+				"",
+				"foo",
+				"",
+			)
+		assert.Equal(t, ",foo,", str.String())
+	})
+}
+
 func TestStrings_Equal(t *testing.T) {
 	t.Parallel()
 
