@@ -12,3 +12,10 @@ func WithTypes(types value.Strings) Option {
 		c.types = types
 	}
 }
+
+// WithScope sets the scope for the subject config.
+func WithScope(v value.String) Option {
+	return func(c *Config) {
+		c.scope = v
+	}
+}

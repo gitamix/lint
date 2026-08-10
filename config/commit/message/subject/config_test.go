@@ -3,10 +3,11 @@ package subject_test
 import (
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+
 	impl "github.com/gitamix/lint/config/commit/message/subject"
 	"github.com/gitamix/lint/config/value"
 	"github.com/gitamix/lint/issue"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestConfig_Types(t *testing.T) {
@@ -16,6 +17,33 @@ func TestConfig_Types(t *testing.T) {
 		t.Parallel()
 		got := impl.NewConfig().Types()
 		want := value.Strings{}
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("with all options and warning level", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewConfig(
+				impl.WithTypes(
+					value.NewStrings(
+						issue.Warning,
+						"feat",
+						"fix",
+					),
+				),
+				impl.WithScope(
+					value.NewString(
+						issue.Critical,
+						`^[A-Za-z _-]+$`,
+					),
+				),
+			).
+			Types()
+		want := value.NewStrings(
+			issue.Warning,
+			"feat",
+			"fix",
+		)
 		assert.Equal(t, want, got)
 	})
 
@@ -150,6 +178,79 @@ func TestConfig_Types(t *testing.T) {
 			"foo",
 			"",
 			"bar",
+		)
+		assert.Equal(t, want, got)
+	})
+}
+
+func TestConfig_Scope(t *testing.T) {
+	t.Parallel()
+
+	t.Run("without any option", func(t *testing.T) {
+		t.Parallel()
+		got := impl.NewConfig().Scope()
+		var want value.String
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("with all options and warning level", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewConfig(
+				impl.WithTypes(
+					value.NewStrings(
+						issue.Warning,
+						"feat",
+						"fix",
+					),
+				),
+				impl.WithScope(
+					value.NewString(
+						issue.Critical,
+						`^[A-Za-z _-]+$`,
+					),
+				),
+			).
+			Scope()
+		want := value.NewString(
+			issue.Critical,
+			`^[A-Za-z _-]+$`,
+		)
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("only with types and critical level", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewConfig(
+				impl.WithTypes(
+					value.NewStrings(
+						issue.Critical,
+						"feat",
+						"fix",
+					),
+				),
+			).
+			Scope()
+		var want value.String
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("only with scrope and critical level", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewConfig(
+				impl.WithScope(
+					value.NewString(
+						issue.Critical,
+						`^[A-Za-z _-]+$`,
+					),
+				),
+			).
+			Scope()
+		want := value.NewString(
+			issue.Critical,
+			`^[A-Za-z _-]+$`,
 		)
 		assert.Equal(t, want, got)
 	})

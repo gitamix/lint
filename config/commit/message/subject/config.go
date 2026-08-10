@@ -6,6 +6,9 @@ import "github.com/gitamix/lint/config/value"
 type Config struct {
 	// types stores the subject types with their issue type levels.
 	types value.Strings
+
+	// scope stores the configuration of the subject scope.
+	scope value.String
 }
 
 // NewConfig creates a new subject config
@@ -21,4 +24,9 @@ func NewConfig(opts ...Option) Config {
 // Types returns the types for the subject config.
 func (c Config) Types() value.Strings {
 	return c.types
+}
+
+// Scope returns the config of the subject scope.
+func (c Config) Scope() value.String {
+	return c.scope
 }
