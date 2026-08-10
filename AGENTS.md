@@ -33,7 +33,7 @@ make/         — Makefile include fragments (test, lint, coverage, pr, setup)
 docker/       — Dockerfile for test containers
 ```
 
-## Style rules (enforced by .golangci.yml + STYLE.MD)
+## Style rules (enforced by .golangci.yml + STYLE.md)
 
 - **All functions/methods must be exported** (unexported = forbidden)
 - **All struct fields must be unexported**; use `New*` constructors

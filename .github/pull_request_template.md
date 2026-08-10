@@ -11,7 +11,7 @@ Closes #
 
 ## Checklist
 
-- [ ] I read [STYLE.MD](../STYLE.MD) and followed the repository code style
+- [ ] I read [STYLE.md](../STYLE.md) and followed the repository code style
 - [ ] I updated `CHANGELOG.md` for all user-visible changes in the [Keep a Changelog](https://keepachangelog.com/ru/1.0.0/) format, or this PR does not require a changelog entry
 - [ ] I added or updated tests where needed
 - [ ] I ran the relevant checks and linters before opening this Pull Request

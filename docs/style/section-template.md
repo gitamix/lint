@@ -1,6 +1,6 @@
 # Section Template
 
-Use this template when adding or refactoring sections in `STYLE.MD`.
+Use this template when adding or refactoring sections in `STYLE.md`.
 
 ## Template
 

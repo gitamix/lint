@@ -4,7 +4,7 @@ Thank you for your interest in this project!
 Here’s how you can contribute to our project and help us make it even better.
 
 > [!IMPORTANT]
-> Read [STYLE.MD](STYLE.MD) before writing code or opening a Pull Request.
+> Read [STYLE.md](STYLE.md) before writing code or opening a Pull Request.
 > This repository uses a project-specific code style,
 > and contributions are expected to follow it.
 
@@ -62,7 +62,7 @@ and work on it.
     make setup
     ```
 
-6. Commit your changes according to [STYLE.MD](STYLE.MD).
+6. Commit your changes according to [STYLE.md](STYLE.md).
 
     > [!IMPORTANT]
     > Use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/),
