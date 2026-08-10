@@ -9,6 +9,28 @@ import (
 	"github.com/gitamix/lint/issue"
 )
 
+func TestString_String(t *testing.T) {
+	t.Parallel()
+
+	t.Run("returns the exact value", func(t *testing.T) {
+		t.Parallel()
+		str := impl.NewString(issue.Critical, "foo")
+		assert.Equal(t, "foo", str.String())
+	})
+
+	t.Run("returns empty string when no value", func(t *testing.T) {
+		t.Parallel()
+		str := impl.NewString(issue.Critical, "")
+		assert.Equal(t, "", str.String())
+	})
+
+	t.Run("preserves surrounding spaces", func(t *testing.T) {
+		t.Parallel()
+		str := impl.NewString(issue.Critical, " foo ")
+		assert.Equal(t, " foo ", str.String())
+	})
+}
+
 func TestString_Equal(t *testing.T) {
 	t.Parallel()
 	type args struct {

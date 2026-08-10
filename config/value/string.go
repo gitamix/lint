@@ -40,3 +40,8 @@ func (s String) Level() issue.Type {
 func (s String) Equal(other string) bool {
 	return s.Exact() == other
 }
+
+// String returns the exact value.
+func (s String) String() string {
+	return s.v
+}
