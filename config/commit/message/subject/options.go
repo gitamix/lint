@@ -7,7 +7,7 @@ import "github.com/gitamix/lint/config/value"
 type Option func(*Config)
 
 // WithTypes sets the types for the subject config.
-func WithTypes(types *value.Strings) Option {
+func WithTypes(types value.Strings) Option {
 	return func(c *Config) {
 		c.types = types
 	}

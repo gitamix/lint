@@ -20,8 +20,8 @@ type Strings struct {
 
 // NewStrings creates a new config value from a slice of string values
 // with the given issue type level.
-func NewStrings(lvl issue.Type, vv ...string) *Strings {
-	return &Strings{
+func NewStrings(lvl issue.Type, vv ...string) Strings {
+	return Strings{
 		lvl: lvl,
 		vv:  vv,
 	}
@@ -29,12 +29,12 @@ func NewStrings(lvl issue.Type, vv ...string) *Strings {
 
 // String returns a comma-separated string
 // representation of the slice of exact values.
-func (s *Strings) String() string {
+func (s Strings) String() string {
 	return strings.Join(s.vv, ",")
 }
 
 // Exact returns a copy of the slice of exact values.
-func (s *Strings) Exact() []string {
+func (s Strings) Exact() []string {
 	dst := make([]string, len(s.vv))
 	copy(dst, s.vv)
 	return dst
@@ -43,7 +43,7 @@ func (s *Strings) Exact() []string {
 // Level returns the issue type level to alert on linting.
 //
 // Returns Warning if not set.
-func (s *Strings) Level() issue.Type {
+func (s Strings) Level() issue.Type {
 	if s.lvl == 0 {
 		return issue.Warning
 	}
@@ -52,13 +52,13 @@ func (s *Strings) Level() issue.Type {
 
 // Equal defines whether the slice of exact values
 // equals the provided slice.
-func (s *Strings) Equal(other []string) bool {
+func (s Strings) Equal(other []string) bool {
 	return reflect.DeepEqual(s.vv, other)
 }
 
 // Has defines whether the slice of exact values
 // contains the provided strings.
-func (s *Strings) Has(v string, vv ...string) bool {
+func (s Strings) Has(v string, vv ...string) bool {
 	if !slices.Contains(s.vv, v) {
 		return false
 	}

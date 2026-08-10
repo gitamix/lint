@@ -15,7 +15,7 @@ func TestConfig_Types(t *testing.T) {
 	t.Run("without any option", func(t *testing.T) {
 		t.Parallel()
 		got := impl.NewConfig().Types()
-		want := impl.NewConfig().Types()
+		want := value.Strings{}
 		assert.Equal(t, want, got)
 	})
 
@@ -55,13 +55,7 @@ func TestConfig_Types(t *testing.T) {
 				),
 			).
 			Types()
-		want := impl.
-			NewConfig(
-				impl.WithTypes(
-					value.NewStrings(issue.Critical),
-				),
-			).
-			Types()
+		want := value.NewStrings(issue.Critical)
 		assert.Equal(t, want, got)
 	})
 
@@ -74,13 +68,7 @@ func TestConfig_Types(t *testing.T) {
 				),
 			).
 			Types()
-		want := impl.
-			NewConfig(
-				impl.WithTypes(
-					value.NewStrings(issue.Warning),
-				),
-			).
-			Types()
+		want := value.NewStrings(issue.Warning)
 		assert.Equal(t, want, got)
 	})
 
@@ -93,13 +81,7 @@ func TestConfig_Types(t *testing.T) {
 				),
 			).
 			Types()
-		want := impl.
-			NewConfig(
-				impl.WithTypes(
-					value.NewStrings(issue.Info),
-				),
-			).
-			Types()
+		want := value.NewStrings(issue.Info)
 		assert.Equal(t, want, got)
 	})
 
@@ -117,18 +99,12 @@ func TestConfig_Types(t *testing.T) {
 				),
 			).
 			Types()
-		want := impl.
-			NewConfig(
-				impl.WithTypes(
-					value.NewStrings(
-						issue.Critical,
-						"foo",
-						"",
-						"bar",
-					),
-				),
-			).
-			Types()
+		want := value.NewStrings(
+			issue.Critical,
+			"foo",
+			"",
+			"bar",
+		)
 		assert.Equal(t, want, got)
 	})
 
@@ -146,18 +122,12 @@ func TestConfig_Types(t *testing.T) {
 				),
 			).
 			Types()
-		want := impl.
-			NewConfig(
-				impl.WithTypes(
-					value.NewStrings(
-						issue.Warning,
-						"foo",
-						"",
-						"bar",
-					),
-				),
-			).
-			Types()
+		want := value.NewStrings(
+			issue.Warning,
+			"foo",
+			"",
+			"bar",
+		)
 		assert.Equal(t, want, got)
 	})
 
@@ -175,18 +145,12 @@ func TestConfig_Types(t *testing.T) {
 				),
 			).
 			Types()
-		want := impl.
-			NewConfig(
-				impl.WithTypes(
-					value.NewStrings(
-						issue.Info,
-						"foo",
-						"",
-						"bar",
-					),
-				),
-			).
-			Types()
+		want := value.NewStrings(
+			issue.Info,
+			"foo",
+			"",
+			"bar",
+		)
 		assert.Equal(t, want, got)
 	})
 }
