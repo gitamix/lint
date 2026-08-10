@@ -44,7 +44,7 @@ docker/       — Dockerfile for test containers
 - **No newlines inside function bodies** — forces small functions
 - **No inline comments** inside functions — doc comments only
 - **Tests in `*_test` package** — must import the implementation via constructor
-- **Table-driven tests** — use `args`/`want` structs, `t.Parallel()` on test and subtest
+- **Direct `t.Run()` per case** — each case is its own `t.Run(name, ...)` with inline setup, act, assert; `t.Parallel()` on the outer test and on every subtest. No `tests := []struct{...}` slices, no `args`/`want` structs
 - **Testify** — `assert.Equal`, `assert.ErrorIs`; never `t.Error()`
 
 ### golangci-lint (v2)
