@@ -24,3 +24,5 @@ including its name and ticket the branch related with
 ### Changed
 
 - Issue type parsing to accept string input or default value
+- Replaced table-driven tests templating in `STYLE.md`
+with direct `t.Run()` per case
