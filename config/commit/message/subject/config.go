@@ -1,6 +1,9 @@
 package subject
 
-import "github.com/gitamix/lint/config/value"
+import (
+	"github.com/gitamix/lint/config/commit/message/subject/scope"
+	"github.com/gitamix/lint/config/value"
+)
 
 // Config represents the configuration of the commit message subject.
 type Config struct {
@@ -8,7 +11,7 @@ type Config struct {
 	types value.Strings
 
 	// scope stores the configuration of the subject scope.
-	scope value.String
+	scope scope.Config
 }
 
 // NewConfig creates a new subject config
@@ -27,6 +30,6 @@ func (c Config) Types() value.Strings {
 }
 
 // Scope returns the config of the subject scope.
-func (c Config) Scope() value.String {
+func (c Config) Scope() scope.Config {
 	return c.scope
 }

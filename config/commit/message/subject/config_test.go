@@ -6,6 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	impl "github.com/gitamix/lint/config/commit/message/subject"
+	"github.com/gitamix/lint/config/commit/message/subject/scope"
 	"github.com/gitamix/lint/config/value"
 	"github.com/gitamix/lint/issue"
 )
@@ -32,9 +33,11 @@ func TestConfig_Types(t *testing.T) {
 					),
 				),
 				impl.WithScope(
-					value.NewString(
-						issue.Critical,
-						`^[A-Za-z _-]+$`,
+					scope.NewConfig(
+						value.NewString(
+							issue.Critical,
+							`^[A-Za-z _-]+$`,
+						),
 					),
 				),
 			).
@@ -189,7 +192,7 @@ func TestConfig_Scope(t *testing.T) {
 	t.Run("without any option", func(t *testing.T) {
 		t.Parallel()
 		got := impl.NewConfig().Scope()
-		var want value.String
+		var want scope.Config
 		assert.Equal(t, want, got)
 	})
 
@@ -205,16 +208,20 @@ func TestConfig_Scope(t *testing.T) {
 					),
 				),
 				impl.WithScope(
-					value.NewString(
-						issue.Critical,
-						`^[A-Za-z _-]+$`,
+					scope.NewConfig(
+						value.NewString(
+							issue.Critical,
+							`^[A-Za-z _-]+$`,
+						),
 					),
 				),
 			).
 			Scope()
-		want := value.NewString(
-			issue.Critical,
-			`^[A-Za-z _-]+$`,
+		want := scope.NewConfig(
+			value.NewString(
+				issue.Critical,
+				`^[A-Za-z _-]+$`,
+			),
 		)
 		assert.Equal(t, want, got)
 	})
@@ -232,7 +239,7 @@ func TestConfig_Scope(t *testing.T) {
 				),
 			).
 			Scope()
-		var want value.String
+		var want scope.Config
 		assert.Equal(t, want, got)
 	})
 
@@ -241,16 +248,20 @@ func TestConfig_Scope(t *testing.T) {
 		got := impl.
 			NewConfig(
 				impl.WithScope(
-					value.NewString(
-						issue.Critical,
-						`^[A-Za-z _-]+$`,
+					scope.NewConfig(
+						value.NewString(
+							issue.Critical,
+							`^[A-Za-z _-]+$`,
+						),
 					),
 				),
 			).
 			Scope()
-		want := value.NewString(
-			issue.Critical,
-			`^[A-Za-z _-]+$`,
+		want := scope.NewConfig(
+			value.NewString(
+				issue.Critical,
+				`^[A-Za-z _-]+$`,
+			),
 		)
 		assert.Equal(t, want, got)
 	})
