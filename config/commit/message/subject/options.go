@@ -22,3 +22,10 @@ func WithScope(cfg scope.Config) Option {
 		c.scope = cfg
 	}
 }
+
+// WithLength sets the allowed length interval for the subject config.
+func WithLength(length value.Range) Option {
+	return func(c *Config) {
+		c.length = length
+	}
+}

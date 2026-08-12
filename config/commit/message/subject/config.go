@@ -12,6 +12,12 @@ type Config struct {
 
 	// scope stores the configuration of the subject scope.
 	scope scope.Config
+
+	// length stores the allowed length interval of the subject text.
+	//
+	// The value is used to validate the number of characters
+	// in the commit message subject.
+	length value.Range
 }
 
 // NewConfig creates a new subject config
@@ -32,4 +38,9 @@ func (c Config) Types() value.Strings {
 // Scope returns the config of the subject scope.
 func (c Config) Scope() scope.Config {
 	return c.scope
+}
+
+// Length returns the allowed length interval of the subject text.
+func (c Config) Length() value.Range {
+	return c.length
 }

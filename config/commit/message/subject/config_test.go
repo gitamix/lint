@@ -40,6 +40,9 @@ func TestConfig_Types(t *testing.T) {
 						),
 					),
 				),
+				impl.WithLength(
+					value.NewRange(10, 72),
+				),
 			).
 			Types()
 		want := value.NewStrings(
@@ -215,6 +218,9 @@ func TestConfig_Scope(t *testing.T) {
 						),
 					),
 				),
+				impl.WithLength(
+					value.NewRange(10, 72),
+				),
 			).
 			Scope()
 		want := scope.NewConfig(
@@ -263,6 +269,122 @@ func TestConfig_Scope(t *testing.T) {
 				`^[A-Za-z _-]+$`,
 			),
 		)
+		assert.Equal(t, want, got)
+	})
+}
+
+func TestConfig_Length(t *testing.T) {
+	t.Parallel()
+
+	t.Run("without any option", func(t *testing.T) {
+		t.Parallel()
+		got := impl.NewConfig().Length()
+		want := value.Range{}
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("with all options", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewConfig(
+				impl.WithTypes(
+					value.NewStrings(
+						issue.Warning,
+						"feat",
+						"fix",
+					),
+				),
+				impl.WithScope(
+					scope.NewConfig(
+						value.NewString(
+							issue.Critical,
+							`^[A-Za-z _-]+$`,
+						),
+					),
+				),
+				impl.WithLength(
+					value.NewRange(10, 72),
+				),
+			).
+			Length()
+		want := value.NewRange(10, 72)
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("only with length", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewConfig(
+				impl.WithLength(
+					value.NewRange(1, 100),
+				),
+			).
+			Length()
+		want := value.NewRange(1, 100)
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("only with types does not set length", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewConfig(
+				impl.WithTypes(
+					value.NewStrings(
+						issue.Critical,
+						"feat",
+						"fix",
+					),
+				),
+			).
+			Length()
+		want := value.Range{}
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("only with scope does not set length", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewConfig(
+				impl.WithScope(
+					scope.NewConfig(
+						value.NewString(
+							issue.Critical,
+							`^[A-Za-z _-]+$`,
+						),
+					),
+				),
+			).
+			Length()
+		want := value.Range{}
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("with zero bounds", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewConfig(
+				impl.WithLength(
+					value.NewRange(0, 0),
+				),
+			).
+			Length()
+		want := value.NewRange(0, 0)
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("last WithLength wins", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewConfig(
+				impl.WithLength(
+					value.NewRange(1, 10),
+				),
+				impl.WithLength(
+					value.NewRange(10, 72),
+				),
+			).
+			Length()
+		want := value.NewRange(10, 72)
 		assert.Equal(t, want, got)
 	})
 }
