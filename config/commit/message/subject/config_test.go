@@ -7,6 +7,8 @@ import (
 
 	impl "github.com/gitamix/lint/config/commit/message/subject"
 	"github.com/gitamix/lint/config/commit/message/subject/scope"
+	"github.com/gitamix/lint/config/ticket"
+	"github.com/gitamix/lint/config/ticket/id"
 	"github.com/gitamix/lint/config/value"
 	"github.com/gitamix/lint/issue"
 )
@@ -42,6 +44,18 @@ func TestConfig_Types(t *testing.T) {
 				),
 				impl.WithLength(
 					value.NewRange(10, 72),
+				),
+				impl.WithTicket(
+					ticket.NewConfig(
+						ticket.WithID(
+							id.NewConfig(
+								value.NewString(
+									issue.Warning,
+									`^[A-Z]+-\d+$`,
+								),
+							),
+						),
+					),
 				),
 			).
 			Types()
@@ -221,6 +235,18 @@ func TestConfig_Scope(t *testing.T) {
 				impl.WithLength(
 					value.NewRange(10, 72),
 				),
+				impl.WithTicket(
+					ticket.NewConfig(
+						ticket.WithID(
+							id.NewConfig(
+								value.NewString(
+									issue.Warning,
+									`^[A-Z]+-\d+$`,
+								),
+							),
+						),
+					),
+				),
 			).
 			Scope()
 		want := scope.NewConfig(
@@ -305,6 +331,18 @@ func TestConfig_Length(t *testing.T) {
 				impl.WithLength(
 					value.NewRange(10, 72),
 				),
+				impl.WithTicket(
+					ticket.NewConfig(
+						ticket.WithID(
+							id.NewConfig(
+								value.NewString(
+									issue.Warning,
+									`^[A-Z]+-\d+$`,
+								),
+							),
+						),
+					),
+				),
 			).
 			Length()
 		want := value.NewRange(10, 72)
@@ -385,6 +423,201 @@ func TestConfig_Length(t *testing.T) {
 			).
 			Length()
 		want := value.NewRange(10, 72)
+		assert.Equal(t, want, got)
+	})
+}
+
+func TestConfig_Ticket(t *testing.T) {
+	t.Parallel()
+
+	t.Run("without any option", func(t *testing.T) {
+		t.Parallel()
+		got := impl.NewConfig().Ticket()
+		var want ticket.Config
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("with all options", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewConfig(
+				impl.WithTypes(
+					value.NewStrings(
+						issue.Warning,
+						"feat",
+						"fix",
+					),
+				),
+				impl.WithScope(
+					scope.NewConfig(
+						value.NewString(
+							issue.Critical,
+							`^[A-Za-z _-]+$`,
+						),
+					),
+				),
+				impl.WithLength(
+					value.NewRange(10, 72),
+				),
+				impl.WithTicket(
+					ticket.NewConfig(
+						ticket.WithID(
+							id.NewConfig(
+								value.NewString(
+									issue.Warning,
+									`^[A-Z]+-\d+$`,
+								),
+							),
+						),
+					),
+				),
+			).
+			Ticket()
+		want := ticket.NewConfig(
+			ticket.WithID(
+				id.NewConfig(
+					value.NewString(
+						issue.Warning,
+						`^[A-Z]+-\d+$`,
+					),
+				),
+			),
+		)
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("only with ticket", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewConfig(
+				impl.WithTicket(
+					ticket.NewConfig(
+						ticket.WithID(
+							id.NewConfig(
+								value.NewString(
+									issue.Critical,
+									`^[A-Z]+-\d+$`,
+								),
+							),
+						),
+					),
+				),
+			).
+			Ticket()
+		want := ticket.NewConfig(
+			ticket.WithID(
+				id.NewConfig(
+					value.NewString(
+						issue.Critical,
+						`^[A-Z]+-\d+$`,
+					),
+				),
+			),
+		)
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("only with types does not set ticket", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewConfig(
+				impl.WithTypes(
+					value.NewStrings(
+						issue.Critical,
+						"feat",
+						"fix",
+					),
+				),
+			).
+			Ticket()
+		var want ticket.Config
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("only with scope does not set ticket", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewConfig(
+				impl.WithScope(
+					scope.NewConfig(
+						value.NewString(
+							issue.Critical,
+							`^[A-Za-z _-]+$`,
+						),
+					),
+				),
+			).
+			Ticket()
+		var want ticket.Config
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("only with length does not set ticket", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewConfig(
+				impl.WithLength(
+					value.NewRange(10, 72),
+				),
+			).
+			Ticket()
+		var want ticket.Config
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("with empty ticket config", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewConfig(
+				impl.WithTicket(
+					ticket.NewConfig(),
+				),
+			).
+			Ticket()
+		want := ticket.NewConfig()
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("last WithTicket wins", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewConfig(
+				impl.WithTicket(
+					ticket.NewConfig(
+						ticket.WithID(
+							id.NewConfig(
+								value.NewString(
+									issue.Critical,
+									`^[A-Z]+-\d+$`,
+								),
+							),
+						),
+					),
+				),
+				impl.WithTicket(
+					ticket.NewConfig(
+						ticket.WithID(
+							id.NewConfig(
+								value.NewString(
+									issue.Warning,
+									`^[A-Z]+-\d+$`,
+								),
+							),
+						),
+					),
+				),
+			).
+			Ticket()
+		want := ticket.NewConfig(
+			ticket.WithID(
+				id.NewConfig(
+					value.NewString(
+						issue.Warning,
+						`^[A-Z]+-\d+$`,
+					),
+				),
+			),
+		)
 		assert.Equal(t, want, got)
 	})
 }

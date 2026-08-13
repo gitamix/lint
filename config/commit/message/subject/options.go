@@ -2,6 +2,7 @@ package subject
 
 import (
 	"github.com/gitamix/lint/config/commit/message/subject/scope"
+	"github.com/gitamix/lint/config/ticket"
 	"github.com/gitamix/lint/config/value"
 )
 
@@ -27,5 +28,12 @@ func WithScope(cfg scope.Config) Option {
 func WithLength(length value.Range) Option {
 	return func(c *Config) {
 		c.length = length
+	}
+}
+
+// WithTicket sets the ticket integration configuration.
+func WithTicket(cfg ticket.Config) Option {
+	return func(c *Config) {
+		c.ticket = cfg
 	}
 }

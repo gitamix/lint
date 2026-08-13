@@ -2,6 +2,7 @@ package subject
 
 import (
 	"github.com/gitamix/lint/config/commit/message/subject/scope"
+	"github.com/gitamix/lint/config/ticket"
 	"github.com/gitamix/lint/config/value"
 )
 
@@ -18,6 +19,9 @@ type Config struct {
 	// The value is used to validate the number of characters
 	// in the commit message subject.
 	length value.Range
+
+	// ticket stores the configuration for ticket integration.
+	ticket ticket.Config
 }
 
 // NewConfig creates a new subject config
@@ -43,4 +47,9 @@ func (c Config) Scope() scope.Config {
 // Length returns the allowed length interval of the subject text.
 func (c Config) Length() value.Range {
 	return c.length
+}
+
+// Ticket returns the configuration for ticket integration.
+func (c Config) Ticket() ticket.Config {
+	return c.ticket
 }
