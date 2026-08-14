@@ -3,7 +3,7 @@ package commit
 import (
 	"github.com/gitamix/lint/config/commit/message"
 	"github.com/gitamix/lint/config/commit/scope"
-	"github.com/gitamix/lint/config/value"
+	"github.com/gitamix/lint/config/commit/types"
 )
 
 // Config groups together the configurable parts
@@ -15,8 +15,8 @@ type Config struct {
 	// scope stores the configuration of the commit message scope.
 	scope scope.Config
 
-	// types stores the commit types with their issue type levels.
-	types value.Strings
+	// types stores the commit types config.
+	types types.Config
 }
 
 // NewConfig creates a new commit Config
@@ -39,7 +39,7 @@ func (c Config) Scope() scope.Config {
 	return c.scope
 }
 
-// Types returns the commit types with their issue type levels.
-func (c Config) Types() value.Strings {
+// Types returns the commit types config.
+func (c Config) Types() types.Config {
 	return c.types
 }

@@ -3,7 +3,7 @@ package commit
 import (
 	"github.com/gitamix/lint/config/commit/message"
 	"github.com/gitamix/lint/config/commit/scope"
-	"github.com/gitamix/lint/config/value"
+	"github.com/gitamix/lint/config/commit/types"
 )
 
 // Option configures a commit Config instance.
@@ -23,9 +23,9 @@ func WithScope(cfg scope.Config) Option {
 	}
 }
 
-// WithTypes sets the commit types for the commit config.
-func WithTypes(types value.Strings) Option {
+// WithTypes sets the commit types config for the commit config.
+func WithTypes(cfg types.Config) Option {
 	return func(c *Config) {
-		c.types = types
+		c.types = cfg
 	}
 }

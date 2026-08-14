@@ -7,6 +7,7 @@ import (
 	"github.com/gitamix/lint/config/commit/message"
 	"github.com/gitamix/lint/config/commit/message/subject"
 	"github.com/gitamix/lint/config/commit/scope"
+	"github.com/gitamix/lint/config/commit/types"
 	"github.com/gitamix/lint/config/ticket"
 	"github.com/gitamix/lint/config/ticket/id"
 	"github.com/gitamix/lint/config/value"
@@ -299,7 +300,7 @@ func TestConfig_Types(t *testing.T) {
 		got := impl.
 			NewConfig().
 			Types()
-		want := value.Strings{}
+		want := types.Config{}
 		assert.Equal(t, want, got)
 	})
 
@@ -327,18 +328,22 @@ func TestConfig_Types(t *testing.T) {
 					),
 				),
 				impl.WithTypes(
-					value.NewStrings(
-						issue.Warning,
-						"feat",
-						"fix",
+					types.NewConfig(
+						value.NewStrings(
+							issue.Warning,
+							"feat",
+							"fix",
+						),
 					),
 				),
 			).
 			Types()
-		want := value.NewStrings(
-			issue.Warning,
-			"feat",
-			"fix",
+		want := types.NewConfig(
+			value.NewStrings(
+				issue.Warning,
+				"feat",
+				"fix",
+			),
 		)
 		assert.Equal(t, want, got)
 	})
@@ -348,18 +353,22 @@ func TestConfig_Types(t *testing.T) {
 		got := impl.
 			NewConfig(
 				impl.WithTypes(
-					value.NewStrings(
-						issue.Warning,
-						"feat",
-						"fix",
+					types.NewConfig(
+						value.NewStrings(
+							issue.Warning,
+							"feat",
+							"fix",
+						),
 					),
 				),
 			).
 			Types()
-		want := value.NewStrings(
-			issue.Warning,
-			"feat",
-			"fix",
+		want := types.NewConfig(
+			value.NewStrings(
+				issue.Warning,
+				"feat",
+				"fix",
+			),
 		)
 		assert.Equal(t, want, got)
 	})
@@ -369,10 +378,12 @@ func TestConfig_Types(t *testing.T) {
 		got := impl.
 			NewConfig(
 				impl.WithTypes(
-					value.NewStrings(
-						issue.Critical,
-						"feat",
-						"fix",
+					types.NewConfig(
+						value.NewStrings(
+							issue.Critical,
+							"feat",
+							"fix",
+						),
 					),
 				),
 			).
@@ -380,10 +391,12 @@ func TestConfig_Types(t *testing.T) {
 		want := impl.
 			NewConfig(
 				impl.WithTypes(
-					value.NewStrings(
-						issue.Critical,
-						"feat",
-						"fix",
+					types.NewConfig(
+						value.NewStrings(
+							issue.Critical,
+							"feat",
+							"fix",
+						),
 					),
 				),
 			).
@@ -396,11 +409,15 @@ func TestConfig_Types(t *testing.T) {
 		got := impl.
 			NewConfig(
 				impl.WithTypes(
-					value.NewStrings(issue.Critical),
+					types.NewConfig(
+						value.NewStrings(issue.Critical),
+					),
 				),
 			).
 			Types()
-		want := value.NewStrings(issue.Critical)
+		want := types.NewConfig(
+			value.NewStrings(issue.Critical),
+		)
 		assert.Equal(t, want, got)
 	})
 
@@ -409,11 +426,15 @@ func TestConfig_Types(t *testing.T) {
 		got := impl.
 			NewConfig(
 				impl.WithTypes(
-					value.NewStrings(issue.Warning),
+					types.NewConfig(
+						value.NewStrings(issue.Warning),
+					),
 				),
 			).
 			Types()
-		want := value.NewStrings(issue.Warning)
+		want := types.NewConfig(
+			value.NewStrings(issue.Warning),
+		)
 		assert.Equal(t, want, got)
 	})
 
@@ -422,11 +443,15 @@ func TestConfig_Types(t *testing.T) {
 		got := impl.
 			NewConfig(
 				impl.WithTypes(
-					value.NewStrings(issue.Info),
+					types.NewConfig(
+						value.NewStrings(issue.Info),
+					),
 				),
 			).
 			Types()
-		want := value.NewStrings(issue.Info)
+		want := types.NewConfig(
+			value.NewStrings(issue.Info),
+		)
 		assert.Equal(t, want, got)
 	})
 
@@ -435,20 +460,24 @@ func TestConfig_Types(t *testing.T) {
 		got := impl.
 			NewConfig(
 				impl.WithTypes(
-					value.NewStrings(
-						issue.Critical,
-						"foo",
-						"",
-						"bar",
+					types.NewConfig(
+						value.NewStrings(
+							issue.Critical,
+							"foo",
+							"",
+							"bar",
+						),
 					),
 				),
 			).
 			Types()
-		want := value.NewStrings(
-			issue.Critical,
-			"foo",
-			"",
-			"bar",
+		want := types.NewConfig(
+			value.NewStrings(
+				issue.Critical,
+				"foo",
+				"",
+				"bar",
+			),
 		)
 		assert.Equal(t, want, got)
 	})
@@ -458,20 +487,24 @@ func TestConfig_Types(t *testing.T) {
 		got := impl.
 			NewConfig(
 				impl.WithTypes(
-					value.NewStrings(
-						issue.Warning,
-						"foo",
-						"",
-						"bar",
+					types.NewConfig(
+						value.NewStrings(
+							issue.Warning,
+							"foo",
+							"",
+							"bar",
+						),
 					),
 				),
 			).
 			Types()
-		want := value.NewStrings(
-			issue.Warning,
-			"foo",
-			"",
-			"bar",
+		want := types.NewConfig(
+			value.NewStrings(
+				issue.Warning,
+				"foo",
+				"",
+				"bar",
+			),
 		)
 		assert.Equal(t, want, got)
 	})
@@ -481,20 +514,24 @@ func TestConfig_Types(t *testing.T) {
 		got := impl.
 			NewConfig(
 				impl.WithTypes(
-					value.NewStrings(
-						issue.Info,
-						"foo",
-						"",
-						"bar",
+					types.NewConfig(
+						value.NewStrings(
+							issue.Info,
+							"foo",
+							"",
+							"bar",
+						),
 					),
 				),
 			).
 			Types()
-		want := value.NewStrings(
-			issue.Info,
-			"foo",
-			"",
-			"bar",
+		want := types.NewConfig(
+			value.NewStrings(
+				issue.Info,
+				"foo",
+				"",
+				"bar",
+			),
 		)
 		assert.Equal(t, want, got)
 	})
@@ -516,7 +553,7 @@ func TestConfig_Types(t *testing.T) {
 				),
 			).
 			Types()
-		want := value.Strings{}
+		want := types.Config{}
 		assert.Equal(t, want, got)
 	})
 
@@ -534,7 +571,7 @@ func TestConfig_Types(t *testing.T) {
 				),
 			).
 			Types()
-		want := value.Strings{}
+		want := types.Config{}
 		assert.Equal(t, want, got)
 	})
 
@@ -543,25 +580,31 @@ func TestConfig_Types(t *testing.T) {
 		got := impl.
 			NewConfig(
 				impl.WithTypes(
-					value.NewStrings(
-						issue.Critical,
-						"feat",
-						"fix",
+					types.NewConfig(
+						value.NewStrings(
+							issue.Critical,
+							"feat",
+							"fix",
+						),
 					),
 				),
 				impl.WithTypes(
-					value.NewStrings(
-						issue.Warning,
-						"docs",
-						"style",
+					types.NewConfig(
+						value.NewStrings(
+							issue.Warning,
+							"docs",
+							"style",
+						),
 					),
 				),
 			).
 			Types()
-		want := value.NewStrings(
-			issue.Warning,
-			"docs",
-			"style",
+		want := types.NewConfig(
+			value.NewStrings(
+				issue.Warning,
+				"docs",
+				"style",
+			),
 		)
 		assert.Equal(t, want, got)
 	})
