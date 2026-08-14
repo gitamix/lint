@@ -6,7 +6,6 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	impl "github.com/gitamix/lint/config/commit/message/subject"
-	"github.com/gitamix/lint/config/commit/scope"
 	"github.com/gitamix/lint/config/ticket"
 	"github.com/gitamix/lint/config/ticket/id"
 	"github.com/gitamix/lint/config/value"
@@ -32,14 +31,6 @@ func TestConfig_Types(t *testing.T) {
 						issue.Warning,
 						"feat",
 						"fix",
-					),
-				),
-				impl.WithScope(
-					scope.NewConfig(
-						value.NewString(
-							issue.Critical,
-							`^[A-Za-z _-]+$`,
-						),
 					),
 				),
 				impl.WithLength(
@@ -203,102 +194,6 @@ func TestConfig_Types(t *testing.T) {
 	})
 }
 
-func TestConfig_Scope(t *testing.T) {
-	t.Parallel()
-
-	t.Run("without any option", func(t *testing.T) {
-		t.Parallel()
-		got := impl.NewConfig().Scope()
-		var want scope.Config
-		assert.Equal(t, want, got)
-	})
-
-	t.Run("with all options and warning level", func(t *testing.T) {
-		t.Parallel()
-		got := impl.
-			NewConfig(
-				impl.WithTypes(
-					value.NewStrings(
-						issue.Warning,
-						"feat",
-						"fix",
-					),
-				),
-				impl.WithScope(
-					scope.NewConfig(
-						value.NewString(
-							issue.Critical,
-							`^[A-Za-z _-]+$`,
-						),
-					),
-				),
-				impl.WithLength(
-					value.NewRange(10, 72),
-				),
-				impl.WithTicket(
-					ticket.NewConfig(
-						ticket.WithID(
-							id.NewConfig(
-								value.NewString(
-									issue.Warning,
-									`^[A-Z]+-\d+$`,
-								),
-							),
-						),
-					),
-				),
-			).
-			Scope()
-		want := scope.NewConfig(
-			value.NewString(
-				issue.Critical,
-				`^[A-Za-z _-]+$`,
-			),
-		)
-		assert.Equal(t, want, got)
-	})
-
-	t.Run("only with types and critical level", func(t *testing.T) {
-		t.Parallel()
-		got := impl.
-			NewConfig(
-				impl.WithTypes(
-					value.NewStrings(
-						issue.Critical,
-						"feat",
-						"fix",
-					),
-				),
-			).
-			Scope()
-		var want scope.Config
-		assert.Equal(t, want, got)
-	})
-
-	t.Run("only with scrope and critical level", func(t *testing.T) {
-		t.Parallel()
-		got := impl.
-			NewConfig(
-				impl.WithScope(
-					scope.NewConfig(
-						value.NewString(
-							issue.Critical,
-							`^[A-Za-z _-]+$`,
-						),
-					),
-				),
-			).
-			Scope()
-		want := scope.NewConfig(
-			value.NewString(
-				issue.Critical,
-				`^[A-Za-z _-]+$`,
-			),
-		)
-		assert.Equal(t, want, got)
-	})
-}
-
 func TestConfig_Length(t *testing.T) {
 	t.Parallel()
 
@@ -318,14 +213,6 @@ func TestConfig_Length(t *testing.T) {
 						issue.Warning,
 						"feat",
 						"fix",
-					),
-				),
-				impl.WithScope(
-					scope.NewConfig(
-						value.NewString(
-							issue.Critical,
-							`^[A-Za-z _-]+$`,
-						),
 					),
 				),
 				impl.WithLength(
@@ -371,24 +258,6 @@ func TestConfig_Length(t *testing.T) {
 						issue.Critical,
 						"feat",
 						"fix",
-					),
-				),
-			).
-			Length()
-		want := value.Range{}
-		assert.Equal(t, want, got)
-	})
-
-	t.Run("only with scope does not set length", func(t *testing.T) {
-		t.Parallel()
-		got := impl.
-			NewConfig(
-				impl.WithScope(
-					scope.NewConfig(
-						value.NewString(
-							issue.Critical,
-							`^[A-Za-z _-]+$`,
-						),
 					),
 				),
 			).
@@ -446,14 +315,6 @@ func TestConfig_Ticket(t *testing.T) {
 						issue.Warning,
 						"feat",
 						"fix",
-					),
-				),
-				impl.WithScope(
-					scope.NewConfig(
-						value.NewString(
-							issue.Critical,
-							`^[A-Za-z _-]+$`,
-						),
 					),
 				),
 				impl.WithLength(
@@ -526,24 +387,6 @@ func TestConfig_Ticket(t *testing.T) {
 						issue.Critical,
 						"feat",
 						"fix",
-					),
-				),
-			).
-			Ticket()
-		var want ticket.Config
-		assert.Equal(t, want, got)
-	})
-
-	t.Run("only with scope does not set ticket", func(t *testing.T) {
-		t.Parallel()
-		got := impl.
-			NewConfig(
-				impl.WithScope(
-					scope.NewConfig(
-						value.NewString(
-							issue.Critical,
-							`^[A-Za-z _-]+$`,
-						),
 					),
 				),
 			).

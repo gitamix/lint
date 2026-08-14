@@ -1,7 +1,6 @@
 package subject
 
 import (
-	"github.com/gitamix/lint/config/commit/scope"
 	"github.com/gitamix/lint/config/ticket"
 	"github.com/gitamix/lint/config/value"
 )
@@ -14,13 +13,6 @@ type Option func(*Config)
 func WithTypes(types value.Strings) Option {
 	return func(c *Config) {
 		c.types = types
-	}
-}
-
-// WithScope sets the scope for the subject config.
-func WithScope(cfg scope.Config) Option {
-	return func(c *Config) {
-		c.scope = cfg
 	}
 }
 

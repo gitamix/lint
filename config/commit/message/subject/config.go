@@ -1,7 +1,6 @@
 package subject
 
 import (
-	"github.com/gitamix/lint/config/commit/scope"
 	"github.com/gitamix/lint/config/ticket"
 	"github.com/gitamix/lint/config/value"
 )
@@ -10,9 +9,6 @@ import (
 type Config struct {
 	// types stores the subject types with their issue type levels.
 	types value.Strings
-
-	// scope stores the configuration of the subject scope.
-	scope scope.Config
 
 	// length stores the allowed length interval of the subject text.
 	//
@@ -37,11 +33,6 @@ func NewConfig(opts ...Option) Config {
 // Types returns the types for the subject config.
 func (c Config) Types() value.Strings {
 	return c.types
-}
-
-// Scope returns the config of the subject scope.
-func (c Config) Scope() scope.Config {
-	return c.scope
 }
 
 // Length returns the allowed length interval of the subject text.

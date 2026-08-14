@@ -2,6 +2,7 @@ package commit
 
 import (
 	"github.com/gitamix/lint/config/commit/message"
+	"github.com/gitamix/lint/config/commit/scope"
 )
 
 // Option configures a commit Config instance.
@@ -11,5 +12,12 @@ type Option func(*Config)
 func WithMessage(msg message.Config) Option {
 	return func(c *Config) {
 		c.msg = msg
+	}
+}
+
+// WithScope sets the commit message scope config for the commit config.
+func WithScope(cfg scope.Config) Option {
+	return func(c *Config) {
+		c.scope = cfg
 	}
 }
