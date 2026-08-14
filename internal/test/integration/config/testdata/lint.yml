@@ -1,7 +1,7 @@
 # Git branch rules.
 branch:
-  # ticket rules to enforce a specific format for task identifiers in commit messages.
-  ticket:
+  # task rules to enforce a specific format for task identifiers in commit messages.
+  task:
     issue:
       # Level for task rules: critical, warning, info
       level: "info"

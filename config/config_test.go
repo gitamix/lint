@@ -8,8 +8,8 @@ import (
 	impl "github.com/gitamix/lint/config"
 	"github.com/gitamix/lint/config/branch"
 	"github.com/gitamix/lint/config/branch/name"
-	"github.com/gitamix/lint/config/ticket"
-	"github.com/gitamix/lint/config/ticket/id"
+	"github.com/gitamix/lint/config/task"
+	"github.com/gitamix/lint/config/task/id"
 	"github.com/gitamix/lint/config/value"
 	"github.com/gitamix/lint/issue"
 )
@@ -26,7 +26,7 @@ func TestConfig_Branch(t *testing.T) {
 		want want
 	}{
 		{
-			name: "with branch name & ticket configs",
+			name: "with branch name & task configs",
 			c: impl.NewConfig(
 				impl.WithBranch(
 					branch.NewConfig(
@@ -38,9 +38,9 @@ func TestConfig_Branch(t *testing.T) {
 								),
 							),
 						),
-						branch.WithTicket(
-							ticket.NewConfig(
-								ticket.WithID(
+						branch.WithTask(
+							task.NewConfig(
+								task.WithID(
 									id.NewConfig(
 										value.NewString(
 											issue.Critical,
@@ -63,9 +63,9 @@ func TestConfig_Branch(t *testing.T) {
 							),
 						),
 					),
-					branch.WithTicket(
-						ticket.NewConfig(
-							ticket.WithID(
+					branch.WithTask(
+						task.NewConfig(
+							task.WithID(
 								id.NewConfig(
 									value.NewString(
 										issue.Critical,
@@ -108,13 +108,13 @@ func TestConfig_Branch(t *testing.T) {
 			},
 		},
 		{
-			name: "with ticket config only",
+			name: "with task config only",
 			c: impl.NewConfig(
 				impl.WithBranch(
 					branch.NewConfig(
-						branch.WithTicket(
-							ticket.NewConfig(
-								ticket.WithID(
+						branch.WithTask(
+							task.NewConfig(
+								task.WithID(
 									id.NewConfig(
 										value.NewString(
 											issue.Info,
@@ -129,9 +129,9 @@ func TestConfig_Branch(t *testing.T) {
 			),
 			want: want{
 				branch: branch.NewConfig(
-					branch.WithTicket(
-						ticket.NewConfig(
-							ticket.WithID(
+					branch.WithTask(
+						task.NewConfig(
+							task.WithID(
 								id.NewConfig(
 									value.NewString(
 										issue.Info,

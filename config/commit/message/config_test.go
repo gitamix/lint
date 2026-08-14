@@ -8,8 +8,8 @@ import (
 	impl "github.com/gitamix/lint/config/commit/message"
 	"github.com/gitamix/lint/config/commit/message/body"
 	"github.com/gitamix/lint/config/commit/message/subject"
-	"github.com/gitamix/lint/config/ticket"
-	"github.com/gitamix/lint/config/ticket/id"
+	"github.com/gitamix/lint/config/task"
+	"github.com/gitamix/lint/config/task/id"
 	"github.com/gitamix/lint/config/value"
 	"github.com/gitamix/lint/issue"
 )
@@ -60,15 +60,15 @@ func TestConfig_Subject(t *testing.T) {
 		assert.Equal(t, want, got)
 	})
 
-	t.Run("with subject ticket", func(t *testing.T) {
+	t.Run("with subject task", func(t *testing.T) {
 		t.Parallel()
 		got := impl.
 			NewConfig(
 				impl.WithSubject(
 					subject.NewConfig(
-						subject.WithTicket(
-							ticket.NewConfig(
-								ticket.WithID(
+						subject.WithTask(
+							task.NewConfig(
+								task.WithID(
 									id.NewConfig(
 										value.NewString(
 											issue.Critical,
@@ -83,9 +83,9 @@ func TestConfig_Subject(t *testing.T) {
 			).
 			Subject()
 		want := subject.NewConfig(
-			subject.WithTicket(
-				ticket.NewConfig(
-					ticket.WithID(
+			subject.WithTask(
+				task.NewConfig(
+					task.WithID(
 						id.NewConfig(
 							value.NewString(
 								issue.Critical,
@@ -99,7 +99,7 @@ func TestConfig_Subject(t *testing.T) {
 		assert.Equal(t, want, got)
 	})
 
-	t.Run("with subject length and ticket", func(t *testing.T) {
+	t.Run("with subject length and task", func(t *testing.T) {
 		t.Parallel()
 		got := impl.
 			NewConfig(
@@ -108,9 +108,9 @@ func TestConfig_Subject(t *testing.T) {
 						subject.WithLength(
 							value.NewRange(1, 100),
 						),
-						subject.WithTicket(
-							ticket.NewConfig(
-								ticket.WithID(
+						subject.WithTask(
+							task.NewConfig(
+								task.WithID(
 									id.NewConfig(
 										value.NewString(
 											issue.Warning,
@@ -128,9 +128,9 @@ func TestConfig_Subject(t *testing.T) {
 			subject.WithLength(
 				value.NewRange(1, 100),
 			),
-			subject.WithTicket(
-				ticket.NewConfig(
-					ticket.WithID(
+			subject.WithTask(
+				task.NewConfig(
+					task.WithID(
 						id.NewConfig(
 							value.NewString(
 								issue.Warning,
@@ -153,9 +153,9 @@ func TestConfig_Subject(t *testing.T) {
 						subject.WithLength(
 							value.NewRange(10, 72),
 						),
-						subject.WithTicket(
-							ticket.NewConfig(
-								ticket.WithID(
+						subject.WithTask(
+							task.NewConfig(
+								task.WithID(
 									id.NewConfig(
 										value.NewString(
 											issue.Critical,
@@ -180,9 +180,9 @@ func TestConfig_Subject(t *testing.T) {
 			subject.WithLength(
 				value.NewRange(10, 72),
 			),
-			subject.WithTicket(
-				ticket.NewConfig(
-					ticket.WithID(
+			subject.WithTask(
+				task.NewConfig(
+					task.WithID(
 						id.NewConfig(
 							value.NewString(
 								issue.Critical,
@@ -321,9 +321,9 @@ func TestConfig_Body(t *testing.T) {
 						subject.WithLength(
 							value.NewRange(10, 72),
 						),
-						subject.WithTicket(
-							ticket.NewConfig(
-								ticket.WithID(
+						subject.WithTask(
+							task.NewConfig(
+								task.WithID(
 									id.NewConfig(
 										value.NewString(
 											issue.Critical,

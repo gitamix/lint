@@ -1,12 +1,12 @@
-package ticket_test
+package task_test
 
 import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 
-	impl "github.com/gitamix/lint/config/ticket"
-	"github.com/gitamix/lint/config/ticket/id"
+	impl "github.com/gitamix/lint/config/task"
+	"github.com/gitamix/lint/config/task/id"
 	"github.com/gitamix/lint/config/value"
 	"github.com/gitamix/lint/issue"
 )

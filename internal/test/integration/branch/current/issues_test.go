@@ -16,8 +16,8 @@ import (
 	lintbranch "github.com/gitamix/lint/branch/current"
 	"github.com/gitamix/lint/config/branch"
 	"github.com/gitamix/lint/config/branch/name"
-	"github.com/gitamix/lint/config/ticket"
-	"github.com/gitamix/lint/config/ticket/id"
+	"github.com/gitamix/lint/config/task"
+	"github.com/gitamix/lint/config/task/id"
 	"github.com/gitamix/lint/config/value"
 	"github.com/gitamix/lint/internal/test/container"
 	"github.com/gitamix/lint/internal/test/fixture/container/shared"
@@ -59,9 +59,9 @@ func (s *IssuesSuite) TestOk() {
 	currbr := lintbranch.NewBranch(
 		s.git,
 		branch.NewConfig(
-			branch.WithTicket(
-				ticket.NewConfig(
-					ticket.WithID(
+			branch.WithTask(
+				task.NewConfig(
+					task.WithID(
 						id.NewConfig(
 							value.NewString(
 								issue.Info,
@@ -95,9 +95,9 @@ func (s *IssuesSuite) TestNotMatchedWithPattern() {
 	currbr := lintbranch.NewBranch(
 		s.git,
 		branch.NewConfig(
-			branch.WithTicket(
-				ticket.NewConfig(
-					ticket.WithID(
+			branch.WithTask(
+				task.NewConfig(
+					task.WithID(
 						id.NewConfig(
 							value.NewString(
 								issue.Info,
@@ -122,7 +122,7 @@ func (s *IssuesSuite) TestNotMatchedWithPattern() {
 	assert.Equal(s.T(),
 		[]issue.Issue{
 			issue.NewWarning("branch name 'bugfix/BUG-456' doesn't match the required pattern '^(feature|release)/\\w+'"),
-			issue.NewInfo("ticket doesn't match the required pattern '([0-9]+)-\\w'"),
+			issue.NewInfo("task doesn't match the required pattern '([0-9]+)-\\w'"),
 		},
 		got,
 	)

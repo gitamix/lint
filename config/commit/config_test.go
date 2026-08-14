@@ -8,8 +8,8 @@ import (
 	"github.com/gitamix/lint/config/commit/message/subject"
 	"github.com/gitamix/lint/config/commit/scope"
 	"github.com/gitamix/lint/config/commit/types"
-	"github.com/gitamix/lint/config/ticket"
-	"github.com/gitamix/lint/config/ticket/id"
+	"github.com/gitamix/lint/config/task"
+	"github.com/gitamix/lint/config/task/id"
 	"github.com/gitamix/lint/config/value"
 	"github.com/gitamix/lint/issue"
 	"github.com/stretchr/testify/assert"
@@ -69,7 +69,7 @@ func TestConfig_Message(t *testing.T) {
 		assert.Equal(t, want, got)
 	})
 
-	t.Run("with message subject ticket", func(t *testing.T) {
+	t.Run("with message subject task", func(t *testing.T) {
 		t.Parallel()
 		got := impl.
 			NewConfig(
@@ -77,9 +77,9 @@ func TestConfig_Message(t *testing.T) {
 					message.NewConfig(
 						message.WithSubject(
 							subject.NewConfig(
-								subject.WithTicket(
-									ticket.NewConfig(
-										ticket.WithID(
+								subject.WithTask(
+									task.NewConfig(
+										task.WithID(
 											id.NewConfig(
 												value.NewString(
 													issue.Critical,
@@ -98,9 +98,9 @@ func TestConfig_Message(t *testing.T) {
 		want := message.NewConfig(
 			message.WithSubject(
 				subject.NewConfig(
-					subject.WithTicket(
-						ticket.NewConfig(
-							ticket.WithID(
+					subject.WithTask(
+						task.NewConfig(
+							task.WithID(
 								id.NewConfig(
 									value.NewString(
 										issue.Critical,
@@ -116,7 +116,7 @@ func TestConfig_Message(t *testing.T) {
 		assert.Equal(t, want, got)
 	})
 
-	t.Run("with message subject length and ticket", func(t *testing.T) {
+	t.Run("with message subject length and task", func(t *testing.T) {
 		t.Parallel()
 		got := impl.
 			NewConfig(
@@ -127,9 +127,9 @@ func TestConfig_Message(t *testing.T) {
 								subject.WithLength(
 									value.NewRange(1, 100),
 								),
-								subject.WithTicket(
-									ticket.NewConfig(
-										ticket.WithID(
+								subject.WithTask(
+									task.NewConfig(
+										task.WithID(
 											id.NewConfig(
 												value.NewString(
 													issue.Warning,
@@ -151,9 +151,9 @@ func TestConfig_Message(t *testing.T) {
 					subject.WithLength(
 						value.NewRange(1, 100),
 					),
-					subject.WithTicket(
-						ticket.NewConfig(
-							ticket.WithID(
+					subject.WithTask(
+						task.NewConfig(
+							task.WithID(
 								id.NewConfig(
 									value.NewString(
 										issue.Warning,

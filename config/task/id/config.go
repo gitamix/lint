@@ -3,10 +3,10 @@ package id
 import "github.com/gitamix/lint/config/value"
 
 // Config represents configuration rules
-// for ticket (issue) identifiers.
+// for task (issue) identifiers.
 type Config struct {
 	// pattern is a regex pattern
-	// that ticket identifier must match.
+	// that task identifier must match.
 	pattern value.String
 }
 

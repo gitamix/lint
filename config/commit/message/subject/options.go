@@ -1,7 +1,7 @@
 package subject
 
 import (
-	"github.com/gitamix/lint/config/ticket"
+	"github.com/gitamix/lint/config/task"
 	"github.com/gitamix/lint/config/value"
 )
 
@@ -16,9 +16,9 @@ func WithLength(length value.Range) Option {
 	}
 }
 
-// WithTicket sets the ticket integration configuration.
-func WithTicket(cfg ticket.Config) Option {
+// WithTask sets the task integration configuration.
+func WithTask(cfg task.Config) Option {
 	return func(c *Config) {
-		c.ticket = cfg
+		c.task = cfg
 	}
 }

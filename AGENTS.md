@@ -21,7 +21,7 @@ make pr release <version>  # opens GitHub PR page with release template
 
 ```
 cmd/          — entry-points for tooling (generator, 01)
-config/       — YAML config types, loading, unmarshaling (branch, ticket, value subpackages)
+config/       — YAML config types, loading, unmarshaling (branch, task, value subpackages)
 branch/       — branch name parsing and detection
 issue/        — linting issue types (message, type, severity level)
 errs/         — custom error definitions

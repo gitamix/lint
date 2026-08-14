@@ -1,12 +1,12 @@
-package ticket
+package task
 
 import (
-	"github.com/gitamix/lint/config/ticket/id"
+	"github.com/gitamix/lint/config/task/id"
 )
 
-// Config represents configuration for ticket (issue).
+// Config represents configuration for task (issue).
 type Config struct {
-	// id is a configuration for ticket identifier.
+	// id is a configuration for task identifier.
 	id id.Config
 }
 
@@ -20,7 +20,7 @@ func NewConfig(opts ...Option) Config {
 	return c
 }
 
-// ID returns configuration for ticket identifier.
+// ID returns configuration for task identifier.
 func (c Config) ID() id.Config {
 	return c.id
 }

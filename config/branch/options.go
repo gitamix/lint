@@ -2,7 +2,7 @@ package branch
 
 import (
 	"github.com/gitamix/lint/config/branch/name"
-	"github.com/gitamix/lint/config/ticket"
+	"github.com/gitamix/lint/config/task"
 )
 
 // Option configures a Config instance.
@@ -15,8 +15,8 @@ func WithName(name name.Config) Option {
 	}
 }
 
-// WithTicket sets the ticket integration configuration.
-func WithTicket(tkt ticket.Config) Option {
+// WithTask sets the task integration configuration.
+func WithTask(tkt task.Config) Option {
 	return func(c *Config) {
 		c.tkt = tkt
 	}

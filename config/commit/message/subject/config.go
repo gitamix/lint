@@ -1,7 +1,7 @@
 package subject
 
 import (
-	"github.com/gitamix/lint/config/ticket"
+	"github.com/gitamix/lint/config/task"
 	"github.com/gitamix/lint/config/value"
 )
 
@@ -13,8 +13,8 @@ type Config struct {
 	// in the commit message subject.
 	length value.Range
 
-	// ticket stores the configuration for ticket integration.
-	ticket ticket.Config
+	// task stores the configuration for task integration.
+	task task.Config
 }
 
 // NewConfig creates a new subject config
@@ -32,7 +32,7 @@ func (c Config) Length() value.Range {
 	return c.length
 }
 
-// Ticket returns the configuration for ticket integration.
-func (c Config) Ticket() ticket.Config {
-	return c.ticket
+// Task returns the configuration for task integration.
+func (c Config) Task() task.Config {
+	return c.task
 }

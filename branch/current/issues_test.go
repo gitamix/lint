@@ -10,8 +10,8 @@ import (
 	impl "github.com/gitamix/lint/branch/current"
 	config "github.com/gitamix/lint/config/branch"
 	"github.com/gitamix/lint/config/branch/name"
-	"github.com/gitamix/lint/config/ticket"
-	"github.com/gitamix/lint/config/ticket/id"
+	"github.com/gitamix/lint/config/task"
+	"github.com/gitamix/lint/config/task/id"
 	"github.com/gitamix/lint/config/value"
 	"github.com/gitamix/lint/errs"
 	"github.com/gitamix/lint/internal/test/fake/repo/git"
@@ -55,9 +55,9 @@ func TestBranch_Issues(t *testing.T) {
 							),
 						),
 					),
-					config.WithTicket(
-						ticket.NewConfig(
-							ticket.WithID(
+					config.WithTask(
+						task.NewConfig(
+							task.WithID(
 								id.NewConfig(
 									value.NewString(
 										issue.Warning,
@@ -142,7 +142,7 @@ func TestBranch_Issues(t *testing.T) {
 			},
 		},
 		{
-			name: "criticals on name & ticket not match pattern",
+			name: "criticals on name & task not match pattern",
 			b: impl.NewBranch(
 				git.NewRepository(
 					git.WithCurrentBranch(
@@ -162,9 +162,9 @@ func TestBranch_Issues(t *testing.T) {
 							),
 						),
 					),
-					config.WithTicket(
-						ticket.NewConfig(
-							ticket.WithID(
+					config.WithTask(
+						task.NewConfig(
+							task.WithID(
 								id.NewConfig(
 									value.NewString(
 										issue.Critical,
@@ -184,7 +184,7 @@ func TestBranch_Issues(t *testing.T) {
 					issue.NewCritical(
 						`branch name 'my-favorite-feature' doesn't match the required pattern '^(feature|bugfix|hotfix)/[A-Z]+-\d+'`,
 					),
-					issue.NewCritical(`ticket doesn't match the required pattern '(TASK|PROJ|BUG)-[0-9]+'`),
+					issue.NewCritical(`task doesn't match the required pattern '(TASK|PROJ|BUG)-[0-9]+'`),
 				},
 				err: nil,
 			},
@@ -254,7 +254,7 @@ func TestBranch_Issues(t *testing.T) {
 			},
 		},
 		{
-			name: "empty ticket id pattern & name matched pattern",
+			name: "empty task id pattern & name matched pattern",
 			b: impl.NewBranch(
 				git.NewRepository(
 					git.WithCurrentBranch(
@@ -274,9 +274,9 @@ func TestBranch_Issues(t *testing.T) {
 							),
 						),
 					),
-					config.WithTicket(
-						ticket.NewConfig(
-							ticket.WithID(
+					config.WithTask(
+						task.NewConfig(
+							task.WithID(
 								id.NewConfig(
 									value.NewString(
 										issue.Critical,

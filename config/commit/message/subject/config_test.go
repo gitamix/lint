@@ -6,8 +6,8 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	impl "github.com/gitamix/lint/config/commit/message/subject"
-	"github.com/gitamix/lint/config/ticket"
-	"github.com/gitamix/lint/config/ticket/id"
+	"github.com/gitamix/lint/config/task"
+	"github.com/gitamix/lint/config/task/id"
 	"github.com/gitamix/lint/config/value"
 	"github.com/gitamix/lint/issue"
 )
@@ -29,9 +29,9 @@ func TestConfig_Length(t *testing.T) {
 				impl.WithLength(
 					value.NewRange(10, 72),
 				),
-				impl.WithTicket(
-					ticket.NewConfig(
-						ticket.WithID(
+				impl.WithTask(
+					task.NewConfig(
+						task.WithID(
 							id.NewConfig(
 								value.NewString(
 									issue.Warning,
@@ -90,13 +90,13 @@ func TestConfig_Length(t *testing.T) {
 	})
 }
 
-func TestConfig_Ticket(t *testing.T) {
+func TestConfig_Task(t *testing.T) {
 	t.Parallel()
 
 	t.Run("without any option", func(t *testing.T) {
 		t.Parallel()
-		got := impl.NewConfig().Ticket()
-		var want ticket.Config
+		got := impl.NewConfig().Task()
+		var want task.Config
 		assert.Equal(t, want, got)
 	})
 
@@ -107,9 +107,9 @@ func TestConfig_Ticket(t *testing.T) {
 				impl.WithLength(
 					value.NewRange(10, 72),
 				),
-				impl.WithTicket(
-					ticket.NewConfig(
-						ticket.WithID(
+				impl.WithTask(
+					task.NewConfig(
+						task.WithID(
 							id.NewConfig(
 								value.NewString(
 									issue.Warning,
@@ -120,9 +120,9 @@ func TestConfig_Ticket(t *testing.T) {
 					),
 				),
 			).
-			Ticket()
-		want := ticket.NewConfig(
-			ticket.WithID(
+			Task()
+		want := task.NewConfig(
+			task.WithID(
 				id.NewConfig(
 					value.NewString(
 						issue.Warning,
@@ -134,13 +134,13 @@ func TestConfig_Ticket(t *testing.T) {
 		assert.Equal(t, want, got)
 	})
 
-	t.Run("only with ticket", func(t *testing.T) {
+	t.Run("only with task", func(t *testing.T) {
 		t.Parallel()
 		got := impl.
 			NewConfig(
-				impl.WithTicket(
-					ticket.NewConfig(
-						ticket.WithID(
+				impl.WithTask(
+					task.NewConfig(
+						task.WithID(
 							id.NewConfig(
 								value.NewString(
 									issue.Critical,
@@ -151,9 +151,9 @@ func TestConfig_Ticket(t *testing.T) {
 					),
 				),
 			).
-			Ticket()
-		want := ticket.NewConfig(
-			ticket.WithID(
+			Task()
+		want := task.NewConfig(
+			task.WithID(
 				id.NewConfig(
 					value.NewString(
 						issue.Critical,
@@ -165,7 +165,7 @@ func TestConfig_Ticket(t *testing.T) {
 		assert.Equal(t, want, got)
 	})
 
-	t.Run("only with length does not set ticket", func(t *testing.T) {
+	t.Run("only with length does not set task", func(t *testing.T) {
 		t.Parallel()
 		got := impl.
 			NewConfig(
@@ -173,31 +173,31 @@ func TestConfig_Ticket(t *testing.T) {
 					value.NewRange(10, 72),
 				),
 			).
-			Ticket()
-		var want ticket.Config
+			Task()
+		var want task.Config
 		assert.Equal(t, want, got)
 	})
 
-	t.Run("with empty ticket config", func(t *testing.T) {
+	t.Run("with empty task config", func(t *testing.T) {
 		t.Parallel()
 		got := impl.
 			NewConfig(
-				impl.WithTicket(
-					ticket.NewConfig(),
+				impl.WithTask(
+					task.NewConfig(),
 				),
 			).
-			Ticket()
-		want := ticket.NewConfig()
+			Task()
+		want := task.NewConfig()
 		assert.Equal(t, want, got)
 	})
 
-	t.Run("last WithTicket wins", func(t *testing.T) {
+	t.Run("last WithTask wins", func(t *testing.T) {
 		t.Parallel()
 		got := impl.
 			NewConfig(
-				impl.WithTicket(
-					ticket.NewConfig(
-						ticket.WithID(
+				impl.WithTask(
+					task.NewConfig(
+						task.WithID(
 							id.NewConfig(
 								value.NewString(
 									issue.Critical,
@@ -207,9 +207,9 @@ func TestConfig_Ticket(t *testing.T) {
 						),
 					),
 				),
-				impl.WithTicket(
-					ticket.NewConfig(
-						ticket.WithID(
+				impl.WithTask(
+					task.NewConfig(
+						task.WithID(
 							id.NewConfig(
 								value.NewString(
 									issue.Warning,
@@ -220,9 +220,9 @@ func TestConfig_Ticket(t *testing.T) {
 					),
 				),
 			).
-			Ticket()
-		want := ticket.NewConfig(
-			ticket.WithID(
+			Task()
+		want := task.NewConfig(
+			task.WithID(
 				id.NewConfig(
 					value.NewString(
 						issue.Warning,

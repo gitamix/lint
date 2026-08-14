@@ -5,8 +5,8 @@ import (
 
 	"github.com/gitamix/lint/config/branch"
 	"github.com/gitamix/lint/config/branch/name"
-	"github.com/gitamix/lint/config/ticket"
-	"github.com/gitamix/lint/config/ticket/id"
+	"github.com/gitamix/lint/config/task"
+	"github.com/gitamix/lint/config/task/id"
 	"github.com/gitamix/lint/config/value"
 	"github.com/gitamix/lint/issue"
 )
@@ -14,10 +14,10 @@ import (
 type (
 	yamlConfig struct {
 		Branch struct {
-			Ticket struct {
+			Task struct {
 				Issue   yamlIssue `yaml:"issue"`
 				Pattern string    `yaml:"pattern"`
-			} `yaml:"ticket"`
+			} `yaml:"task"`
 			Name struct {
 				Issue   yamlIssue `yaml:"issue"`
 				Pattern string    `yaml:"pattern"`
@@ -41,16 +41,16 @@ func Unmarshal(bb []byte) (*Config, error) {
 	cfg := NewConfig(
 		WithBranch(
 			branch.NewConfig(
-				branch.WithTicket(
-					ticket.NewConfig(
-						ticket.WithID(
+				branch.WithTask(
+					task.NewConfig(
+						task.WithID(
 							id.NewConfig(
 								value.NewString(
 									issue.ParseOr(
-										out.Branch.Ticket.Issue.Level,
+										out.Branch.Task.Issue.Level,
 										issue.Warning,
 									),
-									out.Branch.Ticket.Pattern,
+									out.Branch.Task.Pattern,
 								),
 							),
 						),

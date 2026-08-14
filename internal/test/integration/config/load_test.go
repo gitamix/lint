@@ -13,8 +13,8 @@ import (
 	impl "github.com/gitamix/lint/config"
 	"github.com/gitamix/lint/config/branch"
 	"github.com/gitamix/lint/config/branch/name"
-	"github.com/gitamix/lint/config/ticket"
-	"github.com/gitamix/lint/config/ticket/id"
+	"github.com/gitamix/lint/config/task"
+	"github.com/gitamix/lint/config/task/id"
 	"github.com/gitamix/lint/config/value"
 	"github.com/gitamix/lint/internal/test/testdata"
 	"github.com/gitamix/lint/issue"
@@ -37,9 +37,9 @@ func TestLoad(t *testing.T) {
 			impl.NewConfig(
 				impl.WithBranch(
 					branch.NewConfig(
-						branch.WithTicket(
-							ticket.NewConfig(
-								ticket.WithID(
+						branch.WithTask(
+							task.NewConfig(
+								task.WithID(
 									id.NewConfig(
 										value.NewString(
 											issue.Info,
