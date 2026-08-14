@@ -21,20 +21,7 @@ func TestConfig_Length(t *testing.T) {
 		assert.Equal(t, want, got)
 	})
 
-	t.Run("with all options", func(t *testing.T) {
-		t.Parallel()
-		got := impl.
-			NewConfig(
-				impl.WithLength(
-					value.NewRange(20, 255),
-				),
-			).
-			Length()
-		want := value.NewRange(20, 255)
-		assert.Equal(t, want, got)
-	})
-
-	t.Run("only with length", func(t *testing.T) {
+	t.Run("with length", func(t *testing.T) {
 		t.Parallel()
 		got := impl.
 			NewConfig(
