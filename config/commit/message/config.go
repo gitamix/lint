@@ -1,6 +1,7 @@
 package message
 
 import (
+	"github.com/gitamix/lint/config/commit/message/body"
 	"github.com/gitamix/lint/config/commit/message/subject"
 )
 
@@ -9,6 +10,9 @@ import (
 type Config struct {
 	// subj stores the subject configuration of the commit message.
 	subj subject.Config
+
+	// body stores the body configuration of the commit message.
+	body body.Config
 }
 
 // NewConfig creates a new message Config
@@ -24,4 +28,9 @@ func NewConfig(opts ...Option) Config {
 // Subject returns the subject config.
 func (c Config) Subject() subject.Config {
 	return c.subj
+}
+
+// Body returns the body config.
+func (c Config) Body() body.Config {
+	return c.body
 }
