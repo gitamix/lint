@@ -1,7 +1,7 @@
 package subject
 
 import (
-	"github.com/gitamix/lint/config/commit/message/subject/scope"
+	"github.com/gitamix/lint/config/commit/scope"
 	"github.com/gitamix/lint/config/ticket"
 	"github.com/gitamix/lint/config/value"
 )

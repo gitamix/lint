@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	impl "github.com/gitamix/lint/config/commit/message/subject/scope"
+	impl "github.com/gitamix/lint/config/commit/scope"
 	"github.com/gitamix/lint/config/value"
 	"github.com/gitamix/lint/issue"
 )
