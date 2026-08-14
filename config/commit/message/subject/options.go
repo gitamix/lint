@@ -9,13 +9,6 @@ import (
 // the subject config on its creation.
 type Option func(*Config)
 
-// WithTypes sets the types for the subject config.
-func WithTypes(types value.Strings) Option {
-	return func(c *Config) {
-		c.types = types
-	}
-}
-
 // WithLength sets the allowed length interval for the subject config.
 func WithLength(length value.Range) Option {
 	return func(c *Config) {

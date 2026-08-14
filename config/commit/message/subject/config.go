@@ -7,9 +7,6 @@ import (
 
 // Config represents the configuration of the commit message subject.
 type Config struct {
-	// types stores the subject types with their issue type levels.
-	types value.Strings
-
 	// length stores the allowed length interval of the subject text.
 	//
 	// The value is used to validate the number of characters
@@ -28,11 +25,6 @@ func NewConfig(opts ...Option) Config {
 		opt(&c)
 	}
 	return c
-}
-
-// Types returns the types for the subject config.
-func (c Config) Types() value.Strings {
-	return c.types
 }
 
 // Length returns the allowed length interval of the subject text.

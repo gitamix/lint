@@ -7,6 +7,8 @@ import (
 	"github.com/gitamix/lint/config/commit/message"
 	"github.com/gitamix/lint/config/commit/message/subject"
 	"github.com/gitamix/lint/config/commit/scope"
+	"github.com/gitamix/lint/config/ticket"
+	"github.com/gitamix/lint/config/ticket/id"
 	"github.com/gitamix/lint/config/value"
 	"github.com/gitamix/lint/issue"
 	"github.com/stretchr/testify/assert"
@@ -24,7 +26,7 @@ func TestConfig_Message(t *testing.T) {
 		assert.Equal(t, want, got)
 	})
 
-	t.Run("with message subject types", func(t *testing.T) {
+	t.Run("with message subject length", func(t *testing.T) {
 		t.Parallel()
 		got := impl.
 			NewConfig(
@@ -32,13 +34,8 @@ func TestConfig_Message(t *testing.T) {
 					message.NewConfig(
 						message.WithSubject(
 							subject.NewConfig(
-								subject.WithTypes(
-									value.NewStrings(
-										issue.Warning,
-										"feat",
-										"fix",
-										"refactor",
-									),
+								subject.WithLength(
+									value.NewRange(10, 72),
 								),
 							),
 						),
@@ -49,13 +46,8 @@ func TestConfig_Message(t *testing.T) {
 		want := message.NewConfig(
 			message.WithSubject(
 				subject.NewConfig(
-					subject.WithTypes(
-						value.NewStrings(
-							issue.Warning,
-							"feat",
-							"fix",
-							"refactor",
-						),
+					subject.WithLength(
+						value.NewRange(10, 72),
 					),
 				),
 			),
@@ -76,7 +68,7 @@ func TestConfig_Message(t *testing.T) {
 		assert.Equal(t, want, got)
 	})
 
-	t.Run("with message subject types and critical level", func(t *testing.T) {
+	t.Run("with message subject ticket", func(t *testing.T) {
 		t.Parallel()
 		got := impl.
 			NewConfig(
@@ -84,11 +76,66 @@ func TestConfig_Message(t *testing.T) {
 					message.NewConfig(
 						message.WithSubject(
 							subject.NewConfig(
-								subject.WithTypes(
-									value.NewStrings(
+								subject.WithTicket(
+									ticket.NewConfig(
+										ticket.WithID(
+											id.NewConfig(
+												value.NewString(
+													issue.Critical,
+													`^[A-Z]+-\d+$`,
+												),
+											),
+										),
+									),
+								),
+							),
+						),
+					),
+				),
+			).
+			Message()
+		want := message.NewConfig(
+			message.WithSubject(
+				subject.NewConfig(
+					subject.WithTicket(
+						ticket.NewConfig(
+							ticket.WithID(
+								id.NewConfig(
+									value.NewString(
 										issue.Critical,
-										"feat",
-										"fix",
+										`^[A-Z]+-\d+$`,
+									),
+								),
+							),
+						),
+					),
+				),
+			),
+		)
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("with message subject length and ticket", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewConfig(
+				impl.WithMessage(
+					message.NewConfig(
+						message.WithSubject(
+							subject.NewConfig(
+								subject.WithLength(
+									value.NewRange(1, 100),
+								),
+								subject.WithTicket(
+									ticket.NewConfig(
+										ticket.WithID(
+											id.NewConfig(
+												value.NewString(
+													issue.Warning,
+													`^[A-Z]+-\d+$`,
+												),
+											),
+										),
 									),
 								),
 							),
@@ -100,209 +147,19 @@ func TestConfig_Message(t *testing.T) {
 		want := message.NewConfig(
 			message.WithSubject(
 				subject.NewConfig(
-					subject.WithTypes(
-						value.NewStrings(
-							issue.Critical,
-							"feat",
-							"fix",
-						),
+					subject.WithLength(
+						value.NewRange(1, 100),
 					),
-				),
-			),
-		)
-		assert.Equal(t, want, got)
-	})
-
-	t.Run("with message subject types and info level", func(t *testing.T) {
-		t.Parallel()
-		got := impl.
-			NewConfig(
-				impl.WithMessage(
-					message.NewConfig(
-						message.WithSubject(
-							subject.NewConfig(
-								subject.WithTypes(
-									value.NewStrings(
-										issue.Info,
-										"docs",
-										"style",
-									),
-								),
-							),
-						),
-					),
-				),
-			).
-			Message()
-		want := message.NewConfig(
-			message.WithSubject(
-				subject.NewConfig(
-					subject.WithTypes(
-						value.NewStrings(
-							issue.Info,
-							"docs",
-							"style",
-						),
-					),
-				),
-			),
-		)
-		assert.Equal(t, want, got)
-	})
-
-	t.Run("with message subject empty types and critical level", func(t *testing.T) {
-		t.Parallel()
-		got := impl.
-			NewConfig(
-				impl.WithMessage(
-					message.NewConfig(
-						message.WithSubject(
-							subject.NewConfig(
-								subject.WithTypes(
-									value.NewStrings(issue.Critical),
-								),
-							),
-						),
-					),
-				),
-			).
-			Message()
-		want := message.NewConfig(
-			message.WithSubject(
-				subject.NewConfig(
-					subject.WithTypes(
-						value.NewStrings(issue.Critical),
-					),
-				),
-			),
-		)
-		assert.Equal(t, want, got)
-	})
-
-	t.Run("with message subject empty types and warning level", func(t *testing.T) {
-		t.Parallel()
-		got := impl.
-			NewConfig(
-				impl.WithMessage(
-					message.NewConfig(
-						message.WithSubject(
-							subject.NewConfig(
-								subject.WithTypes(
-									value.NewStrings(issue.Warning),
-								),
-							),
-						),
-					),
-				),
-			).
-			Message()
-		want := message.NewConfig(
-			message.WithSubject(
-				subject.NewConfig(
-					subject.WithTypes(
-						value.NewStrings(issue.Warning),
-					),
-				),
-			),
-		)
-		assert.Equal(t, want, got)
-	})
-
-	t.Run("with message subject empty types and info level", func(t *testing.T) {
-		t.Parallel()
-		got := impl.
-			NewConfig(
-				impl.WithMessage(
-					message.NewConfig(
-						message.WithSubject(
-							subject.NewConfig(
-								subject.WithTypes(
-									value.NewStrings(issue.Info),
-								),
-							),
-						),
-					),
-				),
-			).
-			Message()
-		want := message.NewConfig(
-			message.WithSubject(
-				subject.NewConfig(
-					subject.WithTypes(
-						value.NewStrings(issue.Info),
-					),
-				),
-			),
-		)
-		assert.Equal(t, want, got)
-	})
-
-	t.Run("with message subject some empty types and critical level", func(t *testing.T) {
-		t.Parallel()
-		got := impl.
-			NewConfig(
-				impl.WithMessage(
-					message.NewConfig(
-						message.WithSubject(
-							subject.NewConfig(
-								subject.WithTypes(
-									value.NewStrings(
-										issue.Critical,
-										"feat",
-										"",
-										"fix",
-									),
-								),
-							),
-						),
-					),
-				),
-			).
-			Message()
-		want := message.NewConfig(
-			message.WithSubject(
-				subject.NewConfig(
-					subject.WithTypes(
-						value.NewStrings(
-							issue.Critical,
-							"feat",
-							"",
-							"fix",
-						),
-					),
-				),
-			),
-		)
-		assert.Equal(t, want, got)
-	})
-
-	t.Run("with message subject single type", func(t *testing.T) {
-		t.Parallel()
-		got := impl.
-			NewConfig(
-				impl.WithMessage(
-					message.NewConfig(
-						message.WithSubject(
-							subject.NewConfig(
-								subject.WithTypes(
-									value.NewStrings(
+					subject.WithTicket(
+						ticket.NewConfig(
+							ticket.WithID(
+								id.NewConfig(
+									value.NewString(
 										issue.Warning,
-										"feat",
+										`^[A-Z]+-\d+$`,
 									),
 								),
 							),
-						),
-					),
-				),
-			).
-			Message()
-		want := message.NewConfig(
-			message.WithSubject(
-				subject.NewConfig(
-					subject.WithTypes(
-						value.NewStrings(
-							issue.Warning,
-							"feat",
 						),
 					),
 				),
@@ -332,12 +189,8 @@ func TestConfig_Scope(t *testing.T) {
 					message.NewConfig(
 						message.WithSubject(
 							subject.NewConfig(
-								subject.WithTypes(
-									value.NewStrings(
-										issue.Warning,
-										"feat",
-										"fix",
-									),
+								subject.WithLength(
+									value.NewRange(10, 72),
 								),
 							),
 						),
@@ -370,12 +223,8 @@ func TestConfig_Scope(t *testing.T) {
 					message.NewConfig(
 						message.WithSubject(
 							subject.NewConfig(
-								subject.WithTypes(
-									value.NewStrings(
-										issue.Critical,
-										"feat",
-										"fix",
-									),
+								subject.WithLength(
+									value.NewRange(1, 100),
 								),
 							),
 						),
@@ -437,6 +286,282 @@ func TestConfig_Scope(t *testing.T) {
 				issue.Warning,
 				`^[A-Za-z]+`,
 			),
+		)
+		assert.Equal(t, want, got)
+	})
+}
+
+func TestConfig_Types(t *testing.T) {
+	t.Parallel()
+
+	t.Run("without any option", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewConfig().
+			Types()
+		want := value.Strings{}
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("with all options", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewConfig(
+				impl.WithMessage(
+					message.NewConfig(
+						message.WithSubject(
+							subject.NewConfig(
+								subject.WithLength(
+									value.NewRange(10, 72),
+								),
+							),
+						),
+					),
+				),
+				impl.WithScope(
+					scope.NewConfig(
+						value.NewString(
+							issue.Critical,
+							`^[A-Za-z _-]+$`,
+						),
+					),
+				),
+				impl.WithTypes(
+					value.NewStrings(
+						issue.Warning,
+						"feat",
+						"fix",
+					),
+				),
+			).
+			Types()
+		want := value.NewStrings(
+			issue.Warning,
+			"feat",
+			"fix",
+		)
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("with types and warning level", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewConfig(
+				impl.WithTypes(
+					value.NewStrings(
+						issue.Warning,
+						"feat",
+						"fix",
+					),
+				),
+			).
+			Types()
+		want := value.NewStrings(
+			issue.Warning,
+			"feat",
+			"fix",
+		)
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("with types and critical level", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewConfig(
+				impl.WithTypes(
+					value.NewStrings(
+						issue.Critical,
+						"feat",
+						"fix",
+					),
+				),
+			).
+			Types()
+		want := impl.
+			NewConfig(
+				impl.WithTypes(
+					value.NewStrings(
+						issue.Critical,
+						"feat",
+						"fix",
+					),
+				),
+			).
+			Types()
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("with empty types and critical level", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewConfig(
+				impl.WithTypes(
+					value.NewStrings(issue.Critical),
+				),
+			).
+			Types()
+		want := value.NewStrings(issue.Critical)
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("with empty types and warning level", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewConfig(
+				impl.WithTypes(
+					value.NewStrings(issue.Warning),
+				),
+			).
+			Types()
+		want := value.NewStrings(issue.Warning)
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("with empty types and info level", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewConfig(
+				impl.WithTypes(
+					value.NewStrings(issue.Info),
+				),
+			).
+			Types()
+		want := value.NewStrings(issue.Info)
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("with some empty type and critical level", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewConfig(
+				impl.WithTypes(
+					value.NewStrings(
+						issue.Critical,
+						"foo",
+						"",
+						"bar",
+					),
+				),
+			).
+			Types()
+		want := value.NewStrings(
+			issue.Critical,
+			"foo",
+			"",
+			"bar",
+		)
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("with some empty type and warning level", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewConfig(
+				impl.WithTypes(
+					value.NewStrings(
+						issue.Warning,
+						"foo",
+						"",
+						"bar",
+					),
+				),
+			).
+			Types()
+		want := value.NewStrings(
+			issue.Warning,
+			"foo",
+			"",
+			"bar",
+		)
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("with some empty type and info level", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewConfig(
+				impl.WithTypes(
+					value.NewStrings(
+						issue.Info,
+						"foo",
+						"",
+						"bar",
+					),
+				),
+			).
+			Types()
+		want := value.NewStrings(
+			issue.Info,
+			"foo",
+			"",
+			"bar",
+		)
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("only with message does not set types", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewConfig(
+				impl.WithMessage(
+					message.NewConfig(
+						message.WithSubject(
+							subject.NewConfig(
+								subject.WithLength(
+									value.NewRange(10, 72),
+								),
+							),
+						),
+					),
+				),
+			).
+			Types()
+		want := value.Strings{}
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("only with scope does not set types", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewConfig(
+				impl.WithScope(
+					scope.NewConfig(
+						value.NewString(
+							issue.Critical,
+							`^[A-Za-z _-]+$`,
+						),
+					),
+				),
+			).
+			Types()
+		want := value.Strings{}
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("last WithTypes wins", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewConfig(
+				impl.WithTypes(
+					value.NewStrings(
+						issue.Critical,
+						"feat",
+						"fix",
+					),
+				),
+				impl.WithTypes(
+					value.NewStrings(
+						issue.Warning,
+						"docs",
+						"style",
+					),
+				),
+			).
+			Types()
+		want := value.NewStrings(
+			issue.Warning,
+			"docs",
+			"style",
 		)
 		assert.Equal(t, want, got)
 	})
