@@ -26,11 +26,11 @@ func TestConfig_Length(t *testing.T) {
 		got := impl.
 			NewConfig(
 				impl.WithLength(
-					value.NewRange(1, 100),
+					value.NewRange(issue.Warning, 1, 100),
 				),
 			).
 			Length()
-		want := value.NewRange(1, 100)
+		want := value.NewRange(issue.Warning, 1, 100)
 		assert.Equal(t, want, got)
 	})
 
@@ -39,11 +39,11 @@ func TestConfig_Length(t *testing.T) {
 		got := impl.
 			NewConfig(
 				impl.WithLength(
-					value.NewRange(0, 0),
+					value.NewRange(issue.Warning, 0, 0),
 				),
 			).
 			Length()
-		want := value.NewRange(0, 0)
+		want := value.NewRange(issue.Warning, 0, 0)
 		assert.Equal(t, want, got)
 	})
 
@@ -52,14 +52,14 @@ func TestConfig_Length(t *testing.T) {
 		got := impl.
 			NewConfig(
 				impl.WithLength(
-					value.NewRange(1, 10),
+					value.NewRange(issue.Warning, 1, 10),
 				),
 				impl.WithLength(
-					value.NewRange(20, 255),
+					value.NewRange(issue.Warning, 20, 255),
 				),
 			).
 			Length()
-		want := value.NewRange(20, 255)
+		want := value.NewRange(issue.Warning, 20, 255)
 		assert.Equal(t, want, got)
 	})
 }

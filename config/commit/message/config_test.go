@@ -36,7 +36,7 @@ func TestConfig_Subject(t *testing.T) {
 						subject.WithDescription(
 							description.NewConfig(
 								description.WithLength(
-									value.NewRange(10, 72),
+									value.NewRange(issue.Warning, 10, 72),
 								),
 							),
 						),
@@ -48,7 +48,7 @@ func TestConfig_Subject(t *testing.T) {
 			subject.WithDescription(
 				description.NewConfig(
 					description.WithLength(
-						value.NewRange(10, 72),
+						value.NewRange(issue.Warning, 10, 72),
 					),
 				),
 			),
@@ -117,7 +117,7 @@ func TestConfig_Subject(t *testing.T) {
 						subject.WithDescription(
 							description.NewConfig(
 								description.WithLength(
-									value.NewRange(1, 100),
+									value.NewRange(issue.Warning, 1, 100),
 								),
 							),
 						),
@@ -141,7 +141,7 @@ func TestConfig_Subject(t *testing.T) {
 			subject.WithDescription(
 				description.NewConfig(
 					description.WithLength(
-						value.NewRange(1, 100),
+						value.NewRange(issue.Warning, 1, 100),
 					),
 				),
 			),
@@ -170,7 +170,7 @@ func TestConfig_Subject(t *testing.T) {
 						subject.WithDescription(
 							description.NewConfig(
 								description.WithLength(
-									value.NewRange(10, 72),
+									value.NewRange(issue.Warning, 10, 72),
 								),
 							),
 						),
@@ -191,7 +191,7 @@ func TestConfig_Subject(t *testing.T) {
 				impl.WithBody(
 					body.NewConfig(
 						body.WithLength(
-							value.NewRange(20, 255),
+							value.NewRange(issue.Warning, 20, 255),
 						),
 					),
 				),
@@ -201,7 +201,7 @@ func TestConfig_Subject(t *testing.T) {
 			subject.WithDescription(
 				description.NewConfig(
 					description.WithLength(
-						value.NewRange(10, 72),
+						value.NewRange(issue.Warning, 10, 72),
 					),
 				),
 			),
@@ -231,7 +231,7 @@ func TestConfig_Subject(t *testing.T) {
 				impl.WithBody(
 					body.NewConfig(
 						body.WithLength(
-							value.NewRange(20, 255),
+							value.NewRange(issue.Warning, 20, 255),
 						),
 					),
 				),
@@ -261,7 +261,7 @@ func TestConfig_Body(t *testing.T) {
 				impl.WithBody(
 					body.NewConfig(
 						body.WithLength(
-							value.NewRange(20, 255),
+							value.NewRange(issue.Warning, 20, 255),
 						),
 					),
 				),
@@ -269,7 +269,7 @@ func TestConfig_Body(t *testing.T) {
 			Body()
 		want := body.NewConfig(
 			body.WithLength(
-				value.NewRange(20, 255),
+				value.NewRange(issue.Warning, 20, 255),
 			),
 		)
 		assert.Equal(t, want, got)
@@ -295,7 +295,7 @@ func TestConfig_Body(t *testing.T) {
 				impl.WithBody(
 					body.NewConfig(
 						body.WithLength(
-							value.NewRange(0, 0),
+							value.NewRange(issue.Warning, 0, 0),
 						),
 					),
 				),
@@ -303,7 +303,7 @@ func TestConfig_Body(t *testing.T) {
 			Body()
 		want := body.NewConfig(
 			body.WithLength(
-				value.NewRange(0, 0),
+				value.NewRange(issue.Warning, 0, 0),
 			),
 		)
 		assert.Equal(t, want, got)
@@ -316,14 +316,14 @@ func TestConfig_Body(t *testing.T) {
 				impl.WithBody(
 					body.NewConfig(
 						body.WithLength(
-							value.NewRange(1, 10),
+							value.NewRange(issue.Warning, 1, 10),
 						),
 					),
 				),
 				impl.WithBody(
 					body.NewConfig(
 						body.WithLength(
-							value.NewRange(20, 255),
+							value.NewRange(issue.Warning, 20, 255),
 						),
 					),
 				),
@@ -331,7 +331,7 @@ func TestConfig_Body(t *testing.T) {
 			Body()
 		want := body.NewConfig(
 			body.WithLength(
-				value.NewRange(20, 255),
+				value.NewRange(issue.Warning, 20, 255),
 			),
 		)
 		assert.Equal(t, want, got)
@@ -346,7 +346,7 @@ func TestConfig_Body(t *testing.T) {
 						subject.WithDescription(
 							description.NewConfig(
 								description.WithLength(
-									value.NewRange(10, 72),
+									value.NewRange(issue.Warning, 10, 72),
 								),
 							),
 						),
@@ -367,7 +367,7 @@ func TestConfig_Body(t *testing.T) {
 				impl.WithBody(
 					body.NewConfig(
 						body.WithLength(
-							value.NewRange(20, 255),
+							value.NewRange(issue.Warning, 20, 255),
 						),
 					),
 				),
@@ -375,7 +375,7 @@ func TestConfig_Body(t *testing.T) {
 			Body()
 		want := body.NewConfig(
 			body.WithLength(
-				value.NewRange(20, 255),
+				value.NewRange(issue.Warning, 20, 255),
 			),
 		)
 		assert.Equal(t, want, got)
@@ -390,7 +390,7 @@ func TestConfig_Body(t *testing.T) {
 						subject.WithDescription(
 							description.NewConfig(
 								description.WithLength(
-									value.NewRange(10, 72),
+									value.NewRange(issue.Warning, 10, 72),
 								),
 							),
 						),

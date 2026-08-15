@@ -39,7 +39,7 @@ func TestConfig_Message(t *testing.T) {
 								subject.WithDescription(
 									description.NewConfig(
 										description.WithLength(
-											value.NewRange(10, 72),
+											value.NewRange(issue.Warning, 10, 72),
 										),
 									),
 								),
@@ -55,7 +55,7 @@ func TestConfig_Message(t *testing.T) {
 					subject.WithDescription(
 						description.NewConfig(
 							description.WithLength(
-								value.NewRange(10, 72),
+								value.NewRange(issue.Warning, 10, 72),
 							),
 						),
 					),
@@ -136,7 +136,7 @@ func TestConfig_Message(t *testing.T) {
 								subject.WithDescription(
 									description.NewConfig(
 										description.WithLength(
-											value.NewRange(1, 100),
+											value.NewRange(issue.Warning, 1, 100),
 										),
 									),
 								),
@@ -164,7 +164,7 @@ func TestConfig_Message(t *testing.T) {
 					subject.WithDescription(
 						description.NewConfig(
 							description.WithLength(
-								value.NewRange(1, 100),
+								value.NewRange(issue.Warning, 1, 100),
 							),
 						),
 					),
@@ -210,7 +210,7 @@ func TestConfig_Scope(t *testing.T) {
 								subject.WithDescription(
 									description.NewConfig(
 										description.WithLength(
-											value.NewRange(10, 72),
+											value.NewRange(issue.Warning, 10, 72),
 										),
 									),
 								),
@@ -248,7 +248,7 @@ func TestConfig_Scope(t *testing.T) {
 								subject.WithDescription(
 									description.NewConfig(
 										description.WithLength(
-											value.NewRange(1, 100),
+											value.NewRange(issue.Warning, 1, 100),
 										),
 									),
 								),
@@ -340,7 +340,7 @@ func TestConfig_Types(t *testing.T) {
 								subject.WithDescription(
 									description.NewConfig(
 										description.WithLength(
-											value.NewRange(10, 72),
+											value.NewRange(issue.Warning, 10, 72),
 										),
 									),
 								),
@@ -576,7 +576,7 @@ func TestConfig_Types(t *testing.T) {
 								subject.WithDescription(
 									description.NewConfig(
 										description.WithLength(
-											value.NewRange(10, 72),
+											value.NewRange(issue.Warning, 10, 72),
 										),
 									),
 								),

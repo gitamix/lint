@@ -1,8 +1,13 @@
 package value
 
-import "fmt"
+import (
+	"fmt"
 
-// Range represents an inclusive integer interval [min, max].
+	"github.com/gitamix/lint/issue"
+)
+
+// Range represents an inclusive integer interval [min, max]
+// that can be configured with an issue type level to alert on linting.
 //
 // Range is immutable and validates its invariant
 // on every method call:
@@ -13,14 +18,29 @@ type Range struct {
 
 	// max stores the upper bound of the interval.
 	max int
+
+	// lvl is an issue type level to alert on linting.
+	lvl issue.Type
 }
 
-// NewRange creates a Range with the provided inclusive bounds.
-func NewRange(min, max int) Range {
+// NewRange creates a Range with the provided issue type level
+// and inclusive bounds.
+func NewRange(lvl issue.Type, min, max int) Range {
 	return Range{
 		min: min,
 		max: max,
+		lvl: lvl,
 	}
+}
+
+// Level returns issue type level to alert on linting.
+//
+// Returns Warning if not set.
+func (r Range) Level() issue.Type {
+	if r.lvl == 0 {
+		return issue.Warning
+	}
+	return r.lvl
 }
 
 // String returns the canonical "min-max"

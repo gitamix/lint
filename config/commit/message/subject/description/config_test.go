@@ -7,6 +7,7 @@ import (
 
 	impl "github.com/gitamix/lint/config/commit/message/subject/description"
 	"github.com/gitamix/lint/config/value"
+	"github.com/gitamix/lint/issue"
 )
 
 func TestConfig_Length(t *testing.T) {
@@ -24,11 +25,11 @@ func TestConfig_Length(t *testing.T) {
 		got := impl.
 			NewConfig(
 				impl.WithLength(
-					value.NewRange(1, 100),
+					value.NewRange(issue.Warning, 1, 100),
 				),
 			).
 			Length()
-		want := value.NewRange(1, 100)
+		want := value.NewRange(issue.Warning, 1, 100)
 		assert.Equal(t, want, got)
 	})
 
@@ -37,11 +38,11 @@ func TestConfig_Length(t *testing.T) {
 		got := impl.
 			NewConfig(
 				impl.WithLength(
-					value.NewRange(0, 0),
+					value.NewRange(issue.Warning, 0, 0),
 				),
 			).
 			Length()
-		want := value.NewRange(0, 0)
+		want := value.NewRange(issue.Warning, 0, 0)
 		assert.Equal(t, want, got)
 	})
 
@@ -50,14 +51,14 @@ func TestConfig_Length(t *testing.T) {
 		got := impl.
 			NewConfig(
 				impl.WithLength(
-					value.NewRange(1, 10),
+					value.NewRange(issue.Warning, 1, 10),
 				),
 				impl.WithLength(
-					value.NewRange(10, 72),
+					value.NewRange(issue.Warning, 10, 72),
 				),
 			).
 			Length()
-		want := value.NewRange(10, 72)
+		want := value.NewRange(issue.Warning, 10, 72)
 		assert.Equal(t, want, got)
 	})
 }

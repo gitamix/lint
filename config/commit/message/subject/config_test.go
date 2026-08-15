@@ -30,7 +30,7 @@ func TestConfig_Description(t *testing.T) {
 				impl.WithDescription(
 					description.NewConfig(
 						description.WithLength(
-							value.NewRange(10, 72),
+							value.NewRange(issue.Warning, 10, 72),
 						),
 					),
 				),
@@ -38,7 +38,7 @@ func TestConfig_Description(t *testing.T) {
 			Description()
 		want := description.NewConfig(
 			description.WithLength(
-				value.NewRange(10, 72),
+				value.NewRange(issue.Warning, 10, 72),
 			),
 		)
 		assert.Equal(t, want, got)
@@ -51,14 +51,14 @@ func TestConfig_Description(t *testing.T) {
 				impl.WithDescription(
 					description.NewConfig(
 						description.WithLength(
-							value.NewRange(1, 10),
+							value.NewRange(issue.Warning, 1, 10),
 						),
 					),
 				),
 				impl.WithDescription(
 					description.NewConfig(
 						description.WithLength(
-							value.NewRange(10, 72),
+							value.NewRange(issue.Warning, 10, 72),
 						),
 					),
 				),
@@ -66,7 +66,7 @@ func TestConfig_Description(t *testing.T) {
 			Description()
 		want := description.NewConfig(
 			description.WithLength(
-				value.NewRange(10, 72),
+				value.NewRange(issue.Warning, 10, 72),
 			),
 		)
 		assert.Equal(t, want, got)
@@ -90,7 +90,7 @@ func TestConfig_Task(t *testing.T) {
 				impl.WithDescription(
 					description.NewConfig(
 						description.WithLength(
-							value.NewRange(10, 72),
+							value.NewRange(issue.Warning, 10, 72),
 						),
 					),
 				),
@@ -159,7 +159,7 @@ func TestConfig_Task(t *testing.T) {
 				impl.WithDescription(
 					description.NewConfig(
 						description.WithLength(
-							value.NewRange(10, 72),
+							value.NewRange(issue.Warning, 10, 72),
 						),
 					),
 				),
