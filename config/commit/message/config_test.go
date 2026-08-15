@@ -8,6 +8,7 @@ import (
 	impl "github.com/gitamix/lint/config/commit/message"
 	"github.com/gitamix/lint/config/commit/message/body"
 	"github.com/gitamix/lint/config/commit/message/subject"
+	"github.com/gitamix/lint/config/commit/message/subject/description"
 	"github.com/gitamix/lint/config/task"
 	"github.com/gitamix/lint/config/task/id"
 	"github.com/gitamix/lint/config/value"
@@ -32,16 +33,24 @@ func TestConfig_Subject(t *testing.T) {
 			NewConfig(
 				impl.WithSubject(
 					subject.NewConfig(
-						subject.WithLength(
-							value.NewRange(10, 72),
+						subject.WithDescription(
+							description.NewConfig(
+								description.WithLength(
+									value.NewRange(10, 72),
+								),
+							),
 						),
 					),
 				),
 			).
 			Subject()
 		want := subject.NewConfig(
-			subject.WithLength(
-				value.NewRange(10, 72),
+			subject.WithDescription(
+				description.NewConfig(
+					description.WithLength(
+						value.NewRange(10, 72),
+					),
+				),
 			),
 		)
 		assert.Equal(t, want, got)
@@ -105,8 +114,12 @@ func TestConfig_Subject(t *testing.T) {
 			NewConfig(
 				impl.WithSubject(
 					subject.NewConfig(
-						subject.WithLength(
-							value.NewRange(1, 100),
+						subject.WithDescription(
+							description.NewConfig(
+								description.WithLength(
+									value.NewRange(1, 100),
+								),
+							),
 						),
 						subject.WithTask(
 							task.NewConfig(
@@ -125,8 +138,12 @@ func TestConfig_Subject(t *testing.T) {
 			).
 			Subject()
 		want := subject.NewConfig(
-			subject.WithLength(
-				value.NewRange(1, 100),
+			subject.WithDescription(
+				description.NewConfig(
+					description.WithLength(
+						value.NewRange(1, 100),
+					),
+				),
 			),
 			subject.WithTask(
 				task.NewConfig(
@@ -150,8 +167,12 @@ func TestConfig_Subject(t *testing.T) {
 			NewConfig(
 				impl.WithSubject(
 					subject.NewConfig(
-						subject.WithLength(
-							value.NewRange(10, 72),
+						subject.WithDescription(
+							description.NewConfig(
+								description.WithLength(
+									value.NewRange(10, 72),
+								),
+							),
 						),
 						subject.WithTask(
 							task.NewConfig(
@@ -177,8 +198,12 @@ func TestConfig_Subject(t *testing.T) {
 			).
 			Subject()
 		want := subject.NewConfig(
-			subject.WithLength(
-				value.NewRange(10, 72),
+			subject.WithDescription(
+				description.NewConfig(
+					description.WithLength(
+						value.NewRange(10, 72),
+					),
+				),
 			),
 			subject.WithTask(
 				task.NewConfig(
@@ -318,8 +343,12 @@ func TestConfig_Body(t *testing.T) {
 			NewConfig(
 				impl.WithSubject(
 					subject.NewConfig(
-						subject.WithLength(
-							value.NewRange(10, 72),
+						subject.WithDescription(
+							description.NewConfig(
+								description.WithLength(
+									value.NewRange(10, 72),
+								),
+							),
 						),
 						subject.WithTask(
 							task.NewConfig(
@@ -358,8 +387,12 @@ func TestConfig_Body(t *testing.T) {
 			NewConfig(
 				impl.WithSubject(
 					subject.NewConfig(
-						subject.WithLength(
-							value.NewRange(10, 72),
+						subject.WithDescription(
+							description.NewConfig(
+								description.WithLength(
+									value.NewRange(10, 72),
+								),
+							),
 						),
 					),
 				),

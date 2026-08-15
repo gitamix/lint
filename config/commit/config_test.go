@@ -6,6 +6,7 @@ import (
 	impl "github.com/gitamix/lint/config/commit"
 	"github.com/gitamix/lint/config/commit/message"
 	"github.com/gitamix/lint/config/commit/message/subject"
+	"github.com/gitamix/lint/config/commit/message/subject/description"
 	"github.com/gitamix/lint/config/commit/scope"
 	"github.com/gitamix/lint/config/commit/types"
 	"github.com/gitamix/lint/config/task"
@@ -35,8 +36,12 @@ func TestConfig_Message(t *testing.T) {
 					message.NewConfig(
 						message.WithSubject(
 							subject.NewConfig(
-								subject.WithLength(
-									value.NewRange(10, 72),
+								subject.WithDescription(
+									description.NewConfig(
+										description.WithLength(
+											value.NewRange(10, 72),
+										),
+									),
 								),
 							),
 						),
@@ -47,8 +52,12 @@ func TestConfig_Message(t *testing.T) {
 		want := message.NewConfig(
 			message.WithSubject(
 				subject.NewConfig(
-					subject.WithLength(
-						value.NewRange(10, 72),
+					subject.WithDescription(
+						description.NewConfig(
+							description.WithLength(
+								value.NewRange(10, 72),
+							),
+						),
 					),
 				),
 			),
@@ -124,8 +133,12 @@ func TestConfig_Message(t *testing.T) {
 					message.NewConfig(
 						message.WithSubject(
 							subject.NewConfig(
-								subject.WithLength(
-									value.NewRange(1, 100),
+								subject.WithDescription(
+									description.NewConfig(
+										description.WithLength(
+											value.NewRange(1, 100),
+										),
+									),
 								),
 								subject.WithTask(
 									task.NewConfig(
@@ -148,8 +161,12 @@ func TestConfig_Message(t *testing.T) {
 		want := message.NewConfig(
 			message.WithSubject(
 				subject.NewConfig(
-					subject.WithLength(
-						value.NewRange(1, 100),
+					subject.WithDescription(
+						description.NewConfig(
+							description.WithLength(
+								value.NewRange(1, 100),
+							),
+						),
 					),
 					subject.WithTask(
 						task.NewConfig(
@@ -190,8 +207,12 @@ func TestConfig_Scope(t *testing.T) {
 					message.NewConfig(
 						message.WithSubject(
 							subject.NewConfig(
-								subject.WithLength(
-									value.NewRange(10, 72),
+								subject.WithDescription(
+									description.NewConfig(
+										description.WithLength(
+											value.NewRange(10, 72),
+										),
+									),
 								),
 							),
 						),
@@ -224,8 +245,12 @@ func TestConfig_Scope(t *testing.T) {
 					message.NewConfig(
 						message.WithSubject(
 							subject.NewConfig(
-								subject.WithLength(
-									value.NewRange(1, 100),
+								subject.WithDescription(
+									description.NewConfig(
+										description.WithLength(
+											value.NewRange(1, 100),
+										),
+									),
 								),
 							),
 						),
@@ -312,8 +337,12 @@ func TestConfig_Types(t *testing.T) {
 					message.NewConfig(
 						message.WithSubject(
 							subject.NewConfig(
-								subject.WithLength(
-									value.NewRange(10, 72),
+								subject.WithDescription(
+									description.NewConfig(
+										description.WithLength(
+											value.NewRange(10, 72),
+										),
+									),
 								),
 							),
 						),
@@ -544,8 +573,12 @@ func TestConfig_Types(t *testing.T) {
 					message.NewConfig(
 						message.WithSubject(
 							subject.NewConfig(
-								subject.WithLength(
-									value.NewRange(10, 72),
+								subject.WithDescription(
+									description.NewConfig(
+										description.WithLength(
+											value.NewRange(10, 72),
+										),
+									),
 								),
 							),
 						),

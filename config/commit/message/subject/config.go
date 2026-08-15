@@ -1,17 +1,17 @@
 package subject
 
 import (
+	"github.com/gitamix/lint/config/commit/message/subject/description"
 	"github.com/gitamix/lint/config/task"
-	"github.com/gitamix/lint/config/value"
 )
 
 // Config represents the configuration of the commit message subject.
 type Config struct {
-	// length stores the allowed length interval of the subject text.
+	// desc stores the configuration of the subject description text,
+	// including its length interval.
 	//
-	// The value is used to validate the number of characters
-	// in the commit message subject.
-	length value.Range
+	// The value is used to validate the commit message subject description.
+	desc description.Config
 
 	// task stores the configuration for task integration.
 	task task.Config
@@ -27,9 +27,9 @@ func NewConfig(opts ...Option) Config {
 	return c
 }
 
-// Length returns the allowed length interval of the subject text.
-func (c Config) Length() value.Range {
-	return c.length
+// Description returns the configuration of the subject description text.
+func (c Config) Description() description.Config {
+	return c.desc
 }
 
 // Task returns the configuration for task integration.
