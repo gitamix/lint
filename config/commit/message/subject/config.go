@@ -5,15 +5,18 @@ import (
 	"github.com/gitamix/lint/config/task"
 )
 
-// Config represents the configuration of the commit message subject.
+// Config represents the configuration
+// of the commit message subject.
 type Config struct {
-	// desc stores the configuration of the subject description text,
-	// including its length interval.
+	// desc stores the configuration
+	// of the subject description text.
 	//
-	// The value is used to validate the commit message subject description.
+	// The value is used to validate
+	// the commit message subject description.
 	desc description.Config
 
-	// task stores the configuration for task integration.
+	// task stores the configuration
+	// for task integration.
 	task task.Config
 }
 
@@ -27,7 +30,8 @@ func NewConfig(opts ...Option) Config {
 	return c
 }
 
-// Description returns the configuration of the subject description text.
+// Description returns the configuration
+// of the subject description text.
 func (c Config) Description() description.Config {
 	return c.desc
 }
