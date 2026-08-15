@@ -33,6 +33,12 @@ make/         — Makefile include fragments (test, lint, coverage, pr, setup)
 docker/       — Dockerfile for test containers
 ```
 
+### Lint configuration
+
+Every config value has to be declared with the `config/value/` package,
+and each type declared there must have an `issue.Type` field that defines
+how the gitamix linter has to alert about the detected problem.
+
 ## Style rules (enforced by .golangci.yml + STYLE.md)
 
 - **All functions/methods must be exported** (unexported = forbidden)
