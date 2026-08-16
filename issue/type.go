@@ -1,5 +1,7 @@
 package issue
 
+import "slices"
+
 const (
 	// Critical indicates a critical issue that needs to be solved immediately.
 	//
@@ -50,6 +52,11 @@ func (t Type) String() string {
 // Unspecified defines whether the type is unspecified.
 func (t Type) Unspecified() bool {
 	return t == Type(0)
+}
+
+// In defines whether the type exists in provided list of types.
+func (t Type) In(typs ...Type) bool {
+	return slices.Contains(typs, t)
 }
 
 // ParseOr parses the provided string into an issue Type,

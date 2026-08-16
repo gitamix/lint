@@ -87,6 +87,42 @@ func TestType_Unspecified(t *testing.T) {
 	})
 }
 
+func TestType_In(t *testing.T) {
+	t.Parallel()
+
+	t.Run("type exists in list", func(t *testing.T) {
+		t.Parallel()
+		tt := impl.Warning
+		assert.True(
+			t,
+			tt.In(
+				impl.Critical,
+				impl.Warning,
+				impl.Info,
+			),
+		)
+	})
+
+	t.Run("type does not exist in list", func(t *testing.T) {
+		t.Parallel()
+		tt := impl.Type(255)
+		assert.False(
+			t,
+			tt.In(
+				impl.Critical,
+				impl.Warning,
+				impl.Info,
+			),
+		)
+	})
+
+	t.Run("empty list does not contain type", func(t *testing.T) {
+		t.Parallel()
+		tt := impl.Critical
+		assert.False(t, tt.In())
+	})
+}
+
 func TestParseOr(t *testing.T) {
 	t.Parallel()
 	type args struct {
