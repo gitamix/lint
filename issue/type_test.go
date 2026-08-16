@@ -157,6 +157,72 @@ func TestType_Unknown(t *testing.T) {
 	})
 }
 
+func TestParse(t *testing.T) {
+	t.Parallel()
+
+	t.Run("critical parsed", func(t *testing.T) {
+		t.Parallel()
+		assert.Equal(
+			t,
+			impl.Critical,
+			impl.Parse("critical"),
+		)
+	})
+
+	t.Run("warning parsed", func(t *testing.T) {
+		t.Parallel()
+		assert.Equal(
+			t,
+			impl.Warning,
+			impl.Parse("warning"),
+		)
+	})
+
+	t.Run("info parsed", func(t *testing.T) {
+		t.Parallel()
+		assert.Equal(
+			t,
+			impl.Info,
+			impl.Parse("info"),
+		)
+	})
+
+	t.Run("not trimmed critical not parsed", func(t *testing.T) {
+		t.Parallel()
+		assert.Equal(
+			t,
+			impl.Type(0),
+			impl.Parse(" critical "),
+		)
+	})
+
+	t.Run("Critical not parsed", func(t *testing.T) {
+		t.Parallel()
+		assert.Equal(
+			t,
+			impl.Type(0),
+			impl.Parse("Critical"),
+		)
+	})
+
+	t.Run("empty string not parsed", func(t *testing.T) {
+		t.Parallel()
+		assert.Equal(
+			t,
+			impl.Type(0),
+			impl.Parse(""),
+		)
+	})
+
+	t.Run("unknown string not parsed", func(t *testing.T) {
+		t.Parallel()
+		assert.Equal(
+			t,
+			impl.Type(0),
+			impl.Parse("foo"),
+		)
+	})
+}
 
 func TestParseOr(t *testing.T) {
 	t.Parallel()

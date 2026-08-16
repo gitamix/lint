@@ -64,6 +64,12 @@ func (t Type) Unknown() bool {
 	return !t.In(Critical, Warning, Info)
 }
 
+// Parse parses the provided string into an issue type
+// or returns zero type if not parsed.
+func Parse(s string) Type {
+	return ParseOr(s, Type(0))
+}
+
 // ParseOr parses the provided string into an issue Type,
 // or returns the provided default if the value does not match any known type.
 func ParseOr(s string, def Type) Type {
