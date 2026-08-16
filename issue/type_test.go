@@ -53,6 +53,40 @@ func TestType_String(t *testing.T) {
 	}
 }
 
+func TestType_Unspecified(t *testing.T) {
+	t.Parallel()
+
+	t.Run("zero type is unspecified", func(t *testing.T) {
+		t.Parallel()
+		tt := impl.Type(0)
+		assert.True(t, tt.Unspecified())
+	})
+
+	t.Run("critical type is specified", func(t *testing.T) {
+		t.Parallel()
+		tt := impl.Critical
+		assert.False(t, tt.Unspecified())
+	})
+
+	t.Run("warning type is specified", func(t *testing.T) {
+		t.Parallel()
+		tt := impl.Warning
+		assert.False(t, tt.Unspecified())
+	})
+
+	t.Run("info type is specified", func(t *testing.T) {
+		t.Parallel()
+		tt := impl.Info
+		assert.False(t, tt.Unspecified())
+	})
+
+	t.Run("custom 255 type is specified", func(t *testing.T) {
+		t.Parallel()
+		tt := impl.Type(255)
+		assert.False(t, tt.Unspecified())
+	})
+}
+
 func TestParseOr(t *testing.T) {
 	t.Parallel()
 	type args struct {
