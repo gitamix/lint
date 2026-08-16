@@ -28,27 +28,23 @@ func TestStrings_Config(t *testing.T) {
 				Level: "critical",
 			},
 		}
-		want := value.NewStrings(
-			issue.Critical,
-			"feat",
-			"fix",
-		)
+		want := value.NewStrings(issue.Critical, "feat", "fix")
 		assert.Equal(t, want, s.Config())
 	})
 
-	t.Run("keeps zero level when issue is not set", func(t *testing.T) {
+	t.Run("keeps warning level when issue is not set", func(t *testing.T) {
 		t.Parallel()
 		s := impl.Strings{
 			List: []string{"feat"},
 		}
-		want := value.NewStrings(issue.Type(0), "feat")
+		want := value.NewStrings(issue.Warning, "feat")
 		assert.Equal(t, want, s.Config())
 	})
 
 	t.Run("defaults unknown level to warning", func(t *testing.T) {
 		t.Parallel()
 		s := impl.Strings{
-			List:  []string{"feat"},
+			List: []string{"feat"},
 			Issue: impl.Issue{
 				Level: "bogus",
 			},

@@ -23,9 +23,5 @@ func (i Issue) Empty() bool {
 // Otherwise the level string is parsed,
 // defaulting to warning when it does not match a known level.
 func (i Issue) Config() issue.Type {
-	if i.Empty() {
-		var typ issue.Type
-		return typ
-	}
 	return issue.ParseOr(i.Level, issue.Warning)
 }

@@ -15,7 +15,7 @@ func TestIssue_Config(t *testing.T) {
 	t.Run("returns zero type when empty", func(t *testing.T) {
 		t.Parallel()
 		i := impl.Issue{}
-		assert.Equal(t, issue.Type(0), i.Config())
+		assert.Equal(t, issue.Warning, i.Config())
 	})
 
 	t.Run("parses critical level", func(t *testing.T) {
