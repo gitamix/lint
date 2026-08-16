@@ -6,7 +6,7 @@ Go module `github.com/gitamix/lint` (Go 1.25.7, no vendor). A linting toolkit fo
 
 ## Quick commands
 
-```
+```plaintext
 make check        # test + coverage + lint  (default)
 make test         # unit-test + integration-test
 make unit-test    # Go test ./... (excludes internal/test/integration)
@@ -19,7 +19,7 @@ make pr release <version>  # opens GitHub PR page with release template
 
 ## Architecture
 
-```
+```plaintext
 cmd/          — entry-points for tooling (generator, 01)
 config/       — YAML config types, loading, unmarshaling (branch, task, value subpackages)
 branch/       — branch name parsing and detection
@@ -35,9 +35,18 @@ docker/       — Dockerfile for test containers
 
 ### Lint configuration
 
+#### Values
+
 Every config value has to be declared with the `config/value/` package,
 and each type declared there must have an `issue.Type` field that defines
 how the gitamix linter has to alert about the detected problem.
+
+#### Functional options
+
+Prefer functional options for Config structs in `config/` —
+construct instances by providing any number of options,
+mimicking named/optional parameters found in other languages.
+This keeps constructors logic-free (see Style rules).
 
 ## Style rules (enforced by .golangci.yml + STYLE.md)
 
