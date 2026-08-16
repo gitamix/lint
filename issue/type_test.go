@@ -123,6 +123,41 @@ func TestType_In(t *testing.T) {
 	})
 }
 
+func TestType_Unknown(t *testing.T) {
+	t.Parallel()
+
+	t.Run("zero type is unknown", func(t *testing.T) {
+		t.Parallel()
+		tt := impl.Type(0)
+		assert.True(t, tt.Unknown())
+	})
+
+	t.Run("critical type is known", func(t *testing.T) {
+		t.Parallel()
+		tt := impl.Critical
+		assert.False(t, tt.Unknown())
+	})
+
+	t.Run("warning type is known", func(t *testing.T) {
+		t.Parallel()
+		tt := impl.Warning
+		assert.False(t, tt.Unknown())
+	})
+
+	t.Run("info type is known", func(t *testing.T) {
+		t.Parallel()
+		tt := impl.Info
+		assert.False(t, tt.Unknown())
+	})
+
+	t.Run("custom 255 type is unknown", func(t *testing.T) {
+		t.Parallel()
+		tt := impl.Type(255)
+		assert.True(t, tt.Unknown())
+	})
+}
+
+
 func TestParseOr(t *testing.T) {
 	t.Parallel()
 	type args struct {
