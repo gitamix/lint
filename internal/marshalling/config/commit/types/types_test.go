@@ -42,19 +42,20 @@ func TestTypes_Config(t *testing.T) {
 		assert.Equal(t, want, tt.Config())
 	})
 
-	t.Run("keeps unspecified level when issue is not set", func(t *testing.T) {
+	t.Run("sets critical level when issue is not set", func(t *testing.T) {
 		t.Parallel()
 		tt := impl.Types{
 			Types: mvalue.Strings{
 				List: []string{"feat", "fix"},
 			},
 		}
-		assert.True(
-			t,
-			tt.Config().
-				Types().
-				Level().
-				Unspecified(),
+		want := types.NewConfig(
+			value.NewStrings(
+				issue.Critical,
+				"feat",
+				"fix",
+			),
 		)
+		assert.Equal(t, want, tt.Config())
 	})
 }
