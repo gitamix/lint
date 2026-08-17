@@ -8,6 +8,8 @@ import (
 	impl "github.com/gitamix/lint/config"
 	"github.com/gitamix/lint/config/branch"
 	"github.com/gitamix/lint/config/branch/name"
+	"github.com/gitamix/lint/config/commit"
+	"github.com/gitamix/lint/config/commit/types"
 	"github.com/gitamix/lint/config/task"
 	"github.com/gitamix/lint/config/task/id"
 	"github.com/gitamix/lint/config/value"
@@ -175,4 +177,54 @@ func TestConfig_Branch(t *testing.T) {
 			)
 		})
 	}
+}
+
+func TestConfig_Commit(t *testing.T) {
+	t.Parallel()
+
+	t.Run("returns filled out commit config as it defined", func(t *testing.T) {
+		t.Parallel()
+		cfg := commit.NewConfig(
+			commit.WithTypes(
+				types.NewConfig(
+					value.NewStrings(
+						issue.Critical,
+						"feat",
+						"refactor",
+						"fix",
+						"chore",
+						"docs",
+						"test",
+					),
+				),
+			),
+		)
+		assert.Equal(
+			t,
+			cfg,
+			impl.
+				NewConfig(impl.WithCommit(cfg)).
+				Commit(),
+		)
+	})
+
+	t.Run("returns empty commit config as it defined", func(t *testing.T) {
+		t.Parallel()
+		cfg := commit.NewConfig()
+		assert.Equal(
+			t,
+			cfg,
+			impl.
+				NewConfig(impl.WithCommit(cfg)).
+				Commit(),
+		)
+	})
+
+	t.Run("panics on nil value", func(t *testing.T) {
+		t.Parallel()
+		var cfg *impl.Config
+		assert.Panics(t, func() {
+			_ = cfg.Commit()
+		})
+	})
 }
