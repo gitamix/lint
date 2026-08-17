@@ -40,6 +40,11 @@ func (s Strings) Exact() []string {
 	return dst
 }
 
+// WithLevel creates a new instance with provided issue type level.
+func (s Strings) WithLevel(lvl issue.Type) Strings {
+	return NewStrings(lvl, s.vv...)
+}
+
 // Level returns the issue type level to alert on linting.
 //
 // Returns Warning if not set.

@@ -3,10 +3,11 @@ package value_test
 import (
 	"testing"
 
-	impl "github.com/gitamix/lint/config/value"
-	"github.com/gitamix/lint/issue"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	impl "github.com/gitamix/lint/config/value"
+	"github.com/gitamix/lint/issue"
 )
 
 func TestStrings_Exact(t *testing.T) {
@@ -278,5 +279,36 @@ func TestStrings_Level(t *testing.T) {
 				"baz",
 			)
 		assert.Equal(t, issue.Warning, str.Level())
+	})
+}
+
+func TestStrings_WithLevel(t *testing.T) {
+	t.Parallel()
+
+	t.Run("changes critical to info level", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewStrings(issue.Critical, "foo", "bar").
+			WithLevel(issue.Info)
+		assert.Equal(t, issue.Info, got.Level())
+	})
+
+	t.Run("changes critical to zero level", func(t *testing.T) {
+		t.Parallel()
+		assert.True(
+			t,
+			impl.
+				NewStrings(issue.Critical, "foo", "bar").
+				WithLevel(issue.Type(0)).
+				Level().
+				Unspecified(),
+		)
+	})
+
+	t.Run("does not change level for the previous one", func(t *testing.T) {
+		t.Parallel()
+		prev := impl.NewStrings(issue.Critical, "foo", "bar")
+		_ = prev.WithLevel(issue.Info)
+		assert.Equal(t, issue.Critical, prev.Level())
 	})
 }
