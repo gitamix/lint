@@ -42,3 +42,8 @@ func (s String) Equal(other string) bool {
 func (s String) String() string {
 	return s.v
 }
+
+// WithLevel creates a new instance with provided issue type level.
+func (s String) WithLevel(lvl issue.Type) String {
+	return NewString(lvl, s.v)
+}

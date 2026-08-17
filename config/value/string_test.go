@@ -218,3 +218,34 @@ func TestString_Equal(t *testing.T) {
 		})
 	}
 }
+
+func TestString_WithLevel(t *testing.T) {
+	t.Parallel()
+
+	t.Run("changes critical to info level", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewString(issue.Critical, "foo").
+			WithLevel(issue.Info)
+		assert.Equal(t, issue.Info, got.Level())
+	})
+
+	t.Run("changes critical to zero level", func(t *testing.T) {
+		t.Parallel()
+		assert.True(
+			t,
+			impl.
+				NewString(issue.Critical, "foo").
+				WithLevel(issue.Type(0)).
+				Level().
+				Unspecified(),
+		)
+	})
+
+	t.Run("does not change level for the previous one", func(t *testing.T) {
+		t.Parallel()
+		prev := impl.NewString(issue.Critical, "foo")
+		_ = prev.WithLevel(issue.Info)
+		assert.Equal(t, issue.Critical, prev.Level())
+	})
+}
