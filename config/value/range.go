@@ -40,6 +40,11 @@ func (r Range) Level() issue.Type {
 	return r.lvl
 }
 
+// WithLevel creates a new instance with provided issue type level.
+func (r Range) WithLevel(lvl issue.Type) Range {
+	return NewRange(lvl, r.min, r.max)
+}
+
 // String returns the canonical "min-max"
 // representation of the interval.
 //

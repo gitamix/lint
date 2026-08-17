@@ -284,3 +284,34 @@ func TestRange_Above(t *testing.T) {
 		)
 	})
 }
+
+func TestRange_WithLevel(t *testing.T) {
+	t.Parallel()
+
+	t.Run("changes critical to info level", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewRange(issue.Critical, 5, 10).
+			WithLevel(issue.Info)
+		assert.Equal(t, issue.Info, got.Level())
+	})
+
+	t.Run("changes critical to zero level", func(t *testing.T) {
+		t.Parallel()
+		assert.True(
+			t,
+			impl.
+				NewRange(issue.Critical, 5, 10).
+				WithLevel(issue.Type(0)).
+				Level().
+				Unspecified(),
+		)
+	})
+
+	t.Run("does not change level for the previous one", func(t *testing.T) {
+		t.Parallel()
+		prev := impl.NewRange(issue.Critical, 5, 10)
+		_ = prev.WithLevel(issue.Info)
+		assert.Equal(t, issue.Critical, prev.Level())
+	})
+}
