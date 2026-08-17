@@ -12,8 +12,10 @@ type Types struct {
 	Types value.Strings `yaml:"types,omitempty"`
 }
 
-// Config converts the transport representation into the domain types.Config,
-// wiring the accepted commit types into it.
+// Config converts the transport representation
+// into domain types config, wiring the accepted commit types into it.
+//
+// Sets critical issue level if it is unspecified.
 func (c Types) Config() types.Config {
 	v := c.Types.Config()
 	if !c.Types.Empty() && v.Level().Unspecified() {
