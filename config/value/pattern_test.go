@@ -94,3 +94,47 @@ func TestPattern_Match(t *testing.T) {
 		})
 	})
 }
+
+func TestPattern_WithLevel(t *testing.T) {
+	t.Parallel()
+
+	t.Run("changes critical to info level", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewPattern(
+				issue.Critical,
+				regexp.MustCompile(`foo`),
+			).
+			WithLevel(issue.Info)
+		want := impl.NewPattern(
+			issue.Info,
+			regexp.MustCompile(`foo`),
+		)
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("changes critical to zero level", func(t *testing.T) {
+		t.Parallel()
+		assert.True(
+			t,
+			impl.
+				NewPattern(
+					issue.Critical,
+					regexp.MustCompile(`foo`),
+				).
+				WithLevel(issue.Type(0)).
+				Level().
+				Unspecified(),
+		)
+	})
+
+	t.Run("does not change level for the previous one", func(t *testing.T) {
+		t.Parallel()
+		prev := impl.NewPattern(
+			issue.Critical,
+			regexp.MustCompile(`foo`),
+		)
+		_ = prev.WithLevel(issue.Info)
+		assert.Equal(t, issue.Critical, prev.Level())
+	})
+}

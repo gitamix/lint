@@ -37,6 +37,11 @@ func (p Pattern) String() string {
 	return p.exp.String()
 }
 
+// WithLevel creates a new instance with provided issue type level.
+func (p Pattern) WithLevel(lvl issue.Type) Pattern {
+	return NewPattern(lvl, p.exp)
+}
+
 // Match defines whether the compiled regexp expression
 // matches the provided string.
 func (p Pattern) Match(v string) bool {
