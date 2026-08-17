@@ -47,3 +47,8 @@ func (i Integer) Equal(other int) bool {
 func (i Integer) String() string {
 	return strconv.Itoa(i.v)
 }
+
+// WithLevel creates a new instance with provided issue type level.
+func (i Integer) WithLevel(lvl issue.Type) Integer {
+	return NewInteger(lvl, i.v)
+}

@@ -204,3 +204,34 @@ func TestInteger_Equal(t *testing.T) {
 		assert.False(t, got)
 	})
 }
+
+func TestInteger_WithLevel(t *testing.T) {
+	t.Parallel()
+
+	t.Run("changes critical to info level", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewInteger(issue.Critical, 1).
+			WithLevel(issue.Info)
+		assert.Equal(t, issue.Info, got.Level())
+	})
+
+	t.Run("changes critical to zero level", func(t *testing.T) {
+		t.Parallel()
+		assert.True(
+			t,
+			impl.
+				NewInteger(issue.Critical, 1).
+				WithLevel(issue.Type(0)).
+				Level().
+				Unspecified(),
+		)
+	})
+
+	t.Run("does not change level for the previous one", func(t *testing.T) {
+		t.Parallel()
+		prev := impl.NewInteger(issue.Critical, 1)
+		_ = prev.WithLevel(issue.Info)
+		assert.Equal(t, issue.Critical, prev.Level())
+	})
+}
