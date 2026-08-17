@@ -32,25 +32,33 @@ func TestPattern_Config(t *testing.T) {
 		assert.Equal(t, want, p.Config())
 	})
 
-	t.Run("keeps warning level when issue is not set", func(t *testing.T) {
+	t.Run("keeps unspecified level when issue is not set", func(t *testing.T) {
 		t.Parallel()
 		p := impl.Pattern{
 			Pattern: "feat",
 		}
-		want := value.NewString(issue.Warning, "feat")
-		assert.Equal(t, want, p.Config())
+		assert.True(
+			t,
+			p.Config().
+				Level().
+				Unspecified(),
+		)
 	})
 
-	t.Run("defaults unknown level to warning", func(t *testing.T) {
+	t.Run("keeps unknown level when it is incorrect", func(t *testing.T) {
 		t.Parallel()
 		p := impl.Pattern{
 			Issue: impl.Issue{
-				Level: "bogus",
+				Level: "foo",
 			},
 			Pattern: "feat",
 		}
-		want := value.NewString(issue.Warning, "feat")
-		assert.Equal(t, want, p.Config())
+		assert.True(
+			t,
+			p.Config().
+				Level().
+				Unknown(),
+		)
 	})
 
 	t.Run("keeps empty pattern when only issue is set", func(t *testing.T) {

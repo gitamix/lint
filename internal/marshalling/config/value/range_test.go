@@ -33,27 +33,35 @@ func TestRange_Config(t *testing.T) {
 		assert.Equal(t, want, r.Config())
 	})
 
-	t.Run("keeps warning level when issue is not set", func(t *testing.T) {
+	t.Run("keeps unspecified level when issue is not set", func(t *testing.T) {
 		t.Parallel()
 		r := impl.Range{
 			Min: 1,
 			Max: 5,
 		}
-		want := value.NewRange(issue.Warning, 1, 5)
-		assert.Equal(t, want, r.Config())
+		assert.True(
+			t,
+			r.Config().
+				Level().
+				Unspecified(),
+		)
 	})
 
-	t.Run("defaults unknown level to warning", func(t *testing.T) {
+	t.Run("keeps unknown level when issue is incorrect", func(t *testing.T) {
 		t.Parallel()
 		r := impl.Range{
 			Issue: impl.Issue{
-				Level: "bogus",
+				Level: "foo",
 			},
 			Min: 1,
 			Max: 5,
 		}
-		want := value.NewRange(issue.Warning, 1, 5)
-		assert.Equal(t, want, r.Config())
+		assert.True(
+			t,
+			r.Config().
+				Level().
+				Unknown(),
+		)
 	})
 
 	t.Run("builds zero bounds range when only issue is set", func(t *testing.T) {

@@ -38,10 +38,10 @@ func TestPattern_Level(t *testing.T) {
 		assert.Equal(t, issue.Info, pattern.Level())
 	})
 
-	t.Run("returns Warning when level not set", func(t *testing.T) {
+	t.Run("keeps unknown level when it is incorrect", func(t *testing.T) {
 		t.Parallel()
 		var pattern impl.Pattern
-		assert.Equal(t, issue.Warning, pattern.Level())
+		assert.True(t, pattern.Level().Unknown())
 	})
 }
 

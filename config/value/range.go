@@ -37,9 +37,6 @@ func NewRange(lvl issue.Type, min, max int) Range {
 //
 // Returns Warning if not set.
 func (r Range) Level() issue.Type {
-	if r.lvl == 0 {
-		return issue.Warning
-	}
 	return r.lvl
 }
 

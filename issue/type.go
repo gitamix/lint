@@ -33,7 +33,7 @@ const (
 //
 // It indicates the severity of the issue (critical, warning, info),
 // allowing the linting process to handle different types of issues appropriately.
-type Type uint8
+type Type int8
 
 // String returns a string representation of the Type.
 func (t Type) String() string {
@@ -61,18 +61,12 @@ func (t Type) In(typs ...Type) bool {
 
 // Unknown defines whether the type is unknown.
 func (t Type) Unknown() bool {
-	return !t.In(Critical, Warning, Info)
+	return t == Type(-1) || !t.In(Critical, Warning, Info)
 }
 
 // Parse parses the provided string into an issue type
 // or returns zero type if not parsed.
 func Parse(s string) Type {
-	return ParseOr(s, Type(0))
-}
-
-// ParseOr parses the provided string into an issue Type,
-// or returns the provided default if the value does not match any known type.
-func ParseOr(s string, def Type) Type {
 	switch s {
 	case "critical":
 		return Critical
@@ -80,7 +74,9 @@ func ParseOr(s string, def Type) Type {
 		return Warning
 	case "info":
 		return Info
+	case "":
+		return Type(0)
 	default:
-		return def
+		return Type(-1)
 	}
 }

@@ -44,9 +44,6 @@ func (s Strings) Exact() []string {
 //
 // Returns Warning if not set.
 func (s Strings) Level() issue.Type {
-	if s.lvl == 0 {
-		return issue.Warning
-	}
 	return s.lvl
 }
 

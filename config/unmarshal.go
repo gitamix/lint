@@ -46,9 +46,8 @@ func Unmarshal(bb []byte) (*Config, error) {
 						task.WithID(
 							id.NewConfig(
 								value.NewString(
-									issue.ParseOr(
+									issue.Parse(
 										out.Branch.Task.Issue.Level,
-										issue.Warning,
 									),
 									out.Branch.Task.Pattern,
 								),
@@ -59,9 +58,8 @@ func Unmarshal(bb []byte) (*Config, error) {
 				branch.WithName(
 					name.NewConfig(
 						value.NewString(
-							issue.ParseOr(
+							issue.Parse(
 								out.Branch.Name.Issue.Level,
-								issue.Warning,
 							),
 							out.Branch.Name.Pattern,
 						),

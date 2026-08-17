@@ -15,7 +15,7 @@ func TestIssue_Config(t *testing.T) {
 	t.Run("returns zero type when empty", func(t *testing.T) {
 		t.Parallel()
 		i := impl.Issue{}
-		assert.Equal(t, issue.Warning, i.Config())
+		assert.True(t, i.Config().Unspecified())
 	})
 
 	t.Run("parses critical level", func(t *testing.T) {
@@ -42,11 +42,11 @@ func TestIssue_Config(t *testing.T) {
 		assert.Equal(t, issue.Info, i.Config())
 	})
 
-	t.Run("defaults unknown level to warning", func(t *testing.T) {
+	t.Run("keeps unknown level when it is incorrect", func(t *testing.T) {
 		t.Parallel()
 		i := impl.Issue{
-			Level: "bogus",
+			Level: "foo",
 		}
-		assert.Equal(t, issue.Warning, i.Config())
+		assert.True(t, i.Config().Unknown())
 	})
 }

@@ -32,25 +32,28 @@ func TestStrings_Config(t *testing.T) {
 		assert.Equal(t, want, s.Config())
 	})
 
-	t.Run("keeps warning level when issue is not set", func(t *testing.T) {
+	t.Run("keeps unspecified level when issue is not set", func(t *testing.T) {
 		t.Parallel()
 		s := impl.Strings{
 			List: []string{"feat"},
 		}
-		want := value.NewStrings(issue.Warning, "feat")
-		assert.Equal(t, want, s.Config())
+		assert.True(t, s.Config().Level().Unspecified())
 	})
 
-	t.Run("defaults unknown level to warning", func(t *testing.T) {
+	t.Run("keeps unknown level when it is incorrect", func(t *testing.T) {
 		t.Parallel()
 		s := impl.Strings{
 			List: []string{"feat"},
 			Issue: impl.Issue{
-				Level: "bogus",
+				Level: "foo",
 			},
 		}
-		want := value.NewStrings(issue.Warning, "feat")
-		assert.Equal(t, want, s.Config())
+		assert.True(
+			t, s.
+				Config().
+				Level().
+				Unknown(),
+		)
 	})
 
 	t.Run("builds empty list when only issue is set", func(t *testing.T) {

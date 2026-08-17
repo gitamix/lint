@@ -63,10 +63,10 @@ func TestRange_Level(t *testing.T) {
 		assert.Equal(t, issue.Info, r.Level())
 	})
 
-	t.Run("returns warning when level not set", func(t *testing.T) {
+	t.Run("keeps unspecified level on unset", func(t *testing.T) {
 		t.Parallel()
 		var r impl.Range
-		assert.Equal(t, issue.Warning, r.Level())
+		assert.True(t, r.Level().Unspecified())
 	})
 }
 

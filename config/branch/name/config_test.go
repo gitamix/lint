@@ -185,7 +185,7 @@ func TestConfig_Level(t *testing.T) {
 			},
 		},
 		{
-			name: "zero level defaults to warning",
+			name: "keeps zero level unspecified",
 			c: impl.NewConfig(
 				value.NewString(
 					0,
@@ -193,7 +193,7 @@ func TestConfig_Level(t *testing.T) {
 				),
 			),
 			want: want{
-				level: issue.Warning,
+				level: issue.Type(0),
 			},
 		},
 	}

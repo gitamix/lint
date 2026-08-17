@@ -18,10 +18,6 @@ func (i Issue) Empty() bool {
 }
 
 // Config converts the Issue into the domain value.
-//
-// When empty, the zero issue type is returned.
-// Otherwise the level string is parsed,
-// defaulting to warning when it does not match a known level.
 func (i Issue) Config() issue.Type {
-	return issue.ParseOr(i.Level, issue.Warning)
+	return issue.Parse(i.Level)
 }

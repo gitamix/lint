@@ -29,9 +29,6 @@ func NewPattern(lvl issue.Type, exp *regexp.Regexp) Pattern {
 //
 // Returns Warning if not set.
 func (p Pattern) Level() issue.Type {
-	if p.lvl == 0 {
-		return issue.Warning
-	}
 	return p.lvl
 }
 

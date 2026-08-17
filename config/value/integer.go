@@ -34,9 +34,6 @@ func (i Integer) Exact() int {
 //
 // Returns Warning if not set.
 func (i Integer) Level() issue.Type {
-	if i.lvl == 0 {
-		return issue.Warning
-	}
 	return i.lvl
 }
 
