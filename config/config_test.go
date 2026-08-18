@@ -18,165 +18,102 @@ import (
 
 func TestConfig_Branch(t *testing.T) {
 	t.Parallel()
-	type want struct {
-		branch branch.Config
-		panic  bool
-	}
-	tests := []struct {
-		name string
-		c    *impl.Config
-		want want
-	}{
-		{
-			name: "with branch name & task configs",
-			c: impl.NewConfig(
-				impl.WithBranch(
-					branch.NewConfig(
-						branch.WithName(
-							name.NewConfig(
-								value.NewString(
-									issue.Warning,
-									`^(feature|bugfix|hotfix)/[A-Z]+-\d+`,
-								),
-							),
-						),
-						branch.WithTask(
-							task.NewConfig(
-								task.WithID(
-									id.NewConfig(
-										value.NewString(
-											issue.Critical,
-											`[A-Z]+-\d+`,
-										),
-									),
-								),
-							),
-						),
+
+	t.Run("with branch name & task configs", func(t *testing.T) {
+		t.Parallel()
+		want := branch.NewConfig(
+			branch.WithName(
+				name.NewConfig(
+					value.NewString(
+						issue.Warning,
+						`^(feature|bugfix|hotfix)/[A-Z]+-\d+`,
 					),
 				),
 			),
-			want: want{
-				branch: branch.NewConfig(
-					branch.WithName(
-						name.NewConfig(
-							value.NewString(
-								issue.Warning,
-								`^(feature|bugfix|hotfix)/[A-Z]+-\d+`,
-							),
-						),
-					),
-					branch.WithTask(
-						task.NewConfig(
-							task.WithID(
-								id.NewConfig(
-									value.NewString(
-										issue.Critical,
-										`[A-Z]+-\d+`,
-									),
-								),
-							),
-						),
-					),
-				),
-			},
-		},
-		{
-			name: "with name config only",
-			c: impl.NewConfig(
-				impl.WithBranch(
-					branch.NewConfig(
-						branch.WithName(
-							name.NewConfig(
-								value.NewString(
-									issue.Critical,
-									"foo",
-								),
-							),
-						),
-					),
-				),
-			),
-			want: want{
-				branch: branch.NewConfig(
-					branch.WithName(
-						name.NewConfig(
+			branch.WithTask(
+				task.NewConfig(
+					task.WithID(
+						id.NewConfig(
 							value.NewString(
 								issue.Critical,
-								"foo",
-							),
-						),
-					),
-				),
-			},
-		},
-		{
-			name: "with task config only",
-			c: impl.NewConfig(
-				impl.WithBranch(
-					branch.NewConfig(
-						branch.WithTask(
-							task.NewConfig(
-								task.WithID(
-									id.NewConfig(
-										value.NewString(
-											issue.Info,
-											"",
-										),
-									),
-								),
+								`[A-Z]+-\d+`,
 							),
 						),
 					),
 				),
 			),
-			want: want{
-				branch: branch.NewConfig(
-					branch.WithTask(
-						task.NewConfig(
-							task.WithID(
-								id.NewConfig(
-									value.NewString(
-										issue.Info,
-										"",
-									),
-								),
+		)
+		assert.Equal(
+			t,
+			want,
+			impl.
+				NewConfig(impl.WithBranch(want)).
+				Branch(),
+		)
+	})
+
+	t.Run("with name config only", func(t *testing.T) {
+		t.Parallel()
+		want := branch.NewConfig(
+			branch.WithName(
+				name.NewConfig(
+					value.NewString(
+						issue.Critical,
+						"foo",
+					),
+				),
+			),
+		)
+		assert.Equal(
+			t,
+			want,
+			impl.
+				NewConfig(impl.WithBranch(want)).
+				Branch(),
+		)
+	})
+
+	t.Run("with task config only", func(t *testing.T) {
+		t.Parallel()
+		want := branch.NewConfig(
+			branch.WithTask(
+				task.NewConfig(
+					task.WithID(
+						id.NewConfig(
+							value.NewString(
+								issue.Info,
+								"",
 							),
 						),
 					),
 				),
-			},
-		},
-		{
-			name: "without any options",
-			c:    impl.NewConfig(),
-			want: want{
-				branch: branch.NewConfig(),
-			},
-		},
-		{
-			name: "default value",
-			c:    nil,
-			want: want{
-				panic: true,
-			},
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-			if tt.want.panic {
-				assert.Panics(t, func() {
-					_ = tt.c.Branch()
-				})
-				return
-			}
-			assert.Equal(
-				t,
-				tt.want.branch,
-				tt.c.Branch(),
-			)
+			),
+		)
+		assert.Equal(
+			t,
+			want,
+			impl.
+				NewConfig(impl.WithBranch(want)).
+				Branch(),
+		)
+	})
+
+	t.Run("without any options", func(t *testing.T) {
+		t.Parallel()
+		assert.Equal(
+			t,
+			branch.NewConfig(),
+			impl.NewConfig().Branch(),
+		)
+	})
+
+	t.Run("default value panics", func(t *testing.T) {
+		t.Parallel()
+		var c *impl.Config
+		assert.Panics(t, func() {
+			_ = c.Branch()
 		})
-	}
+	})
 }
 
 func TestConfig_Commit(t *testing.T) {

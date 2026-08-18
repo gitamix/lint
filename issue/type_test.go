@@ -10,47 +10,56 @@ import (
 
 func TestType_String(t *testing.T) {
 	t.Parallel()
-	tests := []struct {
-		name string
-		t    impl.Type
-		want string
-	}{
-		{
-			name: "Critical",
-			t:    impl.Critical,
-			want: "critical",
-		},
-		{
-			name: "Warning",
-			t:    impl.Warning,
-			want: "warning",
-		},
-		{
-			name: "Info",
-			t:    impl.Info,
-			want: "info",
-		},
-		{
-			name: "custom 127",
-			t:    impl.Type(127),
-			want: "",
-		},
-		{
-			name: "custom zero",
-			t:    impl.Type(0),
-			want: "",
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-			assert.Equal(
-				t,
-				tt.want,
-				tt.t.String(),
-			)
-		})
-	}
+
+	t.Run("Critical", func(t *testing.T) {
+		t.Parallel()
+		tt := impl.Critical
+		assert.Equal(
+			t,
+			"critical",
+			tt.String(),
+		)
+	})
+
+	t.Run("Warning", func(t *testing.T) {
+		t.Parallel()
+		tt := impl.Warning
+		assert.Equal(
+			t,
+			"warning",
+			tt.String(),
+		)
+	})
+
+	t.Run("Info", func(t *testing.T) {
+		t.Parallel()
+		tt := impl.Info
+		assert.Equal(
+			t,
+			"info",
+			tt.String(),
+		)
+	})
+
+	t.Run("custom 127 returns empty string", func(t *testing.T) {
+		t.Parallel()
+		tt := impl.Type(127)
+		assert.Equal(
+			t,
+			"",
+			tt.String(),
+		)
+	})
+
+	t.Run("custom zero returns empty string", func(t *testing.T) {
+		t.Parallel()
+		tt := impl.Type(0)
+		assert.Equal(
+			t,
+			"",
+			tt.String(),
+		)
+	})
 }
 
 func TestType_Unspecified(t *testing.T) {

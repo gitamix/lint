@@ -12,128 +12,95 @@ import (
 
 func TestConfig_Pattern(t *testing.T) {
 	t.Parallel()
-	type want struct {
-		value value.String
-	}
-	tests := []struct {
-		name string
-		c    impl.Config
-		want want
-	}{
-		{
-			name: "regexp",
-			c: impl.NewConfig(
-				value.NewString(
-					issue.Warning,
-					`^[A-Z]+-\d+$`,
-				),
-			),
-			want: want{
-				value: value.NewString(
-					issue.Warning,
-					`^[A-Z]+-\d+$`,
-				),
-			},
-		},
-		{
-			name: "critical level & just a word",
-			c: impl.NewConfig(
-				value.NewString(
-					issue.Critical,
-					"foo",
-				),
-			),
-			want: want{
-				value: value.NewString(
-					issue.Critical,
-					"foo",
-				),
-			},
-		},
-		{
-			name: "warning level & just a word",
-			c: impl.NewConfig(
-				value.NewString(
-					issue.Warning,
-					"foo",
-				),
-			),
-			want: want{
-				value: value.NewString(
-					issue.Warning,
-					"foo",
-				),
-			},
-		},
-		{
-			name: "info level & just a word",
-			c: impl.NewConfig(
-				value.NewString(
-					issue.Info,
-					"foo",
-				),
-			),
-			want: want{
-				value: value.NewString(
-					issue.Info,
-					"foo",
-				),
-			},
-		},
-		{
-			name: "critical level & empty string",
-			c: impl.NewConfig(
-				value.NewString(
-					issue.Critical,
-					"",
-				),
-			),
-			want: want{
-				value: value.NewString(
-					issue.Critical,
-					"",
-				),
-			},
-		},
-		{
-			name: "warning level & empty string",
-			c: impl.NewConfig(
-				value.NewString(
-					issue.Warning,
-					"",
-				),
-			),
-			want: want{
-				value: value.NewString(
-					issue.Warning,
-					"",
-				),
-			},
-		},
-		{
-			name: "info level & empty string",
-			c: impl.NewConfig(
-				value.NewString(
-					issue.Info,
-					"",
-				),
-			),
-			want: want{
-				value: value.NewString(
-					issue.Info,
-					"",
-				),
-			},
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-			assert.Equal(
-				t,
-				tt.want.value,
-				tt.c.Pattern(),
-			)
-		})
-	}
+
+	t.Run("regexp", func(t *testing.T) {
+		t.Parallel()
+		want := value.NewString(
+			issue.Warning,
+			`^[A-Z]+-\d+$`,
+		)
+		assert.Equal(
+			t,
+			want,
+			impl.NewConfig(want).Pattern(),
+		)
+	})
+
+	t.Run("critical level & just a word", func(t *testing.T) {
+		t.Parallel()
+		want := value.NewString(
+			issue.Critical,
+			"foo",
+		)
+		assert.Equal(
+			t,
+			want,
+			impl.NewConfig(want).Pattern(),
+		)
+	})
+
+	t.Run("warning level & just a word", func(t *testing.T) {
+		t.Parallel()
+		want := value.NewString(
+			issue.Warning,
+			"foo",
+		)
+		assert.Equal(
+			t,
+			want,
+			impl.NewConfig(want).Pattern(),
+		)
+	})
+
+	t.Run("info level & just a word", func(t *testing.T) {
+		t.Parallel()
+		want := value.NewString(
+			issue.Info,
+			"foo",
+		)
+		assert.Equal(
+			t,
+			want,
+			impl.NewConfig(want).Pattern(),
+		)
+	})
+
+	t.Run("critical level & empty string", func(t *testing.T) {
+		t.Parallel()
+		want := value.NewString(
+			issue.Critical,
+			"",
+		)
+		assert.Equal(
+			t,
+			want,
+			impl.NewConfig(want).Pattern(),
+		)
+	})
+
+	t.Run("warning level & empty string", func(t *testing.T) {
+		t.Parallel()
+		want := value.NewString(
+			issue.Warning,
+			"",
+		)
+		assert.Equal(
+			t,
+			want,
+			impl.NewConfig(want).Pattern(),
+		)
+	})
+
+	t.Run("info level & empty string", func(t *testing.T) {
+		t.Parallel()
+		want := value.NewString(
+			issue.Info,
+			"",
+		)
+		assert.Equal(
+			t,
+			want,
+			impl.NewConfig(want).Pattern(),
+		)
+	})
 }
