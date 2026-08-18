@@ -13,7 +13,6 @@ import (
 	impl "github.com/gitamix/lint/internal/marshalling/config/commit/message/subject"
 	tdescription "github.com/gitamix/lint/internal/marshalling/config/commit/message/subject/description"
 	mtask "github.com/gitamix/lint/internal/marshalling/config/task"
-	mtaskid "github.com/gitamix/lint/internal/marshalling/config/task/id"
 	mvalue "github.com/gitamix/lint/internal/marshalling/config/value"
 	"github.com/gitamix/lint/issue"
 )
@@ -102,10 +101,8 @@ func TestSubject_Config(t *testing.T) {
 		t.Parallel()
 		s := impl.Subject{
 			Task: mtask.Task{
-				ID: mtaskid.ID{
-					Pattern: mvalue.Pattern{
-						Pattern: `(TASK|PROJ|BUG)-[0-9]+`,
-					},
+				ID: mvalue.Pattern{
+					Pattern: `(TASK|PROJ|BUG)-[0-9]+`,
 				},
 			},
 		}
@@ -130,13 +127,11 @@ func TestSubject_Config(t *testing.T) {
 		t.Parallel()
 		s := impl.Subject{
 			Task: mtask.Task{
-				ID: mtaskid.ID{
-					Pattern: mvalue.Pattern{
-						Issue: mvalue.Issue{
-							Level: "foo",
-						},
-						Pattern: `(TASK|PROJ|BUG)-[0-9]+`,
+				ID: mvalue.Pattern{
+					Issue: mvalue.Issue{
+						Level: "foo",
 					},
+					Pattern: `(TASK|PROJ|BUG)-[0-9]+`,
 				},
 			},
 		}
@@ -164,10 +159,8 @@ func TestSubject_Config(t *testing.T) {
 				},
 			},
 			Task: mtask.Task{
-				ID: mtaskid.ID{
-					Pattern: mvalue.Pattern{
-						Pattern: `(TASK|PROJ|BUG)-[0-9]+`,
-					},
+				ID: mvalue.Pattern{
+					Pattern: `(TASK|PROJ|BUG)-[0-9]+`,
 				},
 			},
 		}
@@ -195,13 +188,11 @@ func TestSubject_Config(t *testing.T) {
 				},
 			},
 			Task: mtask.Task{
-				ID: mtaskid.ID{
-					Pattern: mvalue.Pattern{
-						Issue: mvalue.Issue{
-							Level: "foo",
-						},
-						Pattern: `(TASK|PROJ|BUG)-[0-9]+`,
+				ID: mvalue.Pattern{
+					Issue: mvalue.Issue{
+						Level: "foo",
 					},
+					Pattern: `(TASK|PROJ|BUG)-[0-9]+`,
 				},
 			},
 		}

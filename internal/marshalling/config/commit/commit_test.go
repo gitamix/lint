@@ -20,8 +20,6 @@ import (
 	tmandate "github.com/gitamix/lint/internal/marshalling/config/commit/message/body/mandate"
 	tsubject "github.com/gitamix/lint/internal/marshalling/config/commit/message/subject"
 	tdescription "github.com/gitamix/lint/internal/marshalling/config/commit/message/subject/description"
-	tscope "github.com/gitamix/lint/internal/marshalling/config/commit/scope"
-	ttypes "github.com/gitamix/lint/internal/marshalling/config/commit/types"
 	mvalue "github.com/gitamix/lint/internal/marshalling/config/value"
 	"github.com/gitamix/lint/issue"
 )
@@ -107,13 +105,11 @@ func TestCommit_Config(t *testing.T) {
 	t.Run("converts scope config into commit config", func(t *testing.T) {
 		t.Parallel()
 		c := impl.Commit{
-			Scope: tscope.Scope{
-				Pattern: mvalue.Pattern{
-					Issue: mvalue.Issue{
-						Level: "critical",
-					},
-					Pattern: "feat|fix",
+			Scope: mvalue.Pattern{
+				Issue: mvalue.Issue{
+					Level: "critical",
 				},
+				Pattern: "feat|fix",
 			},
 		}
 		want := commit.NewConfig(
@@ -129,12 +125,10 @@ func TestCommit_Config(t *testing.T) {
 	t.Run("converts types config into commit config", func(t *testing.T) {
 		t.Parallel()
 		c := impl.Commit{
-			Types: ttypes.Types{
-				Types: mvalue.Strings{
-					List: []string{"feat", "fix"},
-					Issue: mvalue.Issue{
-						Level: "info",
-					},
+			Types: mvalue.Strings{
+				List: []string{"feat", "fix"},
+				Issue: mvalue.Issue{
+					Level: "info",
 				},
 			},
 		}
@@ -146,5 +140,79 @@ func TestCommit_Config(t *testing.T) {
 			),
 		)
 		assert.Equal(t, want, c.Config())
+	})
+
+	t.Run("sets warning level for scope when it is not set", func(t *testing.T) {
+		t.Parallel()
+		c := impl.Commit{
+			Scope: mvalue.Pattern{
+				Pattern: "feat|fix",
+			},
+		}
+		assert.Equal(
+			t,
+			issue.Warning,
+			c.Config().
+				Scope().
+				Pattern().
+				Level(),
+		)
+	})
+
+	t.Run("keeps unknown level for scope when it is incorrect", func(t *testing.T) {
+		t.Parallel()
+		c := impl.Commit{
+			Scope: mvalue.Pattern{
+				Issue: mvalue.Issue{
+					Level: "foo",
+				},
+				Pattern: "feat|fix",
+			},
+		}
+		assert.True(
+			t,
+			c.Config().
+				Scope().
+				Pattern().
+				Level().
+				Unknown(),
+		)
+	})
+
+	t.Run("sets critical level for types when issue is not set", func(t *testing.T) {
+		t.Parallel()
+		c := impl.Commit{
+			Types: mvalue.Strings{
+				List: []string{"feat", "fix"},
+			},
+		}
+		assert.Equal(
+			t,
+			issue.Critical,
+			c.Config().
+				Types().
+				List().
+				Level(),
+		)
+	})
+
+	t.Run("keeps unknown level for types when it is incorrect", func(t *testing.T) {
+		t.Parallel()
+		c := impl.Commit{
+			Types: mvalue.Strings{
+				Issue: mvalue.Issue{
+					Level: "foo",
+				},
+				List: []string{"feat", "fix"},
+			},
+		}
+		assert.True(
+			t,
+			c.Config().
+				Types().
+				List().
+				Level().
+				Unknown(),
+		)
 	})
 }

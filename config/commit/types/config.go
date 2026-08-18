@@ -16,7 +16,7 @@ func NewConfig(types value.Strings) Config {
 	}
 }
 
-// Types returns the commit types with their issue type levels.
-func (c Config) Types() value.Strings {
+// List returns the commit types with their issue type levels.
+func (c Config) List() value.Strings {
 	return c.types
 }

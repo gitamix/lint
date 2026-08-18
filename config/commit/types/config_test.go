@@ -10,7 +10,7 @@ import (
 	"github.com/gitamix/lint/issue"
 )
 
-func TestConfig_Types(t *testing.T) {
+func TestConfig_List(t *testing.T) {
 	t.Parallel()
 
 	t.Run("types with warning issue type", func(t *testing.T) {
@@ -23,7 +23,7 @@ func TestConfig_Types(t *testing.T) {
 					"fix",
 				),
 			).
-			Types()
+			List()
 		want := value.NewStrings(
 			issue.Warning,
 			"feat",
@@ -40,7 +40,7 @@ func TestConfig_Types(t *testing.T) {
 					issue.Critical,
 				),
 			).
-			Types()
+			List()
 		want := value.NewStrings(
 			issue.Critical,
 		)
@@ -51,6 +51,6 @@ func TestConfig_Types(t *testing.T) {
 		t.Parallel()
 		var cfg impl.Config
 		var want value.Strings
-		assert.Equal(t, want, cfg.Types())
+		assert.Equal(t, want, cfg.List())
 	})
 }
