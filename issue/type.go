@@ -64,8 +64,12 @@ func (t Type) Unknown() bool {
 	return t == Type(-1) || !t.In(Critical, Warning, Info)
 }
 
-// Parse parses the provided string into an issue type
-// or returns zero type if not parsed.
+// Parse parses the provided string into an issue type.
+//
+// Returns unspecifed one for empty input
+// and unknown one for unknown strings.
+// Note that these types are represented as predicates
+// and cannot be declared as package constants to prevent its usage.
 func Parse(s string) Type {
 	switch s {
 	case "critical":
