@@ -6,7 +6,7 @@ import (
 	"regexp"
 
 	"github.com/gitamix/types/branch"
-	"github.com/gitamix/types/ticket"
+	task "github.com/gitamix/types/ticket"
 
 	lintname "github.com/gitamix/lint/branch/name"
 	"github.com/gitamix/lint/errs"
@@ -32,19 +32,19 @@ func (b *Branch) Issues(ctx context.Context) ([]issue.Issue, error) {
 		).
 		Issues()
 	issues = append(issues, nameIssues...)
-	ticketPattern := b.cfg.
-		Ticket().
+	taskPattern := b.cfg.
+		Task().
 		ID().
 		Pattern()
-	if v := ticketPattern.Exact(); v != "" {
-		tkt := ticket.ParseTicket(
+	if v := taskPattern.Exact(); v != "" {
+		tkt := task.ParseTicket(
 			br.String(),
 			regexp.MustCompile(v),
 		)
 		if tkt.Empty() {
 			issues = append(issues, issue.NewIssue(
-				ticketPattern.Level(),
-				"ticket doesn't match the required pattern '"+v+"'",
+				taskPattern.Level(),
+				"task doesn't match the required pattern '"+v+"'",
 			))
 		}
 	}

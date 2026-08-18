@@ -1,7 +1,7 @@
-package ticket
+package task
 
 import (
-	"github.com/gitamix/lint/config/ticket/id"
+	"github.com/gitamix/lint/config/task/id"
 )
 
 // Option represents a functional option

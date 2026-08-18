@@ -9,190 +9,175 @@ import (
 	"github.com/gitamix/lint/issue"
 )
 
+func TestString_String(t *testing.T) {
+	t.Parallel()
+
+	t.Run("returns the exact value", func(t *testing.T) {
+		t.Parallel()
+		str := impl.NewString(issue.Critical, "foo")
+		assert.Equal(
+			t,
+			"foo",
+			str.String(),
+		)
+	})
+
+	t.Run("returns empty string when no value", func(t *testing.T) {
+		t.Parallel()
+		str := impl.NewString(issue.Critical, "")
+		assert.Equal(
+			t,
+			"",
+			str.String(),
+		)
+	})
+
+	t.Run("preserves surrounding spaces", func(t *testing.T) {
+		t.Parallel()
+		str := impl.NewString(issue.Critical, " foo ")
+		assert.Equal(
+			t,
+			" foo ",
+			str.String(),
+		)
+	})
+}
+
 func TestString_Equal(t *testing.T) {
 	t.Parallel()
-	type args struct {
-		other string
-	}
-	type want struct {
-		ok bool
-	}
-	tests := []struct {
-		name string
-		v    impl.String
-		args args
-		want want
-	}{
-		{
-			name: "same with exact",
-			v:    impl.NewString(issue.Warning, "foo"),
-			args: args{
-				other: "foo",
-			},
-			want: want{
-				ok: true,
-			},
-		},
-		{
-			name: "critical level & same with exact but with trim spaces",
-			v:    impl.NewString(issue.Critical, " foo "),
-			args: args{
-				other: "foo",
-			},
-			want: want{
-				ok: false,
-			},
-		},
-		{
-			name: "warning level & same with exact but with trim spaces",
-			v:    impl.NewString(issue.Warning, " foo "),
-			args: args{
-				other: "foo",
-			},
-			want: want{
-				ok: false,
-			},
-		},
-		{
-			name: "info level & same with exact but with trim spaces",
-			v:    impl.NewString(issue.Info, " foo "),
-			args: args{
-				other: "foo",
-			},
-			want: want{
-				ok: false,
-			},
-		},
-		{
-			name: "critical level & not same with exact",
-			v:    impl.NewString(issue.Critical, "foo"),
-			args: args{
-				other: "bar",
-			},
-			want: want{
-				ok: false,
-			},
-		},
-		{
-			name: "warning level & not same with exact",
-			v:    impl.NewString(issue.Warning, "foo"),
-			args: args{
-				other: "bar",
-			},
-			want: want{
-				ok: false,
-			},
-		},
-		{
-			name: "info level & not same with exact",
-			v:    impl.NewString(issue.Info, "foo"),
-			args: args{
-				other: "bar",
-			},
-			want: want{
-				ok: false,
-			},
-		},
-		{
-			name: "critical level & empty provided",
-			v:    impl.NewString(issue.Critical, "foo"),
-			args: args{
-				other: "",
-			},
-			want: want{
-				ok: false,
-			},
-		},
-		{
-			name: "warning level & empty provided",
-			v:    impl.NewString(issue.Warning, "foo"),
-			args: args{
-				other: "",
-			},
-			want: want{
-				ok: false,
-			},
-		},
-		{
-			name: "info level & empty provided",
-			v:    impl.NewString(issue.Info, "foo"),
-			args: args{
-				other: "",
-			},
-			want: want{
-				ok: false,
-			},
-		},
-		{
-			name: "critical level & empty exact",
-			v:    impl.NewString(issue.Critical, ""),
-			args: args{
-				other: "foo",
-			},
-			want: want{
-				ok: false,
-			},
-		},
-		{
-			name: "warning level & empty exact",
-			v:    impl.NewString(issue.Warning, ""),
-			args: args{
-				other: "foo",
-			},
-			want: want{
-				ok: false,
-			},
-		},
-		{
-			name: "info level & empty exact",
-			v:    impl.NewString(issue.Info, ""),
-			args: args{
-				other: "foo",
-			},
-			want: want{
-				ok: false,
-			},
-		},
-		{
-			name: "critical level & all empty",
-			v:    impl.NewString(issue.Critical, ""),
-			args: args{
-				other: "",
-			},
-			want: want{
-				ok: true,
-			},
-		},
-		{
-			name: "warning level & all empty",
-			v:    impl.NewString(issue.Warning, ""),
-			args: args{
-				other: "",
-			},
-			want: want{
-				ok: true,
-			},
-		},
-		{
-			name: "info level & all empty",
-			v:    impl.NewString(issue.Info, ""),
-			args: args{
-				other: "",
-			},
-			want: want{
-				ok: true,
-			},
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-			got := tt.v.Equal(tt.args.other)
-			if tt.want.ok {
-				assert.True(t, got)
-			} else {
-				assert.False(t, got)
-			}
-		})
-	}
+
+	t.Run("same with exact", func(t *testing.T) {
+		t.Parallel()
+		v := impl.NewString(issue.Warning, "foo")
+		assert.True(t, v.Equal("foo"))
+	})
+
+	t.Run("critical level & same with exact but with trim spaces", func(t *testing.T) {
+		t.Parallel()
+		v := impl.NewString(issue.Critical, " foo ")
+		assert.False(t, v.Equal("foo"))
+	})
+
+	t.Run("warning level & same with exact but with trim spaces", func(t *testing.T) {
+		t.Parallel()
+		v := impl.NewString(issue.Warning, " foo ")
+		assert.False(t, v.Equal("foo"))
+	})
+
+	t.Run("info level & same with exact but with trim spaces", func(t *testing.T) {
+		t.Parallel()
+		v := impl.NewString(issue.Info, " foo ")
+		assert.False(t, v.Equal("foo"))
+	})
+
+	t.Run("critical level & not same with exact", func(t *testing.T) {
+		t.Parallel()
+		v := impl.NewString(issue.Critical, "foo")
+		assert.False(t, v.Equal("bar"))
+	})
+
+	t.Run("warning level & not same with exact", func(t *testing.T) {
+		t.Parallel()
+		v := impl.NewString(issue.Warning, "foo")
+		assert.False(t, v.Equal("bar"))
+	})
+
+	t.Run("info level & not same with exact", func(t *testing.T) {
+		t.Parallel()
+		v := impl.NewString(issue.Info, "foo")
+		assert.False(t, v.Equal("bar"))
+	})
+
+	t.Run("critical level & empty provided", func(t *testing.T) {
+		t.Parallel()
+		v := impl.NewString(issue.Critical, "foo")
+		assert.False(t, v.Equal(""))
+	})
+
+	t.Run("warning level & empty provided", func(t *testing.T) {
+		t.Parallel()
+		v := impl.NewString(issue.Warning, "foo")
+		assert.False(t, v.Equal(""))
+	})
+
+	t.Run("info level & empty provided", func(t *testing.T) {
+		t.Parallel()
+		v := impl.NewString(issue.Info, "foo")
+		assert.False(t, v.Equal(""))
+	})
+
+	t.Run("critical level & empty exact", func(t *testing.T) {
+		t.Parallel()
+		v := impl.NewString(issue.Critical, "")
+		assert.False(t, v.Equal("foo"))
+	})
+
+	t.Run("warning level & empty exact", func(t *testing.T) {
+		t.Parallel()
+		v := impl.NewString(issue.Warning, "")
+		assert.False(t, v.Equal("foo"))
+	})
+
+	t.Run("info level & empty exact", func(t *testing.T) {
+		t.Parallel()
+		v := impl.NewString(issue.Info, "")
+		assert.False(t, v.Equal("foo"))
+	})
+
+	t.Run("critical level & all empty", func(t *testing.T) {
+		t.Parallel()
+		v := impl.NewString(issue.Critical, "")
+		assert.True(t, v.Equal(""))
+	})
+
+	t.Run("warning level & all empty", func(t *testing.T) {
+		t.Parallel()
+		v := impl.NewString(issue.Warning, "")
+		assert.True(t, v.Equal(""))
+	})
+
+	t.Run("info level & all empty", func(t *testing.T) {
+		t.Parallel()
+		v := impl.NewString(issue.Info, "")
+		assert.True(t, v.Equal(""))
+	})
+}
+
+func TestString_WithLevel(t *testing.T) {
+	t.Parallel()
+
+	t.Run("changes critical to info level", func(t *testing.T) {
+		t.Parallel()
+		got := impl.
+			NewString(issue.Critical, "foo").
+			WithLevel(issue.Info)
+		assert.Equal(
+			t,
+			issue.Info,
+			got.Level(),
+		)
+	})
+
+	t.Run("changes critical to zero level", func(t *testing.T) {
+		t.Parallel()
+		assert.True(
+			t,
+			impl.
+				NewString(issue.Critical, "foo").
+				WithLevel(issue.Type(0)).
+				Level().
+				Unspecified(),
+		)
+	})
+
+	t.Run("does not change level for the previous one", func(t *testing.T) {
+		t.Parallel()
+		prev := impl.NewString(issue.Critical, "foo")
+		_ = prev.WithLevel(issue.Info)
+		assert.Equal(
+			t,
+			issue.Critical,
+			prev.Level(),
+		)
+	})
 }

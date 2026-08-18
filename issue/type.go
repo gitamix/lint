@@ -1,5 +1,7 @@
 package issue
 
+import "slices"
+
 const (
 	// Critical indicates a critical issue that needs to be solved immediately.
 	//
@@ -31,7 +33,7 @@ const (
 //
 // It indicates the severity of the issue (critical, warning, info),
 // allowing the linting process to handle different types of issues appropriately.
-type Type uint8
+type Type int8
 
 // String returns a string representation of the Type.
 func (t Type) String() string {
@@ -47,9 +49,28 @@ func (t Type) String() string {
 	}
 }
 
-// ParseOr parses the provided string into an issue Type,
-// or returns the provided default if the value does not match any known type.
-func ParseOr(s string, def Type) Type {
+// Unspecified defines whether the type is unspecified.
+func (t Type) Unspecified() bool {
+	return t == Type(0)
+}
+
+// In defines whether the type exists in provided list of types.
+func (t Type) In(typs ...Type) bool {
+	return slices.Contains(typs, t)
+}
+
+// Unknown defines whether the type is unknown.
+func (t Type) Unknown() bool {
+	return t == Type(-1) || !t.In(Critical, Warning, Info)
+}
+
+// Parse parses the provided string into an issue type.
+//
+// Returns unspecifed one for empty input
+// and unknown one for unknown strings.
+// Note that these types are represented as predicates
+// and cannot be declared as package constants to prevent its usage.
+func Parse(s string) Type {
 	switch s {
 	case "critical":
 		return Critical
@@ -57,7 +78,9 @@ func ParseOr(s string, def Type) Type {
 		return Warning
 	case "info":
 		return Info
+	case "":
+		return Type(0)
 	default:
-		return def
+		return Type(-1)
 	}
 }

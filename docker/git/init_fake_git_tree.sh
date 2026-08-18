@@ -407,5 +407,5 @@ EOF
 
 # Create and checkout to a branch matching the test patterns:
 #   - Branch name pattern: ^(feature|bugfix|hotfix)/[A-Z]+-\d+
-#   - Ticket pattern:        (TASK|PROJ|BUG)-[0-9]+
+#   - Task pattern:        (TASK|PROJ|BUG)-[0-9]+
 git checkout bugfix/BUG-456 >/dev/null 2>&1

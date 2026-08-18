@@ -1,0 +1,47 @@
+package value
+
+import (
+	"regexp"
+
+	"github.com/gitamix/lint/issue"
+)
+
+// Pattern represents config regexp pattern value
+// that can be configured with issue type level to alert on linting.
+type Pattern struct {
+	// exp is the compiled regexp expression.
+	exp *regexp.Regexp
+
+	// lvl is an issue type level to alert on linting.
+	lvl issue.Type
+}
+
+// NewPattern creates a new config regexp pattern value
+// with issue type level and compiled regexp expression.
+func NewPattern(lvl issue.Type, exp *regexp.Regexp) Pattern {
+	return Pattern{
+		exp: exp,
+		lvl: lvl,
+	}
+}
+
+// Level returns issue type level to alert on linting.
+func (p Pattern) Level() issue.Type {
+	return p.lvl
+}
+
+// String returns the compiled regexp expression as a string.
+func (p Pattern) String() string {
+	return p.exp.String()
+}
+
+// WithLevel creates a new instance with provided issue type level.
+func (p Pattern) WithLevel(lvl issue.Type) Pattern {
+	return NewPattern(lvl, p.exp)
+}
+
+// Match defines whether the compiled regexp expression
+// matches the provided string.
+func (p Pattern) Match(v string) bool {
+	return p.exp.MatchString(v)
+}

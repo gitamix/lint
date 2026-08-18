@@ -27,16 +27,21 @@ func (s String) Exact() string {
 }
 
 // Level returns issue type level to alert on linting.
-//
-// Returns Warning if not set.
 func (s String) Level() issue.Type {
-	if s.lvl == 0 {
-		return issue.Warning
-	}
 	return s.lvl
 }
 
 // Equal defines whether the exact value equals the provided string.
 func (s String) Equal(other string) bool {
 	return s.Exact() == other
+}
+
+// String returns the exact value.
+func (s String) String() string {
+	return s.v
+}
+
+// WithLevel creates a new instance with provided issue type level.
+func (s String) WithLevel(lvl issue.Type) String {
+	return NewString(lvl, s.v)
 }
