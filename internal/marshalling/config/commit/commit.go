@@ -13,7 +13,7 @@ import (
 // converts them into the domain commit.Config consumed by the linter.
 type Commit struct {
 	// Msg stores the transport representation of the commit message config.
-	Msg message.Message `yaml:"subject,omitempty"`
+	Msg message.Message `yaml:"message,omitempty"`
 
 	// Scope stores the transport representation of the commit scope config.
 	Scope scope.Scope `yaml:"scope,omitempty"`
