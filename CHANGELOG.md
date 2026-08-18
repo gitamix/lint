@@ -16,7 +16,7 @@ indicating problems in the project that need to be linted
 including its name and task the branch related with
 - Lint configuration with commit-related setting including its message, scope and types
 - Loading and unmarshaling config from YAML file
-- Integration tests to load and unmarhal the whole lint config
+- Integration tests to load and unmarshal the whole lint config
 - Added linting current branch with its name and task
 - Implemented fake git client for testing purposes.
 - Added Docker test container with fake git tree to lint it in tests
