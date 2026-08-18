@@ -26,8 +26,6 @@ func NewPattern(lvl issue.Type, exp *regexp.Regexp) Pattern {
 }
 
 // Level returns issue type level to alert on linting.
-//
-// Returns Warning if not set.
 func (p Pattern) Level() issue.Type {
 	return p.lvl
 }

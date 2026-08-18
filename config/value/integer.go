@@ -31,8 +31,6 @@ func (i Integer) Exact() int {
 }
 
 // Level returns issue type level to alert on linting.
-//
-// Returns Warning if not set.
 func (i Integer) Level() issue.Type {
 	return i.lvl
 }

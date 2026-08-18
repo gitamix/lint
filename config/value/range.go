@@ -34,8 +34,6 @@ func NewRange(lvl issue.Type, min, max int) Range {
 }
 
 // Level returns issue type level to alert on linting.
-//
-// Returns Warning if not set.
 func (r Range) Level() issue.Type {
 	return r.lvl
 }

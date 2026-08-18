@@ -46,8 +46,6 @@ func (s Strings) WithLevel(lvl issue.Type) Strings {
 }
 
 // Level returns the issue type level to alert on linting.
-//
-// Returns Warning if not set.
 func (s Strings) Level() issue.Type {
 	return s.lvl
 }
