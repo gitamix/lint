@@ -256,4 +256,38 @@ func TestDescription_Issues(t *testing.T) {
 			Issues()
 		assert.Equal(t, want, got)
 	})
+
+	t.Run("pass on cyrillic description matching range by rune count", func(t *testing.T) {
+		t.Parallel()
+		want := []issue.Issue{}
+		got := impl.
+			NewDescription(
+				commit.ParseSubject("feat: привет").Description(),
+				description.NewConfig(
+					description.WithLength(
+						value.NewRange(issue.Warning, 6, 6),
+					),
+				),
+			).
+			Issues()
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("warn on cyrillic description too long by rune count", func(t *testing.T) {
+		t.Parallel()
+		want := []issue.Issue{
+			issue.NewWarning("subject description length is not in range [1-5]"),
+		}
+		got := impl.
+			NewDescription(
+				commit.ParseSubject("feat: привет").Description(),
+				description.NewConfig(
+					description.WithLength(
+						value.NewRange(issue.Warning, 1, 5),
+					),
+				),
+			).
+			Issues()
+		assert.Equal(t, want, got)
+	})
 }
