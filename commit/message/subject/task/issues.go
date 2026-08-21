@@ -24,7 +24,7 @@ func (t Task) Issues() []issue.Issue {
 	}
 	issues := make([]issue.Issue, 0, 1)
 	texp := tid.Exact()
-	id, err := regexp.Compile(texp)
+	re, err := regexp.Compile(texp)
 	if err != nil {
 		issues = append(
 			issues,
@@ -37,7 +37,7 @@ func (t Task) Issues() []issue.Issue {
 		)
 		return issues
 	}
-	if t.subj.Ticket(id).Empty() {
+	if t.subj.Ticket(re).Empty() {
 		issues = append(
 			issues,
 			issue.NewIssue(
