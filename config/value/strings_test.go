@@ -172,6 +172,50 @@ func TestStrings_Equal(t *testing.T) {
 	})
 }
 
+func TestStrings_Empty(t *testing.T) {
+	t.Parallel()
+
+	t.Run("returns true when no values are provided", func(t *testing.T) {
+		t.Parallel()
+		str := impl.NewStrings(issue.Critical)
+		assert.True(t, str.Empty())
+	})
+
+	t.Run("returns false when a single value is provided", func(t *testing.T) {
+		t.Parallel()
+		str := impl.NewStrings(issue.Critical, "foo")
+		assert.False(t, str.Empty())
+	})
+
+	t.Run("returns false when multiple values are provided", func(t *testing.T) {
+		t.Parallel()
+		str := impl.
+			NewStrings(
+				issue.Critical,
+				"foo",
+				"bar",
+			)
+		assert.False(t, str.Empty())
+	})
+
+	t.Run("returns false when only an empty string value is provided", func(t *testing.T) {
+		t.Parallel()
+		str := impl.NewStrings(issue.Critical, "")
+		assert.False(t, str.Empty())
+	})
+
+	t.Run("returns false when empty strings are among the values", func(t *testing.T) {
+		t.Parallel()
+		str := impl.
+			NewStrings(
+				issue.Critical,
+				"",
+				"",
+			)
+		assert.False(t, str.Empty())
+	})
+}
+
 func TestStrings_Has(t *testing.T) {
 	t.Parallel()
 

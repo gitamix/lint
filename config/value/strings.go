@@ -56,6 +56,11 @@ func (s Strings) Equal(other []string) bool {
 	return reflect.DeepEqual(s.vv, other)
 }
 
+// Empty defines whether the slice is empty.
+func (s Strings) Empty() bool {
+	return len(s.vv) == 0
+}
+
 // Has defines whether the slice of exact values
 // contains the provided strings.
 func (s Strings) Has(v string, vv ...string) bool {
