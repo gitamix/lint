@@ -143,6 +143,76 @@ func TestString_Equal(t *testing.T) {
 	})
 }
 
+func TestString_Empty(t *testing.T) {
+	t.Parallel()
+
+	t.Run("critical level & empty value", func(t *testing.T) {
+		t.Parallel()
+		v := impl.NewString(issue.Critical, "")
+		assert.True(t, v.Empty())
+	})
+
+	t.Run("warning level & empty value", func(t *testing.T) {
+		t.Parallel()
+		v := impl.NewString(issue.Warning, "")
+		assert.True(t, v.Empty())
+	})
+
+	t.Run("info level & empty value", func(t *testing.T) {
+		t.Parallel()
+		v := impl.NewString(issue.Info, "")
+		assert.True(t, v.Empty())
+	})
+
+	t.Run("critical level & non-empty value", func(t *testing.T) {
+		t.Parallel()
+		v := impl.NewString(issue.Critical, "foo")
+		assert.False(t, v.Empty())
+	})
+
+	t.Run("warning level & non-empty value", func(t *testing.T) {
+		t.Parallel()
+		v := impl.NewString(issue.Warning, "foo")
+		assert.False(t, v.Empty())
+	})
+
+	t.Run("info level & non-empty value", func(t *testing.T) {
+		t.Parallel()
+		v := impl.NewString(issue.Info, "foo")
+		assert.False(t, v.Empty())
+	})
+
+	t.Run("critical level & value with surrounding spaces", func(t *testing.T) {
+		t.Parallel()
+		v := impl.NewString(issue.Critical, " foo ")
+		assert.False(t, v.Empty())
+	})
+
+	t.Run("warning level & value with surrounding spaces", func(t *testing.T) {
+		t.Parallel()
+		v := impl.NewString(issue.Warning, " foo ")
+		assert.False(t, v.Empty())
+	})
+
+	t.Run("info level & value with surrounding spaces", func(t *testing.T) {
+		t.Parallel()
+		v := impl.NewString(issue.Info, " foo ")
+		assert.False(t, v.Empty())
+	})
+
+	t.Run("zero level & empty value", func(t *testing.T) {
+		t.Parallel()
+		v := impl.NewString(issue.Type(0), "")
+		assert.True(t, v.Empty())
+	})
+
+	t.Run("zero level & non-empty value", func(t *testing.T) {
+		t.Parallel()
+		v := impl.NewString(issue.Type(0), "foo")
+		assert.False(t, v.Empty())
+	})
+}
+
 func TestString_WithLevel(t *testing.T) {
 	t.Parallel()
 

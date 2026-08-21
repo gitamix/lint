@@ -36,6 +36,11 @@ func (s String) Equal(other string) bool {
 	return s.Exact() == other
 }
 
+// Empty defines whether the value is empty.
+func (s String) Empty() bool {
+	return s.v == ""
+}
+
 // String returns the exact value.
 func (s String) String() string {
 	return s.v
