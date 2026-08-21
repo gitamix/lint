@@ -36,7 +36,7 @@ func TestTypes_Issues(t *testing.T) {
 	t.Run("crit on empty type", func(t *testing.T) {
 		t.Parallel()
 		want := []issue.Issue{
-			issue.NewCritical("subject must contain one type of [feat,fix]"),
+			issue.NewCritical("type must be one of [feat,fix]"),
 		}
 		got := impl.
 			NewTypes(
