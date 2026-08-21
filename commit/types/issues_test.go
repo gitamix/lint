@@ -101,6 +101,18 @@ func TestTypes_Issues(t *testing.T) {
 		assert.Equal(t, want, got)
 	})
 
+	t.Run("pass on defaults when type is set but config is not", func(t *testing.T) {
+		t.Parallel()
+		want := []issue.Issue{}
+		got := impl.
+			NewTypes(
+				commit.NewType("feat"),
+				types.Config{},
+			).
+			Issues()
+		assert.Equal(t, want, got)
+	})
+
 	t.Run("incorrect case & warn on empty string in config", func(t *testing.T) {
 		t.Parallel()
 		want := []issue.Issue{
