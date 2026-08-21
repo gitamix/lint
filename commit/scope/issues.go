@@ -9,11 +9,16 @@ import (
 // Issues returns a slice of issues describing
 // any validation problems with the commit scope.
 //
-// It matches the scope against the regex pattern from the linter configuration.
+// It returns no issues when the configured pattern is empty.
+// Otherwise it matches the scope against the regex pattern
+// from the linter configuration.
 // If the pattern fails to compile, a critical issue is returned describing
 // the compilation error. If the scope does not match the pattern,
 // an issue is returned with the level from the configuration.
 func (s Scope) Issues() []issue.Issue {
+	if s.cfg.Pattern().Empty() {
+		return []issue.Issue{}
+	}
 	issues := make([]issue.Issue, 0, 1)
 	exp := s.cfg.
 		Pattern().

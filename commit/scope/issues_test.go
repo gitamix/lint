@@ -128,6 +128,23 @@ func TestScope_Issues(t *testing.T) {
 		assert.Equal(t, want, got)
 	})
 
+	t.Run("pass on empty pattern with level set", func(t *testing.T) {
+		t.Parallel()
+		want := []issue.Issue{}
+		got := impl.
+			NewScope(
+				commit.NewScope("core"),
+				scope.NewConfig(
+					value.NewString(
+						issue.Warning,
+						"",
+					),
+				),
+			).
+			Issues()
+		assert.Equal(t, want, got)
+	})
+
 	t.Run("warn on empty scope with valid pattern", func(t *testing.T) {
 		t.Parallel()
 		want := []issue.Issue{
