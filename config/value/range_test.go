@@ -285,6 +285,140 @@ func TestRange_Above(t *testing.T) {
 	})
 }
 
+func TestRange_Empty(t *testing.T) {
+	t.Parallel()
+
+	t.Run("critical level & both bounds zero", func(t *testing.T) {
+		t.Parallel()
+		r := impl.NewRange(issue.Critical, 0, 0)
+		assert.True(t, r.Empty())
+	})
+
+	t.Run("warning level & both bounds zero", func(t *testing.T) {
+		t.Parallel()
+		r := impl.NewRange(issue.Warning, 0, 0)
+		assert.True(t, r.Empty())
+	})
+
+	t.Run("info level & both bounds zero", func(t *testing.T) {
+		t.Parallel()
+		r := impl.NewRange(issue.Info, 0, 0)
+		assert.True(t, r.Empty())
+	})
+
+	t.Run("critical level & min zero max non-zero", func(t *testing.T) {
+		t.Parallel()
+		r := impl.NewRange(issue.Critical, 0, 10)
+		assert.False(t, r.Empty())
+	})
+
+	t.Run("warning level & min zero max non-zero", func(t *testing.T) {
+		t.Parallel()
+		r := impl.NewRange(issue.Warning, 0, 10)
+		assert.False(t, r.Empty())
+	})
+
+	t.Run("info level & min zero max non-zero", func(t *testing.T) {
+		t.Parallel()
+		r := impl.NewRange(issue.Info, 0, 10)
+		assert.False(t, r.Empty())
+	})
+
+	t.Run("critical level & negative min zero max", func(t *testing.T) {
+		t.Parallel()
+		r := impl.NewRange(issue.Critical, -5, 0)
+		assert.False(t, r.Empty())
+	})
+
+	t.Run("warning level & negative min zero max", func(t *testing.T) {
+		t.Parallel()
+		r := impl.NewRange(issue.Warning, -5, 0)
+		assert.False(t, r.Empty())
+	})
+
+	t.Run("info level & negative min zero max", func(t *testing.T) {
+		t.Parallel()
+		r := impl.NewRange(issue.Info, -5, 0)
+		assert.False(t, r.Empty())
+	})
+
+	t.Run("critical level & both bounds non-zero", func(t *testing.T) {
+		t.Parallel()
+		r := impl.NewRange(issue.Critical, 5, 10)
+		assert.False(t, r.Empty())
+	})
+
+	t.Run("warning level & both bounds non-zero", func(t *testing.T) {
+		t.Parallel()
+		r := impl.NewRange(issue.Warning, 5, 10)
+		assert.False(t, r.Empty())
+	})
+
+	t.Run("info level & both bounds non-zero", func(t *testing.T) {
+		t.Parallel()
+		r := impl.NewRange(issue.Info, 5, 10)
+		assert.False(t, r.Empty())
+	})
+
+	t.Run("critical level & negative bounds", func(t *testing.T) {
+		t.Parallel()
+		r := impl.NewRange(issue.Critical, -10, -1)
+		assert.False(t, r.Empty())
+	})
+
+	t.Run("warning level & negative bounds", func(t *testing.T) {
+		t.Parallel()
+		r := impl.NewRange(issue.Warning, -10, -1)
+		assert.False(t, r.Empty())
+	})
+
+	t.Run("info level & negative bounds", func(t *testing.T) {
+		t.Parallel()
+		r := impl.NewRange(issue.Info, -10, -1)
+		assert.False(t, r.Empty())
+	})
+
+	t.Run("zero level & both bounds zero", func(t *testing.T) {
+		t.Parallel()
+		r := impl.NewRange(issue.Type(0), 0, 0)
+		assert.True(t, r.Empty())
+	})
+
+	t.Run("zero level & both bounds non-zero", func(t *testing.T) {
+		t.Parallel()
+		r := impl.NewRange(issue.Type(0), 5, 10)
+		assert.False(t, r.Empty())
+	})
+
+	t.Run("zero value range is empty", func(t *testing.T) {
+		t.Parallel()
+		var r impl.Range
+		assert.True(t, r.Empty())
+	})
+
+	t.Run("panics when min is greater than max", func(t *testing.T) {
+		t.Parallel()
+		assert.PanicsWithValue(
+			t,
+			"min value is greater than max: 10 > 5",
+			func() {
+				_ = impl.NewRange(issue.Critical, 10, 5).Empty()
+			},
+		)
+	})
+
+	t.Run("panics when min is positive and max is zero", func(t *testing.T) {
+		t.Parallel()
+		assert.PanicsWithValue(
+			t,
+			"min value is greater than max: 5 > 0",
+			func() {
+				_ = impl.NewRange(issue.Critical, 5, 0).Empty()
+			},
+		)
+	})
+}
+
 func TestRange_WithLevel(t *testing.T) {
 	t.Parallel()
 

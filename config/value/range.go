@@ -43,6 +43,14 @@ func (r Range) WithLevel(lvl issue.Type) Range {
 	return NewRange(lvl, r.min, r.max)
 }
 
+// Empty defines whether the range is empty (min and max are zeros).
+//
+// Panics if min is greater than max.
+func (r Range) Empty() bool {
+	r.mustValidate()
+	return r.min == 0 && r.max == 0
+}
+
 // String returns the canonical "min-max"
 // representation of the interval.
 //
