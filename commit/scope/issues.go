@@ -31,9 +31,9 @@ func (s Scope) Issues() []issue.Issue {
 		issues = append(
 			issues,
 			issue.NewCritical(
-				"failed to compile scope expression \\"+
+				"failed to compile scope expression '"+
 					exp+
-					"\\: "+
+					"': "+
 					err.Error(),
 			),
 		)
@@ -46,7 +46,7 @@ func (s Scope) Issues() []issue.Issue {
 				s.cfg.
 					Pattern().
 					Level(),
-				"scope not found in subject by expression \\"+exp+"\\",
+				"scope not found in subject by expression '"+exp+"'",
 			),
 		)
 	}

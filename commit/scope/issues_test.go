@@ -35,7 +35,7 @@ func TestScope_Issues(t *testing.T) {
 	t.Run("warning on scope not matching pattern", func(t *testing.T) {
 		t.Parallel()
 		want := []issue.Issue{
-			issue.NewWarning("scope not found in subject by expression \\core|ui\\"),
+			issue.NewWarning("scope not found in subject by expression 'core|ui'"),
 		}
 		got := impl.
 			NewScope(
@@ -54,7 +54,7 @@ func TestScope_Issues(t *testing.T) {
 	t.Run("info on scope not matching pattern", func(t *testing.T) {
 		t.Parallel()
 		want := []issue.Issue{
-			issue.NewInfo("scope not found in subject by expression \\core|ui\\"),
+			issue.NewInfo("scope not found in subject by expression 'core|ui'"),
 		}
 		got := impl.
 			NewScope(
@@ -73,7 +73,7 @@ func TestScope_Issues(t *testing.T) {
 	t.Run("critical on scope not matching pattern", func(t *testing.T) {
 		t.Parallel()
 		want := []issue.Issue{
-			issue.NewCritical("scope not found in subject by expression \\core|ui\\"),
+			issue.NewCritical("scope not found in subject by expression 'core|ui'"),
 		}
 		got := impl.
 			NewScope(
@@ -92,7 +92,7 @@ func TestScope_Issues(t *testing.T) {
 	t.Run("critical on invalid pattern", func(t *testing.T) {
 		t.Parallel()
 		want := []issue.Issue{
-			issue.NewCritical("failed to compile scope expression \\[\\: error parsing regexp: missing closing ]: `[`"),
+			issue.NewCritical("failed to compile scope expression '[': error parsing regexp: missing closing ]: `[`"),
 		}
 		got := impl.
 			NewScope(
@@ -148,7 +148,7 @@ func TestScope_Issues(t *testing.T) {
 	t.Run("warn on empty scope with valid pattern", func(t *testing.T) {
 		t.Parallel()
 		want := []issue.Issue{
-			issue.NewWarning("scope not found in subject by expression \\core|ui\\"),
+			issue.NewWarning("scope not found in subject by expression 'core|ui'"),
 		}
 		got := impl.
 			NewScope(
@@ -184,7 +184,7 @@ func TestScope_Issues(t *testing.T) {
 	t.Run("warn on digits not matching alphanumeric pattern", func(t *testing.T) {
 		t.Parallel()
 		want := []issue.Issue{
-			issue.NewWarning("scope not found in subject by expression \\^[A-Za-z _-]+$\\"),
+			issue.NewWarning("scope not found in subject by expression '^[A-Za-z _-]+$'"),
 		}
 		got := impl.
 			NewScope(
@@ -203,7 +203,7 @@ func TestScope_Issues(t *testing.T) {
 	t.Run("warn on non-ascii not matching alphanumeric pattern", func(t *testing.T) {
 		t.Parallel()
 		want := []issue.Issue{
-			issue.NewWarning("scope not found in subject by expression \\^[A-Za-z _-]+$\\"),
+			issue.NewWarning("scope not found in subject by expression '^[A-Za-z _-]+$'"),
 		}
 		got := impl.
 			NewScope(
@@ -222,7 +222,7 @@ func TestScope_Issues(t *testing.T) {
 	t.Run("warn on empty scope not matching alphanumeric pattern", func(t *testing.T) {
 		t.Parallel()
 		want := []issue.Issue{
-			issue.NewWarning("scope not found in subject by expression \\^[A-Za-z _-]+$\\"),
+			issue.NewWarning("scope not found in subject by expression '^[A-Za-z _-]+$'"),
 		}
 		got := impl.
 			NewScope(
@@ -241,7 +241,7 @@ func TestScope_Issues(t *testing.T) {
 	t.Run("info on digits not matching alphanumeric pattern", func(t *testing.T) {
 		t.Parallel()
 		want := []issue.Issue{
-			issue.NewInfo("scope not found in subject by expression \\^[A-Za-z _-]+$\\"),
+			issue.NewInfo("scope not found in subject by expression '^[A-Za-z _-]+$'"),
 		}
 		got := impl.
 			NewScope(
@@ -260,7 +260,7 @@ func TestScope_Issues(t *testing.T) {
 	t.Run("critical on non-ascii not matching alphanumeric pattern", func(t *testing.T) {
 		t.Parallel()
 		want := []issue.Issue{
-			issue.NewCritical("scope not found in subject by expression \\^[A-Za-z _-]+$\\"),
+			issue.NewCritical("scope not found in subject by expression '^[A-Za-z _-]+$'"),
 		}
 		got := impl.
 			NewScope(
