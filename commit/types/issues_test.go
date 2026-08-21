@@ -33,7 +33,7 @@ func TestTypes_Issues(t *testing.T) {
 		assert.Equal(t, want, got)
 	})
 
-	t.Run("crit on empty type", func(t *testing.T) {
+	t.Run("crit on empty type but warning provided", func(t *testing.T) {
 		t.Parallel()
 		want := []issue.Issue{
 			issue.NewCritical("type must be one of [feat,fix]"),
@@ -43,7 +43,7 @@ func TestTypes_Issues(t *testing.T) {
 				commit.NewType(""),
 				types.NewConfig(
 					value.NewStrings(
-						issue.Critical,
+						issue.Warning,
 						"feat",
 						"fix",
 					),
@@ -53,17 +53,17 @@ func TestTypes_Issues(t *testing.T) {
 		assert.Equal(t, want, got)
 	})
 
-	t.Run("crit on type is not in list", func(t *testing.T) {
+	t.Run("warn on type is not in list", func(t *testing.T) {
 		t.Parallel()
 		want := []issue.Issue{
-			issue.NewCritical("type must be one of [feat,fix]"),
+			issue.NewWarning("type must be one of [feat,fix]"),
 		}
 		got := impl.
 			NewTypes(
 				commit.NewType("refactor"),
 				types.NewConfig(
 					value.NewStrings(
-						issue.Critical,
+						issue.Warning,
 						"feat",
 						"fix",
 					),
