@@ -2,7 +2,6 @@ package subject
 
 import (
 	"github.com/gitamix/lint/commit/message/subject/description"
-	"github.com/gitamix/lint/commit/message/subject/task"
 	"github.com/gitamix/lint/commit/scope"
 	"github.com/gitamix/lint/commit/types"
 	"github.com/gitamix/lint/issue"
@@ -16,15 +15,6 @@ import (
 // the task identifier, the commit type, the scope, and the description.
 func (s Subject) Issues() []issue.Issue {
 	issues := make([]issue.Issue, 0, 4)
-	issues = append(
-		issues,
-		task.
-			NewTask(
-				s.subj,
-				s.cfg.Task(),
-			).
-			Issues()...,
-	)
 	issues = append(
 		issues,
 		types.
