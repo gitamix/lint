@@ -90,7 +90,6 @@ func TestSubject_Issues(t *testing.T) {
 	t.Run("aggregates warnings from all four sub-linters in order", func(t *testing.T) {
 		t.Parallel()
 		want := []issue.Issue{
-			issue.NewWarning("ticket not found in subject by expression '(WS[A-Z]*-[0-9]+)'"),
 			issue.NewWarning("type must be one of [feat,fix]"),
 			issue.NewWarning("scope not found in subject by expression 'core|ui'"),
 			issue.NewWarning("subject description length is not in range [10-72]"),
@@ -140,7 +139,6 @@ func TestSubject_Issues(t *testing.T) {
 	t.Run("aggregates info from all four sub-linters in order", func(t *testing.T) {
 		t.Parallel()
 		want := []issue.Issue{
-			issue.NewInfo("ticket not found in subject by expression '(WS[A-Z]*-[0-9]+)'"),
 			issue.NewInfo("type must be one of [feat,fix]"),
 			issue.NewInfo("scope not found in subject by expression 'core|ui'"),
 			issue.NewInfo("subject description length is not in range [10-72]"),
@@ -190,7 +188,6 @@ func TestSubject_Issues(t *testing.T) {
 	t.Run("aggregates critical from all four sub-linters in order", func(t *testing.T) {
 		t.Parallel()
 		want := []issue.Issue{
-			issue.NewCritical("failed to parse task id with expression '[': error parsing regexp: missing closing ]: `[`"),
 			issue.NewCritical("type must be one of [feat,fix]"),
 			issue.NewCritical("failed to compile scope expression '[': error parsing regexp: missing closing ]: `[`"),
 			issue.NewCritical("subject description length is not in range [10-72]"),
@@ -240,7 +237,6 @@ func TestSubject_Issues(t *testing.T) {
 	t.Run("aggregates issues with mixed levels from all four sub-linters", func(t *testing.T) {
 		t.Parallel()
 		want := []issue.Issue{
-			issue.NewCritical("ticket not found in subject by expression '(WS[A-Z]*-[0-9]+)'"),
 			issue.NewWarning("type must be one of [feat,fix]"),
 			issue.NewInfo("scope not found in subject by expression 'core|ui'"),
 			issue.NewCritical("subject description length is not in range [10-72]"),
@@ -287,11 +283,9 @@ func TestSubject_Issues(t *testing.T) {
 		assert.Equal(t, want, got)
 	})
 
-	t.Run("task warning only", func(t *testing.T) {
+	t.Run("task not found but not issued", func(t *testing.T) {
 		t.Parallel()
-		want := []issue.Issue{
-			issue.NewWarning("ticket not found in subject by expression '(WS[A-Z]*-[0-9]+)'"),
-		}
+		want := []issue.Issue{}
 		got := impl.
 			NewSubject(
 				commit.ParseSubject("feat(ui): add new feature"),
@@ -505,35 +499,6 @@ func TestSubject_Issues(t *testing.T) {
 		assert.Equal(t, want, got)
 	})
 
-	t.Run("critical on invalid task pattern", func(t *testing.T) {
-		t.Parallel()
-		want := []issue.Issue{
-			issue.NewCritical("failed to parse task id with expression '[': error parsing regexp: missing closing ]: `[`"),
-		}
-		got := impl.
-			NewSubject(
-				commit.ParseSubject("feat(ui): add new feature"),
-				subject.NewConfig(
-					subject.WithTask(
-						task.NewConfig(
-							task.WithID(
-								id.NewConfig(
-									value.NewString(
-										issue.Warning,
-										"[",
-									),
-								),
-							),
-						),
-					),
-				),
-				types.Config{},
-				scope.Config{},
-			).
-			Issues()
-		assert.Equal(t, want, got)
-	})
-
 	t.Run("critical on invalid scope pattern", func(t *testing.T) {
 		t.Parallel()
 		want := []issue.Issue{
@@ -550,43 +515,6 @@ func TestSubject_Issues(t *testing.T) {
 						"[",
 					),
 				),
-			).
-			Issues()
-		assert.Equal(t, want, got)
-	})
-
-	t.Run("task and description issues preserve order", func(t *testing.T) {
-		t.Parallel()
-		want := []issue.Issue{
-			issue.NewWarning("ticket not found in subject by expression '(WS[A-Z]*-[0-9]+)'"),
-			issue.NewWarning("subject description length is not in range [1-10]"),
-		}
-		got := impl.
-			NewSubject(
-				commit.ParseSubject("feat(ui): add new feature"),
-				subject.NewConfig(
-					subject.WithTask(
-						task.NewConfig(
-							task.WithID(
-								id.NewConfig(
-									value.NewString(
-										issue.Warning,
-										"(WS[A-Z]*-[0-9]+)",
-									),
-								),
-							),
-						),
-					),
-					subject.WithDescription(
-						description.NewConfig(
-							description.WithLength(
-								value.NewRange(issue.Warning, 1, 10),
-							),
-						),
-					),
-				),
-				types.Config{},
-				scope.Config{},
 			).
 			Issues()
 		assert.Equal(t, want, got)

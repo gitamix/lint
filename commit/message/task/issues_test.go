@@ -6,7 +6,7 @@ import (
 	"github.com/gitamix/types/commit"
 	"github.com/stretchr/testify/assert"
 
-	impl "github.com/gitamix/lint/commit/message/subject/task"
+	impl "github.com/gitamix/lint/commit/message/task"
 	"github.com/gitamix/lint/config/task"
 	"github.com/gitamix/lint/config/task/id"
 	"github.com/gitamix/lint/config/value"
@@ -21,7 +21,7 @@ func TestTask_Issues(t *testing.T) {
 		want := []issue.Issue{}
 		got := impl.
 			NewTask(
-				commit.ParseSubject("[WSTS-1234] some fix"),
+				commit.ParseMessage("[WSTS-1234] some fix"),
 				task.NewConfig(
 					task.WithID(
 						id.NewConfig(
@@ -42,7 +42,7 @@ func TestTask_Issues(t *testing.T) {
 		want := []issue.Issue{}
 		got := impl.
 			NewTask(
-				commit.ParseSubject("[WS-1234] some fix"),
+				commit.ParseMessage("[WS-1234] some fix"),
 				task.NewConfig(
 					task.WithID(
 						id.NewConfig(
@@ -63,7 +63,7 @@ func TestTask_Issues(t *testing.T) {
 		want := []issue.Issue{}
 		got := impl.
 			NewTask(
-				commit.ParseSubject("[WSPROJ-99] fix"),
+				commit.ParseMessage("[WSPROJ-99] fix"),
 				task.NewConfig(
 					task.WithID(
 						id.NewConfig(
@@ -86,7 +86,7 @@ func TestTask_Issues(t *testing.T) {
 		}
 		got := impl.
 			NewTask(
-				commit.ParseSubject("add new feature"),
+				commit.ParseMessage("add new feature"),
 				task.NewConfig(
 					task.WithID(
 						id.NewConfig(
@@ -109,7 +109,7 @@ func TestTask_Issues(t *testing.T) {
 		}
 		got := impl.
 			NewTask(
-				commit.ParseSubject("add new feature"),
+				commit.ParseMessage("add new feature"),
 				task.NewConfig(
 					task.WithID(
 						id.NewConfig(
@@ -132,7 +132,7 @@ func TestTask_Issues(t *testing.T) {
 		}
 		got := impl.
 			NewTask(
-				commit.ParseSubject("add new feature"),
+				commit.ParseMessage("add new feature"),
 				task.NewConfig(
 					task.WithID(
 						id.NewConfig(
@@ -155,7 +155,7 @@ func TestTask_Issues(t *testing.T) {
 		}
 		got := impl.
 			NewTask(
-				commit.ParseSubject("[WSTS-1234] some fix"),
+				commit.ParseMessage("[WSTS-1234] some fix"),
 				task.NewConfig(
 					task.WithID(
 						id.NewConfig(
@@ -179,12 +179,12 @@ func TestTask_Issues(t *testing.T) {
 		assert.Equal(t, want, got)
 	})
 
-	t.Run("pass on defaults when subject is set but config is not", func(t *testing.T) {
+	t.Run("pass on defaults when message is set but config is not", func(t *testing.T) {
 		t.Parallel()
 		want := []issue.Issue{}
 		got := impl.
 			NewTask(
-				commit.ParseSubject("[WSTS-1234] some fix"),
+				commit.ParseMessage("[WSTS-1234] some fix"),
 				task.Config{},
 			).
 			Issues()
@@ -196,7 +196,7 @@ func TestTask_Issues(t *testing.T) {
 		want := []issue.Issue{}
 		got := impl.
 			NewTask(
-				commit.ParseSubject("[WSTS-1234] some fix"),
+				commit.ParseMessage("[WSTS-1234] some fix"),
 				task.NewConfig(
 					task.WithID(
 						id.NewConfig(
@@ -212,14 +212,14 @@ func TestTask_Issues(t *testing.T) {
 		assert.Equal(t, want, got)
 	})
 
-	t.Run("warn on empty subject with valid pattern", func(t *testing.T) {
+	t.Run("warn on empty message with valid pattern", func(t *testing.T) {
 		t.Parallel()
 		want := []issue.Issue{
 			issue.NewWarning("ticket not found in subject by expression '(WS[A-Z]*-[0-9]+)'"),
 		}
 		got := impl.
 			NewTask(
-				commit.ParseSubject(""),
+				commit.ParseMessage(""),
 				task.NewConfig(
 					task.WithID(
 						id.NewConfig(
@@ -235,14 +235,14 @@ func TestTask_Issues(t *testing.T) {
 		assert.Equal(t, want, got)
 	})
 
-	t.Run("warn on subject with type but no ticket", func(t *testing.T) {
+	t.Run("warn on message with type but no ticket", func(t *testing.T) {
 		t.Parallel()
 		want := []issue.Issue{
 			issue.NewWarning("ticket not found in subject by expression '(WS[A-Z]*-[0-9]+)'"),
 		}
 		got := impl.
 			NewTask(
-				commit.ParseSubject("feat: add new feature"),
+				commit.ParseMessage("feat: add new feature"),
 				task.NewConfig(
 					task.WithID(
 						id.NewConfig(
@@ -265,7 +265,7 @@ func TestTask_Issues(t *testing.T) {
 		}
 		got := impl.
 			NewTask(
-				commit.ParseSubject("[ABTS-1234] some fix"),
+				commit.ParseMessage("[ABTS-1234] some fix"),
 				task.NewConfig(
 					task.WithID(
 						id.NewConfig(
@@ -288,7 +288,7 @@ func TestTask_Issues(t *testing.T) {
 		}
 		got := impl.
 			NewTask(
-				commit.ParseSubject("[WSTS] some fix"),
+				commit.ParseMessage("[WSTS] some fix"),
 				task.NewConfig(
 					task.WithID(
 						id.NewConfig(
@@ -311,12 +311,56 @@ func TestTask_Issues(t *testing.T) {
 		}
 		got := impl.
 			NewTask(
-				commit.ParseSubject("[wsts-1234] some fix"),
+				commit.ParseMessage("[wsts-1234] some fix"),
 				task.NewConfig(
 					task.WithID(
 						id.NewConfig(
 							value.NewString(
 								issue.Critical,
+								"(WS[A-Z]*-[0-9]+)",
+							),
+						),
+					),
+				),
+			).
+			Issues()
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("ticket in subject found when body present", func(t *testing.T) {
+		t.Parallel()
+		want := []issue.Issue{}
+		got := impl.
+			NewTask(
+				commit.ParseMessage("[WS-1234] feat(ui): add new feature\n\nbody text"),
+				task.NewConfig(
+					task.WithID(
+						id.NewConfig(
+							value.NewString(
+								issue.Warning,
+								"(WS[A-Z]*-[0-9]+)",
+							),
+						),
+					),
+				),
+			).
+			Issues()
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("ticket only in body not found", func(t *testing.T) {
+		t.Parallel()
+		want := []issue.Issue{
+			issue.NewWarning("ticket not found in subject by expression '(WS[A-Z]*-[0-9]+)'"),
+		}
+		got := impl.
+			NewTask(
+				commit.ParseMessage("feat(ui): add new feature\n\nWS-1234 body text"),
+				task.NewConfig(
+					task.WithID(
+						id.NewConfig(
+							value.NewString(
+								issue.Warning,
 								"(WS[A-Z]*-[0-9]+)",
 							),
 						),

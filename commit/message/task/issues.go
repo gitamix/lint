@@ -8,15 +8,18 @@ import (
 
 // Issues returns a slice of issues describing
 // any validation problems with the task identifier
-// in the commit message subject.
+// in the commit message.
 //
 // It returns no issues when the configured task identifier
 // pattern is empty. Otherwise it compiles the pattern into a
-// regular expression and extracts the ticket from the subject.
+// regular expression and extracts the ticket from the message subject.
 // If the pattern fails to compile, a critical issue is returned
 // describing the compilation error.
-// If no ticket matching the pattern is found in the subject
+// If no ticket matching the pattern is found in the subject,
 // an issue is returned with the level from the configuration.
+//
+// Only the subject line of the message is searched for a ticket;
+// the body is never inspected.
 func (t Task) Issues() []issue.Issue {
 	tid := t.cfg.ID().Pattern()
 	if tid.Empty() {
@@ -37,7 +40,7 @@ func (t Task) Issues() []issue.Issue {
 		)
 		return issues
 	}
-	if t.subj.Ticket(re).Empty() {
+	if t.msg.Ticket(re).Empty() {
 		issues = append(
 			issues,
 			issue.NewIssue(
