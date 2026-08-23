@@ -9,15 +9,15 @@ import (
 )
 
 // Subject represents a linter that validates a commit message subject
-// by aggregating issues from its task, type, scope, and description sub-linters.
+// by aggregating issues from its type, scope, and description sub-linters.
 type Subject struct {
 	// subj is the parsed commit message subject
 	// inspected by the sub-linters.
 	subj commit.Subject
 
 	// cfg is the subject-level configuration
-	// that provides the task and description sub-configurations
-	// used by the corresponding sub-linters.
+	// that provides the description sub-configuration
+	// used by the description sub-linter.
 	cfg subject.Config
 
 	// typcfg is the configuration that defines
@@ -34,7 +34,7 @@ type Subject struct {
 // with the provided commit message subject and lint configurations.
 //
 //   - subj: the parsed commit message subject to validate.
-//   - cfg: the subject-level configuration providing task and description sub-configs.
+//   - cfg: the subject-level configuration providing the description sub-config.
 //   - typcfg: the configuration defining the allowed commit types.
 //   - scpcfg: the configuration defining the pattern used to validate the commit scope.
 func NewSubject(

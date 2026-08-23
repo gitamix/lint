@@ -15,7 +15,7 @@ import (
 // regular expression and extracts the ticket from the subject.
 // If the pattern fails to compile, a critical issue is returned
 // describing the compilation error.
-// If no ticket matching the pattern is found in the subject
+// If no ticket matching the pattern is found in the subject,
 // an issue is returned with the level from the configuration.
 func (t Task) Issues() []issue.Issue {
 	tid := t.cfg.ID().Pattern()

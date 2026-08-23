@@ -15,7 +15,7 @@ import (
 // regular expression and extracts the ticket from the message subject.
 // If the pattern fails to compile, a critical issue is returned
 // describing the compilation error.
-// If no ticket matching the pattern is found in the subject
+// If no ticket matching the pattern is found in the subject,
 // an issue is returned with the level from the configuration.
 //
 // Only the subject line of the message is searched for a ticket;
