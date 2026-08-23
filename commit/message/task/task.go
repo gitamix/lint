@@ -14,6 +14,12 @@ type Task struct {
 	// The ticket is extracted from the subject line of the message,
 	// read from the raw bytes preserved by ParseMessage, so a leading
 	// ticket prefix that ParseSubject strips is still detected.
+	//
+	// The message must carry raw bytes for ticket extraction to work:
+	// a Message built with NewMessage without the WithRaw option has no
+	// raw bytes, so Ticket always returns empty and Issues reports a
+	// false "ticket not found". Prefer ParseMessage, which records the
+	// raw bytes, when constructing the message passed to NewTask.
 	msg commit.Message
 
 	// cfg is the configuration that defines
