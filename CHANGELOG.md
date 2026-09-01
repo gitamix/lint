@@ -17,11 +17,8 @@ including its name and task the branch related with
 - Lint configuration with commit-related setting including its message, scope and types
 - Loading and unmarshaling config from YAML file
 - Integration tests to load and unmarshal the whole lint config
-- Added linting current branch with its name and task
+- Added linting branch with its name and task
 - Added linting commit messages with its type, scope, subject and body
-- Implemented fake git client for testing purposes.
-- Added Docker test container with fake git tree to lint it in tests
-- Added integration tests for linting current branch
 - Filled project README with getting started guide,
 full YAML configuration example and rules reference table
 
