@@ -30,7 +30,6 @@ scripts/      — automation: itsme.sh, coverage checks, PR creation
 make/         — Makefile include fragments (test, lint, coverage, pr, setup)
 .github/      — CI workflows (go_guard, tests, quality, release)
 .githooks/    — pre-commit (unit-test), pre-push (make check)
-docker/       — Dockerfile for test containers
 ```
 
 ### Lint configuration
@@ -74,7 +73,6 @@ Formatters: gofmt + goimports.
 - **Integration tests**: tagged with `integration`, cover real packages via `-coverpkg`
 - **Coverage**: unit profile → `tmp/coverage_unit.out`, integration → `tmp/coverage_integration.out`, combined → `tmp/coverage_total.out`
 - Threshold: 90% (see `.github/ci.env`)
-- Integration tests may require Docker (testcontainers — see `docker-compose.test.yml`)
 
 ## Git / CI / Release
 
@@ -89,7 +87,6 @@ Formatters: gofmt + goimports.
 
 - `make setup` registers git hooks (`.githooks/`) — run it after cloning
 - Pre-commit runs `make unit-test`; pre-push runs `make check`
-- Integration tests use testcontainers — Docker must be running
 - `scripts/itsme.sh` replaces template placeholders (run after `make setup`)
 - COVERAGE_THRESHOLD is read from `.github/ci.env` (default 90)
 - Go version: `go.mod` specifies 1.25.7 — use `go-version-file: go.mod` in CI
