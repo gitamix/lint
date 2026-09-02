@@ -22,6 +22,8 @@ including its name and task the branch related with
 - Implemented fake git client for testing purposes.
 - Added Docker test container with fake git tree to lint it in tests
 - Added integration tests for linting current branch
+- Filled project README with getting started guide,
+full YAML configuration example and rules reference table
 
 ### Changed
 
