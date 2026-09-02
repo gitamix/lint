@@ -60,7 +60,7 @@ body:
         - [ ] Code is implemented
         - [ ] Tests are added or updated where needed
         - [ ] Documentation is updated where needed
-        - [ ] STYLE.MD is followed
+        - [ ] STYLE.md is followed
         - [ ] CHANGELOG.md is updated if the change is user-visible
     validations:
       required: true
