@@ -12,6 +12,7 @@ import (
 
 	impl "github.com/gitamix/lint/config"
 	"github.com/gitamix/lint/config/branch"
+	"github.com/gitamix/lint/config/branch/defaults"
 	"github.com/gitamix/lint/config/branch/name"
 	"github.com/gitamix/lint/config/commit"
 	"github.com/gitamix/lint/config/commit/message"
@@ -60,6 +61,13 @@ func TestLoad(t *testing.T) {
 							value.NewString(
 								issue.Warning,
 								`^(feature|bugfix|hotfix)/[A-Z]+-\d+`,
+							),
+						),
+					),
+					branch.WithDefault(
+						defaults.NewConfig(
+							defaults.WithName(
+								"master",
 							),
 						),
 					),

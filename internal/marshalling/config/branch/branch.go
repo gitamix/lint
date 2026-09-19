@@ -5,6 +5,7 @@ import (
 	"github.com/gitamix/lint/config/branch/name"
 	"github.com/gitamix/lint/config/task"
 	"github.com/gitamix/lint/config/task/id"
+	"github.com/gitamix/lint/internal/marshalling/config/branch/defaults"
 	"github.com/gitamix/lint/internal/marshalling/config/value"
 )
 
@@ -18,6 +19,10 @@ type Branch struct {
 
 	// Name stores the transport representation of the branch name pattern.
 	Name value.Pattern `yaml:"name,omitempty"`
+
+	// Default stores the transport representation
+	// of the default branch configuration.
+	Default defaults.Default `yaml:"default,omitempty"`
 }
 
 // Config converts the Branch into the domain branch.Config, wiring the
@@ -37,6 +42,9 @@ func (b Branch) Config() branch.Config {
 			name.NewConfig(
 				b.Name.Config(),
 			),
+		),
+		branch.WithDefault(
+			b.Default.Config(),
 		),
 	)
 }

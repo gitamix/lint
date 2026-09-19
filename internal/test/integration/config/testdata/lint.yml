@@ -16,7 +16,8 @@ branch:
     # This pattern allows branches to be named
     # with lowercase letters, numbers, underscores, and hyphens.
     pattern: ^(feature|bugfix|hotfix)/[A-Z]+-\d+
-
+  default:
+    name: "master"
 # Git commit rules.
 commit:
   # Commit message rules, grouping subject and body configuration.
