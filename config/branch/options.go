@@ -1,6 +1,7 @@
 package branch
 
 import (
+	"github.com/gitamix/lint/config/branch/defaults"
 	"github.com/gitamix/lint/config/branch/name"
 	"github.com/gitamix/lint/config/task"
 )
@@ -19,5 +20,12 @@ func WithName(name name.Config) Option {
 func WithTask(tkt task.Config) Option {
 	return func(c *Config) {
 		c.tkt = tkt
+	}
+}
+
+// WithDefault sets the default branch configuration.
+func WithDefault(def defaults.Config) Option {
+	return func(c *Config) {
+		c.def = def
 	}
 }
