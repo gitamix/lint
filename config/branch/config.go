@@ -1,6 +1,7 @@
 package branch
 
 import (
+	"github.com/gitamix/lint/config/branch/defaults"
 	"github.com/gitamix/lint/config/branch/name"
 	"github.com/gitamix/lint/config/task"
 )
@@ -12,6 +13,9 @@ type Config struct {
 
 	// tkt stores the configuration for task integration.
 	tkt task.Config
+
+	// def stores the configuration for the default branch.
+	def defaults.Config
 }
 
 // NewConfig creates a new Config instance
@@ -32,4 +36,9 @@ func (c Config) Name() name.Config {
 // Task returns the configuration for task integration.
 func (c Config) Task() task.Config {
 	return c.tkt
+}
+
+// Default returns the configuration for the default branch.
+func (c Config) Default() defaults.Config {
+	return c.def
 }
