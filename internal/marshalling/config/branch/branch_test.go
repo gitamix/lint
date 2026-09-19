@@ -6,11 +6,13 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/gitamix/lint/config/branch"
+	"github.com/gitamix/lint/config/branch/defaults"
 	"github.com/gitamix/lint/config/branch/name"
 	"github.com/gitamix/lint/config/task"
 	"github.com/gitamix/lint/config/task/id"
 	"github.com/gitamix/lint/config/value"
 	impl "github.com/gitamix/lint/internal/marshalling/config/branch"
+	mdefaults "github.com/gitamix/lint/internal/marshalling/config/branch/defaults"
 	mvalue "github.com/gitamix/lint/internal/marshalling/config/value"
 	"github.com/gitamix/lint/issue"
 )
@@ -63,6 +65,23 @@ func TestBranch_Config(t *testing.T) {
 			branch.WithName(
 				name.NewConfig(
 					value.NewString(issue.Info, "feat/.*"),
+				),
+			),
+		)
+		assert.Equal(t, want, b.Config())
+	})
+
+	t.Run("converts default name into defaults config", func(t *testing.T) {
+		t.Parallel()
+		b := impl.Branch{
+			Default: mdefaults.Default{
+				Name: "master",
+			},
+		}
+		want := branch.NewConfig(
+			branch.WithDefault(
+				defaults.NewConfig(
+					defaults.WithName("master"),
 				),
 			),
 		)
