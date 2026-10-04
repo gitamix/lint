@@ -261,4 +261,64 @@ func TestCommits_Issues(t *testing.T) {
 			Issues()
 		assert.Equal(t, want, got)
 	})
+
+	t.Run("skips merge commits even when invalid", func(t *testing.T) {
+		t.Parallel()
+		want := []issue.Issue{}
+		got := impl.
+			NewCommits(
+				[]commit.Commit{
+					commit.NewCommit(
+						commit.NewHash("abc1234567"),
+						commit.ParseMessage(
+							[]byte("refactor(ui): add new feature\n\nbody text"),
+						),
+						commit.WithKind(commit.KindMerge),
+					),
+				},
+				config.NewConfig(
+					config.WithTypes(
+						types.NewConfig(
+							value.NewStrings(
+								issue.Warning,
+								"feat",
+								"fix",
+							),
+						),
+					),
+				),
+			).
+			Issues()
+		assert.Equal(t, want, got)
+	})
+
+	t.Run("skips revert commits even when invalid", func(t *testing.T) {
+		t.Parallel()
+		want := []issue.Issue{}
+		got := impl.
+			NewCommits(
+				[]commit.Commit{
+					commit.NewCommit(
+						commit.NewHash("abc1234567"),
+						commit.ParseMessage(
+							[]byte("refactor(ui): add new feature\n\nbody text"),
+						),
+						commit.WithKind(commit.KindRevert),
+					),
+				},
+				config.NewConfig(
+					config.WithTypes(
+						types.NewConfig(
+							value.NewStrings(
+								issue.Warning,
+								"feat",
+								"fix",
+							),
+						),
+					),
+				),
+			).
+			Issues()
+		assert.Equal(t, want, got)
+	})
 }
