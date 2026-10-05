@@ -38,6 +38,9 @@ func NewCommits(
 func (c Commits) Issues() []issue.Issue {
 	issues := make([]issue.Issue, 0, 5*len(c.commits))
 	for _, cmt := range c.commits {
+		if !cmt.Kind().Default() {
+			continue
+		}
 		for _, iss := range NewCommit(cmt, c.cfg).Issues() {
 			issues = append(
 				issues,

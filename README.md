@@ -22,6 +22,7 @@ so you control how each violation is reported.
 - **Commit linting** — validate the commit subject: allowed types, scope
   pattern, description length and task ID; and the commit body: length
   and mandatory body per commit type.
+  Merge and revert commits are skipped and never reported.
 - **YAML-driven configuration** — declare rules in a single `lint.yml`;
   every key is optional, and rules are strictly opt-in:
   an empty config reports no issues.
@@ -231,10 +232,12 @@ Full API reference is available on [pkg.go.dev](https://pkg.go.dev/github.com/gi
   for `config.Load` and `config.Unmarshal` (pulled in automatically).
 
 The library does not run git commands itself.
-Obtain branch names and commit messages in your own workflow
-(for example, with `git branch` and `git log`),
-wrap them into [github.com/gitamix/types](https://github.com/gitamix/types) values,
-and pass them to the linters.
+  Obtain branch names and commit messages in your own workflow
+  (for example, with `git branch` and `git log`),
+  wrap them into [github.com/gitamix/types](https://github.com/gitamix/types) values,
+  and pass them to the linters.
+  Merge and revert commits are detected by their kind
+  (`github.com/gitamix/types/commit`) and skipped by the linter.
 
 ## Contributing
 
