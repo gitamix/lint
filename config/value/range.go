@@ -46,8 +46,13 @@ func (r Range) WithLevel(lvl issue.Type) Range {
 
 // Validate checks the range configuration for correctness.
 //
-// Returns an error if the issue type level is specified but unknown,
-// if min or max is lower than zero or if min is greater than max.
+// Returns an error wrapping ErrInvalidConfig if the issue type level
+// is specified but unknown, if min or max is lower than zero
+// or if min is greater than max. When several checks fail,
+// the error of the first failed check in that order is returned.
+//
+// Unlike Empty, String, Fit, Below and Above, Validate does not panic
+// on invalid bounds and is intended to report them.
 func (r Range) Validate() error {
 	if !r.lvl.Unspecified() && r.lvl.Unknown() {
 		return fmt.Errorf("%w: unknown issue level", errs.ErrInvalidConfig)
