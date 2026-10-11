@@ -234,4 +234,34 @@ func TestInteger_WithLevel(t *testing.T) {
 		_ = prev.WithLevel(issue.Info)
 		assert.Equal(t, issue.Critical, prev.Level())
 	})
+	package value
+
+import (
+    "testing"
+    "github.com/gitamix/lint/issue"
+)
+
+func TestInteger_Validate(t *testing.T) {
+    tests := []struct {
+        name    string
+        level   issue.Type
+        wantErr bool
+    }{
+        {"empty level is valid", issue.Type(""), false},
+        {"Critical level is valid", issue.Type("Critical"), false},
+        {"Warning level is valid", issue.Type("Warning"), false},
+        {"Info level is valid", issue.Type("Info"), false},
+        {"unknown level is invalid", issue.Type("Debug"), true},
+    }
+
+    for _, tt := range tests {
+        t.Run(tt.name, func(t *testing.T) {
+            i := NewInteger(tt.level, 10)
+            err := i.Validate()
+            if (err != nil) != tt.wantErr {
+                t.Errorf("Validate() error = %v, wantErr %v", err, tt.wantErr)
+            }
+        })
+    }
 }
+} 
