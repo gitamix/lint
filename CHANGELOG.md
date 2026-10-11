@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Validation of range config value checking its issue type level and bounds
+
 ### Changed
 
 - No lint merge and revert commits
