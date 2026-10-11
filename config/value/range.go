@@ -3,6 +3,7 @@ package value
 import (
 	"fmt"
 
+	"github.com/gitamix/lint/errs"
 	"github.com/gitamix/lint/issue"
 )
 
@@ -41,6 +42,26 @@ func (r Range) Level() issue.Type {
 // WithLevel creates a new instance with provided issue type level.
 func (r Range) WithLevel(lvl issue.Type) Range {
 	return NewRange(lvl, r.min, r.max)
+}
+
+// Validate checks the range configuration for correctness.
+//
+// Returns an error if the issue type level is specified but unknown,
+// if min or max is lower than zero or if min is greater than max.
+func (r Range) Validate() error {
+	if !r.lvl.Unspecified() && r.lvl.Unknown() {
+		return fmt.Errorf("%w: unknown issue level", errs.ErrInvalidConfig)
+	}
+	if r.min < 0 {
+		return fmt.Errorf("%w: min is negative", errs.ErrInvalidConfig)
+	}
+	if r.max < 0 {
+		return fmt.Errorf("%w: max is negative", errs.ErrInvalidConfig)
+	}
+	if r.min > r.max {
+		return fmt.Errorf("%w: min is greater than max", errs.ErrInvalidConfig)
+	}
+	return nil
 }
 
 // Empty defines whether the range is empty (min and max are zeros).
