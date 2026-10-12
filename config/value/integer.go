@@ -1,9 +1,10 @@
 package value
 
 import (
-	"strconv"
+    "fmt"
+    "strconv"
 
-	"github.com/gitamix/lint/issue"
+    "github.com/gitamix/lint/issue"
 )
 
 // Integer represents config integer value
@@ -49,4 +50,11 @@ func (i Integer) String() string {
 // WithLevel creates a new instance with provided issue type level.
 func (i Integer) WithLevel(lvl issue.Type) Integer {
 	return NewInteger(lvl, i.v)
+}
+// Validate checks if the configured issue level is valid.
+func (i Integer) Validate() error {
+	if !i.lvl.Unspecified() && i.lvl.Unknown() {
+		return fmt.Errorf("unknown issue level: %s", i.lvl)
+	}
+	return nil
 }
