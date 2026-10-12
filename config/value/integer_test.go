@@ -242,26 +242,35 @@ import (
 )
 
 func TestInteger_Validate(t *testing.T) {
-    tests := []struct {
-        name    string
-        level   issue.Type
-        wantErr bool
-    }{
-        {"empty level is valid", issue.Type(""), false},
-        {"Critical level is valid", issue.Type("Critical"), false},
-        {"Warning level is valid", issue.Type("Warning"), false},
-        {"Info level is valid", issue.Type("Info"), false},
-        {"unknown level is invalid", issue.Type("Debug"), true},
-    }
+	t.Parallel()
 
-    for _, tt := range tests {
-        t.Run(tt.name, func(t *testing.T) {
-            i := NewInteger(tt.level, 10)
-            err := i.Validate()
-            if (err != nil) != tt.wantErr {
-                t.Errorf("Validate() error = %v, wantErr %v", err, tt.wantErr)
-            }
-        })
-    }
+	t.Run("empty level is valid", func(t *testing.T) {
+		t.Parallel()
+		i := NewInteger(issue.Type(""), 10)
+		assert.NoError(t, i.Validate())
+	})
+
+	t.Run("Critical level is valid", func(t *testing.T) {
+		t.Parallel()
+		i := NewInteger(issue.Critical, 10)
+		assert.NoError(t, i.Validate())
+	})
+
+	t.Run("Warning level is valid", func(t *testing.T) {
+		t.Parallel()
+		i := NewInteger(issue.Warning, 10)
+		assert.NoError(t, i.Validate())
+	})
+
+	t.Run("Info level is valid", func(t *testing.T) {
+		t.Parallel()
+		i := NewInteger(issue.Info, 10)
+		assert.NoError(t, i.Validate())
+	})
+
+	t.Run("unknown level is invalid", func(t *testing.T) {
+		t.Parallel()
+		i := NewInteger(issue.Type("Debug"), 10)
+		assert.Error(t, i.Validate())
+	})
 }
-} 

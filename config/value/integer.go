@@ -53,11 +53,8 @@ func (i Integer) WithLevel(lvl issue.Type) Integer {
 }
 // Validate checks if the configured issue level is valid.
 func (i Integer) Validate() error {
-    // Convert issue.Type to a string for comparison
-    lvl := string(i.lvl)
-
-    if lvl != "" && lvl != "Critical" && lvl != "Warning" && lvl != "Info" {
-        return fmt.Errorf("unknown issue level: %s", lvl)
-    }
-    return nil
+	if !i.lvl.Unspecified() && i.lvl.Unknown() {
+		return fmt.Errorf("unknown issue level: %s", i.lvl)
+	}
+	return nil
 }
