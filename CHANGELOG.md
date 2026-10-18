@@ -36,5 +36,7 @@ full YAML configuration example and rules reference table
 - Replaced table-driven tests templating in `STYLE.md`
 with direct `t.Run()` per case
 
-### Unreleased 
+# [Unreleased]
+
+### Added
 - Added validation for Integer configuration values to reject unknown issue levels.
