@@ -234,4 +234,43 @@ func TestInteger_WithLevel(t *testing.T) {
 		_ = prev.WithLevel(issue.Info)
 		assert.Equal(t, issue.Critical, prev.Level())
 	})
+	package value
+
+import (
+    "testing"
+    "github.com/gitamix/lint/issue"
+)
+
+func TestInteger_Validate(t *testing.T) {
+	t.Parallel()
+
+	t.Run("empty level is valid", func(t *testing.T) {
+		t.Parallel()
+		i := NewInteger(issue.Type(""), 10)
+		assert.NoError(t, i.Validate())
+	})
+
+	t.Run("Critical level is valid", func(t *testing.T) {
+		t.Parallel()
+		i := NewInteger(issue.Critical, 10)
+		assert.NoError(t, i.Validate())
+	})
+
+	t.Run("Warning level is valid", func(t *testing.T) {
+		t.Parallel()
+		i := NewInteger(issue.Warning, 10)
+		assert.NoError(t, i.Validate())
+	})
+
+	t.Run("Info level is valid", func(t *testing.T) {
+		t.Parallel()
+		i := NewInteger(issue.Info, 10)
+		assert.NoError(t, i.Validate())
+	})
+
+	t.Run("unknown level is invalid", func(t *testing.T) {
+		t.Parallel()
+		i := NewInteger(issue.Type("Debug"), 10)
+		assert.Error(t, i.Validate())
+	})
 }

@@ -45,3 +45,8 @@ full YAML configuration example and rules reference table
 - Issue type parsing to accept string input or default value
 - Replaced table-driven tests templating in `STYLE.md`
 with direct `t.Run()` per case
+
+# [Unreleased]
+
+### Added
+- Added validation for Integer configuration values to reject unknown issue levels.
