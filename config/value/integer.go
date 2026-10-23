@@ -1,10 +1,11 @@
 package value
 
 import (
-    "fmt"
-    "strconv"
+	"fmt"
+	"strconv"
 
-    "github.com/gitamix/lint/issue"
+	"github.com/gitamix/lint/errs"
+	"github.com/gitamix/lint/issue"
 )
 
 // Integer represents config integer value
@@ -51,10 +52,14 @@ func (i Integer) String() string {
 func (i Integer) WithLevel(lvl issue.Type) Integer {
 	return NewInteger(lvl, i.v)
 }
+
 // Validate checks if the configured issue level is valid.
+//
+// Returns an error wrapping ErrInvalidConfig if the issue type level
+// is specified but unknown. An unspecified level is considered valid.
 func (i Integer) Validate() error {
 	if !i.lvl.Unspecified() && i.lvl.Unknown() {
-		return fmt.Errorf("unknown issue level: %s", i.lvl)
+		return fmt.Errorf("%w: unknown issue level", errs.ErrInvalidConfig)
 	}
 	return nil
 }

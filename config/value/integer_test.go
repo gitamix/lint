@@ -6,6 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	impl "github.com/gitamix/lint/config/value"
+	"github.com/gitamix/lint/errs"
 	"github.com/gitamix/lint/issue"
 )
 
@@ -234,43 +235,63 @@ func TestInteger_WithLevel(t *testing.T) {
 		_ = prev.WithLevel(issue.Info)
 		assert.Equal(t, issue.Critical, prev.Level())
 	})
-	package value
-
-import (
-    "testing"
-    "github.com/gitamix/lint/issue"
-)
-
+}
 func TestInteger_Validate(t *testing.T) {
 	t.Parallel()
 
-	t.Run("empty level is valid", func(t *testing.T) {
+	t.Run("returns nil for unspecified level", func(t *testing.T) {
 		t.Parallel()
-		i := NewInteger(issue.Type(""), 10)
-		assert.NoError(t, i.Validate())
+		gotErr := impl.
+			NewInteger(issue.Type(0), 10).
+			Validate()
+		assert.NoError(t, gotErr)
 	})
 
-	t.Run("Critical level is valid", func(t *testing.T) {
+	t.Run("returns nil for critical level", func(t *testing.T) {
 		t.Parallel()
-		i := NewInteger(issue.Critical, 10)
-		assert.NoError(t, i.Validate())
+		gotErr := impl.
+			NewInteger(issue.Critical, 10).
+			Validate()
+		assert.NoError(t, gotErr)
 	})
 
-	t.Run("Warning level is valid", func(t *testing.T) {
+	t.Run("returns nil for warning level", func(t *testing.T) {
 		t.Parallel()
-		i := NewInteger(issue.Warning, 10)
-		assert.NoError(t, i.Validate())
+		gotErr := impl.
+			NewInteger(issue.Warning, 10).
+			Validate()
+		assert.NoError(t, gotErr)
 	})
 
-	t.Run("Info level is valid", func(t *testing.T) {
+	t.Run("returns nil for info level", func(t *testing.T) {
 		t.Parallel()
-		i := NewInteger(issue.Info, 10)
-		assert.NoError(t, i.Validate())
+		gotErr := impl.
+			NewInteger(issue.Info, 10).
+			Validate()
+		assert.NoError(t, gotErr)
 	})
 
-	t.Run("unknown level is invalid", func(t *testing.T) {
+	t.Run("returns error wrapping ErrInvalidConfig for unknown level", func(t *testing.T) {
 		t.Parallel()
-		i := NewInteger(issue.Type("Debug"), 10)
-		assert.Error(t, i.Validate())
+		gotErr := impl.
+			NewInteger(issue.Type(99), 10).
+			Validate()
+		assert.ErrorIs(
+			t,
+			gotErr,
+			errs.ErrInvalidConfig,
+		)
+	})
+
+	t.Run("returns error wrapping ErrInvalidConfig for negative level", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewInteger(issue.Type(-1), 10).
+			Validate()
+		assert.ErrorIs(
+			t,
+			gotErr,
+			errs.ErrInvalidConfig,
+		)
 	})
 }

@@ -1,6 +1,11 @@
 package value
 
-import "github.com/gitamix/lint/issue"
+import (
+	"fmt"
+
+	"github.com/gitamix/lint/errs"
+	"github.com/gitamix/lint/issue"
+)
 
 // String represents config string value
 // that can be configured with issue type level to alert on linting.
@@ -49,4 +54,15 @@ func (s String) String() string {
 // WithLevel creates a new instance with provided issue type level.
 func (s String) WithLevel(lvl issue.Type) String {
 	return NewString(lvl, s.v)
+}
+
+// Validate checks the string configuration for correctness.
+//
+// Returns an error wrapping ErrInvalidConfig if the issue type level
+// is specified but unknown. An unspecified level is considered valid.
+func (s String) Validate() error {
+	if !s.lvl.Unspecified() && s.lvl.Unknown() {
+		return fmt.Errorf("%w: unknown issue level", errs.ErrInvalidConfig)
+	}
+	return nil
 }
