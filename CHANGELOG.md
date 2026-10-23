@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Validation of range config value checking its issue type level and bounds
+- Validation of integer config value checking its issue type level
 - Validation of string config value checking its issue type level
 
 ### Changed
@@ -46,8 +47,3 @@ full YAML configuration example and rules reference table
 - Issue type parsing to accept string input or default value
 - Replaced table-driven tests templating in `STYLE.md`
 with direct `t.Run()` per case
-
-# [Unreleased]
-
-### Added
-- Added validation for Integer configuration values to reject unknown issue levels.
