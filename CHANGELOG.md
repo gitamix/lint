@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Validation of range config value checking its issue type level and bounds
 - Validation of integer config value checking its issue type level
-- Validation of string config value checking its issue type level
+- Validation of strings config value checking its issue type level
 
 ### Changed
 
