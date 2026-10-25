@@ -24,3 +24,8 @@ func NewConfig(opts ...Option) Config {
 func (c Config) ID() id.Config {
 	return c.id
 }
+
+// Validate checks the task id configuration for correctness.
+func (c Config) Validate() error {
+	return c.ID().Validate()
+}
