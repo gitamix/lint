@@ -74,3 +74,145 @@ func TestConfig_ID(t *testing.T) {
 		)
 	})
 }
+
+func TestConfig_Validate(t *testing.T) {
+	t.Parallel()
+
+	t.Run("ok if id pattern is valid & info issue", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithID(
+					id.NewConfig(
+						value.NewString(
+							issue.Info,
+							`^(feature|bugfix|hotfix)/[A-Z]+-\d+`,
+						),
+					),
+				),
+			).
+			Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("err if id pattern is valid but type is unknown", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithID(
+					id.NewConfig(
+						value.NewString(
+							issue.Type(-1),
+							`^(feature|bugfix|hotfix)/[A-Z]+-\d+`,
+						),
+					),
+				),
+			).
+			Validate()
+		assert.EqualError(t, gotErr, "invalid config: unknown issue level")
+	})
+
+	t.Run("ok if id pattern is valid but type is zero as default", func(t *testing.T) {
+		t.Parallel()
+		var typ issue.Type
+		gotErr := impl.
+			NewConfig(
+				impl.WithID(
+					id.NewConfig(
+						value.NewString(
+							typ,
+							`^(feature|bugfix|hotfix)/[A-Z]+-\d+`,
+						),
+					),
+				),
+			).
+			Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("ok if id pattern is valid but not trimmed & info issue", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithID(
+					id.NewConfig(
+						value.NewString(
+							issue.Info,
+							` ^(feature|bugfix|hotfix)/[A-Z]+-\d+ `,
+						),
+					),
+				),
+			).
+			Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("ok if id pattern is just a string & warning issue", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithID(
+					id.NewConfig(
+						value.NewString(
+							issue.Warning,
+							`foo`,
+						),
+					),
+				),
+			).
+			Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("ok if id pattern is empty & warning issue", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithID(
+					id.NewConfig(
+						value.NewString(
+							issue.Warning,
+							"",
+						),
+					),
+				),
+			).
+			Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("ok if id pattern is empty & critical issue", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithID(
+					id.NewConfig(
+						value.NewString(
+							issue.Critical,
+							"",
+						),
+					),
+				),
+			).
+			Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("ok on default value", func(t *testing.T) {
+		t.Parallel()
+		var conf impl.Config
+		gotErr := conf.Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("ok on default id config value", func(t *testing.T) {
+		t.Parallel()
+		var id id.Config
+		gotErr := impl.
+			NewConfig(
+				impl.WithID(id),
+			).
+			Validate()
+		assert.NoError(t, gotErr)
+	})
+}
