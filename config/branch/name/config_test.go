@@ -176,3 +176,136 @@ func TestConfig_Level(t *testing.T) {
 		)
 	})
 }
+
+func TestConfig_Validate(t *testing.T) {
+	t.Parallel()
+
+	t.Run("ok on critical level", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				value.NewString(
+					issue.Critical,
+					`^(feature|bugfix|hotfix)/[A-Z]+-\d+`,
+				),
+			).
+			Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("ok on warning level", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				value.NewString(
+					issue.Warning,
+					`^(feature|bugfix|hotfix)/[A-Z]+-\d+`,
+				),
+			).
+			Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("ok on info level", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				value.NewString(
+					issue.Info,
+					`^(feature|bugfix|hotfix)/[A-Z]+-\d+`,
+				),
+			).
+			Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("ok on unspecified level", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				value.NewString(
+					issue.Type(0),
+					`^(feature|bugfix|hotfix)/[A-Z]+-\d+`,
+				),
+			).
+			Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("ok on unspecified level with empty pattern", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				value.NewString(
+					issue.Type(0),
+					"",
+				),
+			).
+			Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("ok on critical level with empty pattern", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				value.NewString(
+					issue.Critical,
+					"",
+				),
+			).
+			Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("err on unknown level", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				value.NewString(
+					issue.Type(-1),
+					`^(feature|bugfix|hotfix)/[A-Z]+-\d+`,
+				),
+			).
+			Validate()
+		assert.EqualError(
+			t,
+			gotErr,
+			"invalid config: unknown issue level",
+		)
+	})
+
+	t.Run("err on unknown level with empty pattern", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				value.NewString(
+					issue.Type(-1),
+					"",
+				),
+			).
+			Validate()
+		assert.EqualError(
+			t,
+			gotErr,
+			"invalid config: unknown issue level",
+		)
+	})
+
+	t.Run("err on out of range level", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				value.NewString(
+					issue.Type(4),
+					`^(feature|bugfix|hotfix)/[A-Z]+-\d+`,
+				),
+			).
+			Validate()
+		assert.EqualError(
+			t,
+			gotErr,
+			"invalid config: unknown issue level",
+		)
+	})
+}
