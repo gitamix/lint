@@ -1,5 +1,10 @@
 package defaults
 
+import (
+	"errors"
+	"strings"
+)
+
 // Config represents configuration of the default branch.
 //
 // Config keeps the name of the branch
@@ -28,4 +33,12 @@ func NewConfig(opts ...Option) Config {
 // Name returns the name of the default branch.
 func (c Config) Name() string {
 	return c.name
+}
+
+// Validate checks the default branch configuration for correctness.
+func (c Config) Validate() error {
+	if strings.TrimSpace(c.name) == "" {
+		return errors.New("empty default branch name")
+	}
+	return nil
 }
