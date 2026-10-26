@@ -642,3 +642,160 @@ func TestConfig_Types(t *testing.T) {
 		assert.Equal(t, want, got)
 	})
 }
+
+func TestConfig_Validate(t *testing.T) {
+	t.Parallel()
+
+	t.Run("ok without any option", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.NewConfig().Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("ok with valid sections", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithMessage(
+					message.NewConfig(
+						message.WithSubject(
+							subject.NewConfig(
+								subject.WithDescription(
+									description.NewConfig(
+										description.WithLength(
+											value.NewRange(issue.Warning, 1, 50),
+										),
+									),
+								),
+							),
+						),
+					),
+				),
+				impl.WithScope(
+					scope.NewConfig(
+						value.NewString(
+							issue.Warning,
+							`^[a-z]+$`,
+						),
+					),
+				),
+				impl.WithTypes(
+					types.NewConfig(
+						value.NewStrings(
+							issue.Warning,
+							"feat",
+							"fix",
+						),
+					),
+				),
+			).
+			Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("err with invalid message", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithMessage(
+					message.NewConfig(
+						message.WithSubject(
+							subject.NewConfig(
+								subject.WithDescription(
+									description.NewConfig(
+										description.WithLength(
+											value.NewRange(issue.Warning, 100, 1),
+										),
+									),
+								),
+							),
+						),
+					),
+				),
+			).
+			Validate()
+		assert.EqualError(
+			t,
+			gotErr,
+			"invalid message: invalid subject: invalid description: invalid config: min is greater than max",
+		)
+	})
+
+	t.Run("err with invalid scope", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithScope(
+					scope.NewConfig(
+						value.NewString(
+							issue.Type(-1),
+							`^[a-z]+$`,
+						),
+					),
+				),
+			).
+			Validate()
+		assert.EqualError(
+			t,
+			gotErr,
+			"invalid scope: invalid config: unknown issue level",
+		)
+	})
+
+	t.Run("err with invalid types", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithTypes(
+					types.NewConfig(
+						value.NewStrings(
+							issue.Type(-1),
+							"feat",
+						),
+					),
+				),
+			).
+			Validate()
+		assert.EqualError(
+			t,
+			gotErr,
+			"invalid types: invalid config: unknown issue level",
+		)
+	})
+
+	t.Run("err for message even if scope is invalid", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithMessage(
+					message.NewConfig(
+						message.WithSubject(
+							subject.NewConfig(
+								subject.WithDescription(
+									description.NewConfig(
+										description.WithLength(
+											value.NewRange(issue.Warning, 100, 1),
+										),
+									),
+								),
+							),
+						),
+					),
+				),
+				impl.WithScope(
+					scope.NewConfig(
+						value.NewString(
+							issue.Type(-1),
+							`^[a-z]+$`,
+						),
+					),
+				),
+			).
+			Validate()
+		assert.EqualError(
+			t,
+			gotErr,
+			"invalid message: invalid subject: invalid description: invalid config: min is greater than max",
+		)
+	})
+}
