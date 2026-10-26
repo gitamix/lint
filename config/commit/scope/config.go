@@ -20,3 +20,8 @@ func NewConfig(pattern value.String) Config {
 func (c Config) Pattern() value.String {
 	return c.pattern
 }
+
+// Validate checks the commit scope configuration for correctness.
+func (c Config) Validate() error {
+	return c.Pattern().Validate()
+}
