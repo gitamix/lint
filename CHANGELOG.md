@@ -9,14 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Validation of branch config including its default branch, name and task
-- Validation of task config including its id pattern
-- Validation of default branch name checking it is not empty
-- Validation of branch name pattern checking its issue type level
-- Validation of range config value checking its issue type level and bounds
-- Validation of integer config value checking its issue type level
-- Validation of strings config value checking its issue type level
-- Validation of commit config including its message, scope and types
+- Validation of lint config: branch (default branch, name, task) and commit (message, scope, types)
+- Validation of config values: issue type level for every value and min/max bounds for ranges
 
 ### Changed
 
