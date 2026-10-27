@@ -1,6 +1,8 @@
 package message
 
 import (
+	"fmt"
+
 	"github.com/gitamix/lint/config/commit/message/body"
 	"github.com/gitamix/lint/config/commit/message/subject"
 )
@@ -33,4 +35,20 @@ func (c Config) Subject() subject.Config {
 // Body returns the body config.
 func (c Config) Body() body.Config {
 	return c.body
+}
+
+// Validate checks the commit message configuration for correctness.
+//
+// It validates the subject and the body configurations
+// and returns the error of the first invalid one.
+func (c Config) Validate() error {
+	err := c.Subject().Validate()
+	if err != nil {
+		return fmt.Errorf("invalid subject: %w", err)
+	}
+	err = c.Body().Validate()
+	if err != nil {
+		return fmt.Errorf("invalid body: %w", err)
+	}
+	return nil
 }

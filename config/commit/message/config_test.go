@@ -405,3 +405,115 @@ func TestConfig_Body(t *testing.T) {
 		assert.Equal(t, want, got)
 	})
 }
+
+func TestConfig_Validate(t *testing.T) {
+	t.Parallel()
+
+	t.Run("ok without any option", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.NewConfig().Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("ok with valid subject and body", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithSubject(
+					subject.NewConfig(
+						subject.WithDescription(
+							description.NewConfig(
+								description.WithLength(
+									value.NewRange(issue.Warning, 1, 50),
+								),
+							),
+						),
+					),
+				),
+				impl.WithBody(
+					body.NewConfig(
+						body.WithLength(
+							value.NewRange(issue.Warning, 1, 100),
+						),
+					),
+				),
+			).
+			Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("err with invalid subject", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithSubject(
+					subject.NewConfig(
+						subject.WithDescription(
+							description.NewConfig(
+								description.WithLength(
+									value.NewRange(issue.Type(-1), 1, 50),
+								),
+							),
+						),
+					),
+				),
+			).
+			Validate()
+		assert.EqualError(
+			t,
+			gotErr,
+			"invalid subject: invalid description: invalid config: unknown issue level",
+		)
+	})
+
+	t.Run("err with invalid body", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithBody(
+					body.NewConfig(
+						body.WithLength(
+							value.NewRange(issue.Warning, -1, 100),
+						),
+					),
+				),
+			).
+			Validate()
+		assert.EqualError(
+			t,
+			gotErr,
+			"invalid body: invalid length: invalid config: min is negative",
+		)
+	})
+
+	t.Run("err for subject even if body is invalid", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithSubject(
+					subject.NewConfig(
+						subject.WithDescription(
+							description.NewConfig(
+								description.WithLength(
+									value.NewRange(issue.Warning, 100, 1),
+								),
+							),
+						),
+					),
+				),
+				impl.WithBody(
+					body.NewConfig(
+						body.WithLength(
+							value.NewRange(issue.Warning, -1, 100),
+						),
+					),
+				),
+			).
+			Validate()
+		assert.EqualError(
+			t,
+			gotErr,
+			"invalid subject: invalid description: invalid config: min is greater than max",
+		)
+	})
+}

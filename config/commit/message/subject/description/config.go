@@ -30,3 +30,8 @@ func NewConfig(opts ...Option) Config {
 func (c Config) Length() value.Range {
 	return c.length
 }
+
+// Validate checks the subject description length configuration for correctness.
+func (c Config) Validate() error {
+	return c.Length().Validate()
+}

@@ -32,3 +32,8 @@ func NewConfig(opts ...Option) Config {
 func (c Config) For(typ commit.Type) bool {
 	return c.types.Has(typ.String())
 }
+
+// Validate checks the commit types mandate configuration for correctness.
+func (c Config) Validate() error {
+	return c.types.Validate()
+}
