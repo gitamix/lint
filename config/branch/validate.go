@@ -19,7 +19,7 @@ func (b Config) Validate() error {
 	}
 	err = b.Task().Validate()
 	if err != nil {
-		return fmt.Errorf("invalid name: %w", err)
+		return fmt.Errorf("invalid task: %w", err)
 	}
 	return nil
 }
