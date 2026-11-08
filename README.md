@@ -166,10 +166,17 @@ import (
 )
 
 func main() {
+    // Load config from the file.
     cfg, err := config.Load("path/to/gitamix.yml")
     if err != nil {
         log.Fatal(err)
     }
+    // Check it for errors before you start the linter.
+    err := cfg.Validate()
+    if err != nil {
+        log.Fatal(err)
+    }
+    // Lint the branch.
     brs := branch.NewBranch(
         typesbranch.NewBranch(typesbranch.NewName("release/TASK-123")),
         cfg.Branch(),
@@ -177,6 +184,7 @@ func main() {
     for _, iss := range brs.Issues() {
         fmt.Println(iss.Type(), iss.Message()) 
     }
+    // Lint the commits.
     cmts := commit.NewCommits(
         []typescommit.Commit{
             typescommit.NewCommit(
