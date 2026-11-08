@@ -62,3 +62,101 @@ func TestConfig_Length(t *testing.T) {
 		assert.Equal(t, want, got)
 	})
 }
+
+func TestConfig_Validate(t *testing.T) {
+	t.Parallel()
+
+	t.Run("ok without any option", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.NewConfig().Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("ok with valid length", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithLength(
+					value.NewRange(issue.Warning, 1, 100),
+				),
+			).
+			Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("ok with equal bounds", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithLength(
+					value.NewRange(issue.Critical, 10, 10),
+				),
+			).
+			Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("err with unknown issue level", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithLength(
+					value.NewRange(issue.Type(-1), 1, 100),
+				),
+			).
+			Validate()
+		assert.EqualError(
+			t,
+			gotErr,
+			"invalid config: unknown issue level",
+		)
+	})
+
+	t.Run("err with negative min", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithLength(
+					value.NewRange(issue.Warning, -1, 100),
+				),
+			).
+			Validate()
+		assert.EqualError(
+			t,
+			gotErr,
+			"invalid config: min is negative",
+		)
+	})
+
+	t.Run("err with negative max", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithLength(
+					value.NewRange(issue.Warning, 0, -1),
+				),
+			).
+			Validate()
+		assert.EqualError(
+			t,
+			gotErr,
+			"invalid config: max is negative",
+		)
+	})
+
+	t.Run("err when min is greater than max", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithLength(
+					value.NewRange(issue.Warning, 100, 1),
+				),
+			).
+			Validate()
+		assert.EqualError(
+			t,
+			gotErr,
+			"invalid config: min is greater than max",
+		)
+	})
+}

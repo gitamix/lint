@@ -123,3 +123,91 @@ func TestConfig_Mandate(t *testing.T) {
 		assert.Equal(t, last, got)
 	})
 }
+
+func TestConfig_Validate(t *testing.T) {
+	t.Parallel()
+
+	t.Run("ok without any option", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.NewConfig().Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("ok with valid mandate and length", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithMandate(
+					mandateImpl.NewConfig(
+						mandateImpl.WithTypes(
+							value.NewStrings(issue.Warning, "feat", "fix"),
+						),
+					),
+				),
+				impl.WithLength(
+					value.NewRange(issue.Warning, 1, 100),
+				),
+			).
+			Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("err with unknown mandate issue level", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithMandate(
+					mandateImpl.NewConfig(
+						mandateImpl.WithTypes(
+							value.NewStrings(issue.Type(-1), "feat"),
+						),
+					),
+				),
+			).
+			Validate()
+		assert.EqualError(
+			t,
+			gotErr,
+			"invalid mandate: invalid config: unknown issue level",
+		)
+	})
+
+	t.Run("err with invalid length", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithLength(
+					value.NewRange(issue.Warning, 100, 1),
+				),
+			).
+			Validate()
+		assert.EqualError(
+			t,
+			gotErr,
+			"invalid length: invalid config: min is greater than max",
+		)
+	})
+
+	t.Run("err for mandate even if length is invalid", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithMandate(
+					mandateImpl.NewConfig(
+						mandateImpl.WithTypes(
+							value.NewStrings(issue.Type(-1), "feat"),
+						),
+					),
+				),
+				impl.WithLength(
+					value.NewRange(issue.Warning, -1, 100),
+				),
+			).
+			Validate()
+		assert.EqualError(
+			t,
+			gotErr,
+			"invalid mandate: invalid config: unknown issue level",
+		)
+	})
+}

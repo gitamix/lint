@@ -1,6 +1,8 @@
 package subject
 
 import (
+	"fmt"
+
 	"github.com/gitamix/lint/config/commit/message/subject/description"
 	"github.com/gitamix/lint/config/task"
 )
@@ -39,4 +41,21 @@ func (c Config) Description() description.Config {
 // Task returns the configuration for task integration.
 func (c Config) Task() task.Config {
 	return c.task
+}
+
+// Validate checks the commit message subject configuration for correctness.
+//
+// It validates the description and the task configurations in that order
+// and returns the error of the first invalid one,
+// wrapped with the prefix describing the failed section.
+func (c Config) Validate() error {
+	err := c.Description().Validate()
+	if err != nil {
+		return fmt.Errorf("invalid description: %w", err)
+	}
+	err = c.Task().Validate()
+	if err != nil {
+		return fmt.Errorf("invalid task: %w", err)
+	}
+	return nil
 }

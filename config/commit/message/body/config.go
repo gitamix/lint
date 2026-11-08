@@ -1,6 +1,8 @@
 package body
 
 import (
+	"fmt"
+
 	"github.com/gitamix/lint/config/commit/message/body/mandate"
 	"github.com/gitamix/lint/config/value"
 )
@@ -38,4 +40,20 @@ func (c Config) Length() value.Range {
 // Mandate returns the mandate config of the body config.
 func (c Config) Mandate() mandate.Config {
 	return c.mandate
+}
+
+// Validate checks the commit message body configuration for correctness.
+//
+// It validates the mandate and the length configurations
+// and returns the error of the first invalid one.
+func (c Config) Validate() error {
+	err := c.Mandate().Validate()
+	if err != nil {
+		return fmt.Errorf("invalid mandate: %w", err)
+	}
+	err = c.Length().Validate()
+	if err != nil {
+		return fmt.Errorf("invalid length: %w", err)
+	}
+	return nil
 }

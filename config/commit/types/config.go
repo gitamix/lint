@@ -20,3 +20,8 @@ func NewConfig(types value.Strings) Config {
 func (c Config) List() value.Strings {
 	return c.types
 }
+
+// Validate checks the commit types configuration for correctness.
+func (c Config) Validate() error {
+	return c.List().Validate()
+}

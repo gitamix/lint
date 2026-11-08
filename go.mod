@@ -3,7 +3,7 @@ module github.com/gitamix/lint
 go 1.25.7
 
 require (
-	github.com/gitamix/types v0.1.3
+	github.com/gitamix/types v0.1.4
 	github.com/stretchr/testify v1.11.1
 	gopkg.in/yaml.v3 v3.0.1
 )

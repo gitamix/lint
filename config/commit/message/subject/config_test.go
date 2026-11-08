@@ -225,3 +225,118 @@ func TestConfig_Task(t *testing.T) {
 		assert.Equal(t, want, got)
 	})
 }
+
+func TestConfig_Validate(t *testing.T) {
+	t.Parallel()
+
+	t.Run("ok without any option", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.NewConfig().Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("ok with valid description and task", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithDescription(
+					description.NewConfig(
+						description.WithLength(
+							value.NewRange(issue.Warning, 1, 100),
+						),
+					),
+				),
+				impl.WithTask(
+					task.NewConfig(
+						task.WithID(
+							id.NewConfig(
+								value.NewString(
+									issue.Warning,
+									`^[A-Z]+-\d+$`,
+								),
+							),
+						),
+					),
+				),
+			).
+			Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("err with invalid description", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithDescription(
+					description.NewConfig(
+						description.WithLength(
+							value.NewRange(issue.Warning, 100, 1),
+						),
+					),
+				),
+			).
+			Validate()
+		assert.EqualError(
+			t,
+			gotErr,
+			"invalid description: invalid config: min is greater than max",
+		)
+	})
+
+	t.Run("err with invalid task", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithTask(
+					task.NewConfig(
+						task.WithID(
+							id.NewConfig(
+								value.NewString(
+									issue.Type(-1),
+									`^[A-Z]+-\d+$`,
+								),
+							),
+						),
+					),
+				),
+			).
+			Validate()
+		assert.EqualError(
+			t,
+			gotErr,
+			"invalid task: invalid config: unknown issue level",
+		)
+	})
+
+	t.Run("err for description even if task is invalid", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithDescription(
+					description.NewConfig(
+						description.WithLength(
+							value.NewRange(issue.Warning, 100, 1),
+						),
+					),
+				),
+				impl.WithTask(
+					task.NewConfig(
+						task.WithID(
+							id.NewConfig(
+								value.NewString(
+									issue.Type(-1),
+									`^[A-Z]+-\d+$`,
+								),
+							),
+						),
+					),
+				),
+			).
+			Validate()
+		assert.EqualError(
+			t,
+			gotErr,
+			"invalid description: invalid config: min is greater than max",
+		)
+	})
+}

@@ -6,6 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	impl "github.com/gitamix/lint/config/value"
+	"github.com/gitamix/lint/errs"
 	"github.com/gitamix/lint/issue"
 )
 
@@ -415,6 +416,200 @@ func TestRange_Empty(t *testing.T) {
 			func() {
 				_ = impl.NewRange(issue.Critical, 5, 0).Empty()
 			},
+		)
+	})
+}
+
+func TestRange_Validate(t *testing.T) {
+	t.Parallel()
+
+	t.Run("returns nil for critical level with valid bounds", func(t *testing.T) {
+		t.Parallel()
+		err := impl.
+			NewRange(issue.Critical, 1, 10).
+			Validate()
+		assert.NoError(t, err)
+	})
+
+	t.Run("returns nil for warning level with valid bounds", func(t *testing.T) {
+		t.Parallel()
+		err := impl.
+			NewRange(issue.Warning, 1, 10).
+			Validate()
+		assert.NoError(t, err)
+	})
+
+	t.Run("returns nil for info level with valid bounds", func(t *testing.T) {
+		t.Parallel()
+		err := impl.
+			NewRange(issue.Info, 1, 10).
+			Validate()
+		assert.NoError(t, err)
+	})
+
+	t.Run("returns nil when level is unspecified", func(t *testing.T) {
+		t.Parallel()
+		err := impl.
+			NewRange(issue.Type(0), 1, 10).
+			Validate()
+		assert.NoError(t, err)
+	})
+
+	t.Run("returns nil for zero value range", func(t *testing.T) {
+		t.Parallel()
+		var r impl.Range
+		assert.NoError(t, r.Validate())
+	})
+
+	t.Run("returns nil when bounds are equal", func(t *testing.T) {
+		t.Parallel()
+		err := impl.
+			NewRange(issue.Critical, 7, 7).
+			Validate()
+		assert.NoError(t, err)
+	})
+
+	t.Run("returns nil when min is zero", func(t *testing.T) {
+		t.Parallel()
+		err := impl.
+			NewRange(issue.Critical, 0, 10).
+			Validate()
+		assert.NoError(t, err)
+	})
+
+	t.Run("returns unknown level error when level is out of known values", func(t *testing.T) {
+		t.Parallel()
+		err := impl.
+			NewRange(issue.Type(7), 1, 10).
+			Validate()
+		assert.ErrorIs(
+			t,
+			err,
+			errs.ErrInvalidConfig,
+		)
+		assert.EqualError(
+			t,
+			err,
+			"invalid config: unknown issue level",
+		)
+	})
+
+	t.Run("returns unknown level error when level is negative", func(t *testing.T) {
+		t.Parallel()
+		err := impl.
+			NewRange(issue.Type(-1), 1, 10).
+			Validate()
+		assert.ErrorIs(
+			t,
+			err,
+			errs.ErrInvalidConfig,
+		)
+		assert.EqualError(
+			t,
+			err,
+			"invalid config: unknown issue level",
+		)
+	})
+
+	t.Run("returns unknown level error before bounds errors", func(t *testing.T) {
+		t.Parallel()
+		err := impl.
+			NewRange(issue.Type(7), -1, -10).
+			Validate()
+		assert.ErrorIs(
+			t,
+			err,
+			errs.ErrInvalidConfig,
+		)
+		assert.EqualError(
+			t,
+			err,
+			"invalid config: unknown issue level",
+		)
+	})
+
+	t.Run("returns negative min error when min is below zero", func(t *testing.T) {
+		t.Parallel()
+		err := impl.
+			NewRange(issue.Critical, -1, 10).
+			Validate()
+		assert.ErrorIs(
+			t,
+			err,
+			errs.ErrInvalidConfig,
+		)
+		assert.EqualError(
+			t,
+			err,
+			"invalid config: min is negative",
+		)
+	})
+
+	t.Run("returns negative min error when min and max are both below zero", func(t *testing.T) {
+		t.Parallel()
+		err := impl.
+			NewRange(issue.Critical, -10, -1).
+			Validate()
+		assert.ErrorIs(
+			t,
+			err,
+			errs.ErrInvalidConfig,
+		)
+		assert.EqualError(
+			t,
+			err,
+			"invalid config: min is negative",
+		)
+	})
+
+	t.Run("returns negative max error when max is below zero", func(t *testing.T) {
+		t.Parallel()
+		err := impl.
+			NewRange(issue.Critical, 0, -1).
+			Validate()
+		assert.ErrorIs(
+			t,
+			err,
+			errs.ErrInvalidConfig,
+		)
+		assert.EqualError(
+			t,
+			err,
+			"invalid config: max is negative",
+		)
+	})
+
+	t.Run("returns min greater than max error when min is bigger than max", func(t *testing.T) {
+		t.Parallel()
+		err := impl.
+			NewRange(issue.Critical, 10, 5).
+			Validate()
+		assert.ErrorIs(
+			t,
+			err,
+			errs.ErrInvalidConfig,
+		)
+		assert.EqualError(
+			t,
+			err,
+			"invalid config: min is greater than max",
+		)
+	})
+
+	t.Run("returns min greater than max error when min is positive and max is zero", func(t *testing.T) {
+		t.Parallel()
+		err := impl.
+			NewRange(issue.Critical, 5, 0).
+			Validate()
+		assert.ErrorIs(
+			t,
+			err,
+			errs.ErrInvalidConfig,
+		)
+		assert.EqualError(
+			t,
+			err,
+			"invalid config: min is greater than max",
 		)
 	})
 }

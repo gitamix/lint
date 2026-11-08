@@ -1,8 +1,10 @@
 package value
 
 import (
+	"fmt"
 	"strconv"
 
+	"github.com/gitamix/lint/errs"
 	"github.com/gitamix/lint/issue"
 )
 
@@ -49,4 +51,15 @@ func (i Integer) String() string {
 // WithLevel creates a new instance with provided issue type level.
 func (i Integer) WithLevel(lvl issue.Type) Integer {
 	return NewInteger(lvl, i.v)
+}
+
+// Validate checks if the configured issue level is valid.
+//
+// Returns an error wrapping ErrInvalidConfig if the issue type level
+// is specified but unknown. An unspecified level is considered valid.
+func (i Integer) Validate() error {
+	if !i.lvl.Unspecified() && i.lvl.Unknown() {
+		return fmt.Errorf("%w: unknown issue level", errs.ErrInvalidConfig)
+	}
+	return nil
 }

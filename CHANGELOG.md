@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/2.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.2] - 2026-11-08
+
+### Added
+
+- Validation of lint config: branch (default branch, name, task) and commit (message, scope, types)
+- Validation of config values: issue type level for every value and min/max bounds for ranges
+
+### Changed
+
+- No lint merge and revert commits
+
 ## [0.1.1] - 2026-09-19
 
 ### Added

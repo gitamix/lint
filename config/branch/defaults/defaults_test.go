@@ -46,3 +46,57 @@ func TestConfig_Name(t *testing.T) {
 		assert.Equal(t, want, got)
 	})
 }
+
+func TestConfig_Validate(t *testing.T) {
+	t.Parallel()
+
+	t.Run("ok if name is not empty", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithName("main"),
+			).
+			Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("ok if name is numeric", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithName("123"),
+			).
+			Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("ok if name is not trimmed", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithName(" main "),
+			).
+			Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("error if name is empty", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithName(""),
+			).
+			Validate()
+		assert.EqualError(t, gotErr, "empty default branch name")
+	})
+
+	t.Run("error if name is just a whitespace", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithName(" "),
+			).
+			Validate()
+		assert.EqualError(t, gotErr, "empty default branch name")
+	})
+}

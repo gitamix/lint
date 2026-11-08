@@ -1,6 +1,8 @@
 package commit
 
 import (
+	"fmt"
+
 	"github.com/gitamix/lint/config/commit/message"
 	"github.com/gitamix/lint/config/commit/scope"
 	"github.com/gitamix/lint/config/commit/types"
@@ -42,4 +44,24 @@ func (c Config) Scope() scope.Config {
 // Types returns the commit types config.
 func (c Config) Types() types.Config {
 	return c.types
+}
+
+// Validate checks the commit configuration for correctness.
+//
+// It validates the message, scope and types configurations
+// and returns the error of the first invalid one.
+func (c Config) Validate() error {
+	err := c.Message().Validate()
+	if err != nil {
+		return fmt.Errorf("invalid message: %w", err)
+	}
+	err = c.Scope().Validate()
+	if err != nil {
+		return fmt.Errorf("invalid scope: %w", err)
+	}
+	err = c.Types().Validate()
+	if err != nil {
+		return fmt.Errorf("invalid types: %w", err)
+	}
+	return nil
 }

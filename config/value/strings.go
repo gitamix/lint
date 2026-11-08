@@ -1,10 +1,12 @@
 package value
 
 import (
+	"fmt"
 	"reflect"
 	"slices"
 	"strings"
 
+	"github.com/gitamix/lint/errs"
 	"github.com/gitamix/lint/issue"
 )
 
@@ -73,4 +75,15 @@ func (s Strings) Has(v string, vv ...string) bool {
 		}
 	}
 	return true
+}
+
+// Validate checks the strings configuration for correctness.
+//
+// Returns an error wrapping ErrInvalidConfig if the issue type level
+// is specified but unknown. An unspecified level is considered valid.
+func (s Strings) Validate() error {
+	if !s.lvl.Unspecified() && s.lvl.Unknown() {
+		return fmt.Errorf("%w: unknown issue level", errs.ErrInvalidConfig)
+	}
+	return nil
 }

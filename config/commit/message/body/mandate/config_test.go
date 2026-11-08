@@ -139,3 +139,53 @@ func TestConfig_For(t *testing.T) {
 		assert.False(t, cfg.For(typ))
 	})
 }
+
+func TestConfig_Validate(t *testing.T) {
+	t.Parallel()
+
+	t.Run("ok without any option", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.NewConfig().Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("ok with valid types", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithTypes(
+					value.NewStrings(issue.Warning, "feat", "fix"),
+				),
+			).
+			Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("ok with empty strings", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithTypes(
+					value.NewStrings(issue.Critical),
+				),
+			).
+			Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("err with unknown issue level", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				impl.WithTypes(
+					value.NewStrings(issue.Type(-1), "feat"),
+				),
+			).
+			Validate()
+		assert.EqualError(
+			t,
+			gotErr,
+			"invalid config: unknown issue level",
+		)
+	})
+}

@@ -6,6 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	impl "github.com/gitamix/lint/config/value"
+	"github.com/gitamix/lint/errs"
 	"github.com/gitamix/lint/issue"
 )
 
@@ -210,6 +211,94 @@ func TestString_Empty(t *testing.T) {
 		t.Parallel()
 		v := impl.NewString(issue.Type(0), "foo")
 		assert.False(t, v.Empty())
+	})
+}
+
+func TestString_Validate(t *testing.T) {
+	t.Parallel()
+
+	t.Run("returns nil for critical level", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewString(issue.Critical, "foo").
+			Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("returns nil for warning level", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewString(issue.Warning, "foo").
+			Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("returns nil for info level", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewString(issue.Info, "foo").
+			Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("returns nil for unspecified level with value", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewString(issue.Type(0), "foo").
+			Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("returns nil for unspecified level with empty value", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewString(issue.Type(0), "").
+			Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("returns nil for critical level with empty value", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewString(issue.Critical, "").
+			Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("returns error wrapping ErrInvalidConfig for unknown level", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewString(issue.Type(-1), "foo").
+			Validate()
+		assert.ErrorIs(
+			t,
+			gotErr,
+			errs.ErrInvalidConfig,
+		)
+	})
+
+	t.Run("returns error wrapping ErrInvalidConfig for unknown level with empty value", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewString(issue.Type(-1), "").
+			Validate()
+		assert.ErrorIs(
+			t,
+			gotErr,
+			errs.ErrInvalidConfig,
+		)
+	})
+
+	t.Run("returns error wrapping ErrInvalidConfig for out of range level", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewString(issue.Type(4), "foo").
+			Validate()
+		assert.ErrorIs(
+			t,
+			gotErr,
+			errs.ErrInvalidConfig,
+		)
 	})
 }
 

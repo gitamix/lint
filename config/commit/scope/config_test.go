@@ -54,3 +54,65 @@ func TestConfig_Pattern(t *testing.T) {
 		assert.Equal(t, want, cfg.Pattern())
 	})
 }
+
+func TestConfig_Validate(t *testing.T) {
+	t.Parallel()
+
+	t.Run("ok with zero pattern value", func(t *testing.T) {
+		t.Parallel()
+		var str value.String
+		gotErr := impl.NewConfig(str).Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("ok with empty pattern value", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				value.NewString(issue.Critical, ""),
+			).
+			Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("ok with unspecfified issue level", func(t *testing.T) {
+		t.Parallel()
+		var lvl issue.Type
+		gotErr := impl.
+			NewConfig(
+				value.NewString(lvl, "foo"),
+			).
+			Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("ok with valid pattern", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				value.NewString(
+					issue.Warning,
+					`^[a-z]+$`,
+				),
+			).
+			Validate()
+		assert.NoError(t, gotErr)
+	})
+
+	t.Run("err with unknown issue level", func(t *testing.T) {
+		t.Parallel()
+		gotErr := impl.
+			NewConfig(
+				value.NewString(
+					issue.Type(-1),
+					`^[a-z]+$`,
+				),
+			).
+			Validate()
+		assert.EqualError(
+			t,
+			gotErr,
+			"invalid config: unknown issue level",
+		)
+	})
+}
